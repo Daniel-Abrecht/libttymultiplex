@@ -1,2 +1,8 @@
 build/
+repo/
 bin/
+.repo
+.dir
+*.o
+*.so
+*~
