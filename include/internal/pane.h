@@ -1,0 +1,80 @@
+#ifndef TYM_INTERNAL_PANE_H
+#define TYM_INTERNAL_PANE_H
+
+#include <poll.h>
+#include <curses.h>
+#include <termios.h>
+#include <libttymultiplex.h>
+
+struct tym_i_handler_ptr_pair {
+  void* ptr;
+  tym_resize_handler_t callback;
+};
+
+enum {
+  TYM_I_MAX_SEQ_LEN = 256,
+  TYM_I_MAX_INT_COUNT = 12,
+};
+
+struct tym_i_sequence_state {
+  unsigned short length;
+  unsigned short index;
+  bool last_special_match_continue;
+  char buffer[TYM_I_MAX_SEQ_LEN];
+  unsigned integer_count;
+  int integer[TYM_I_MAX_INT_COUNT];
+  ssize_t seq_opt_min, seq_opt_max;
+};
+
+enum tym_i_character_attribute {
+  TYM_I_CA_DEFAULT   = 0,
+  TYM_I_CA_BOLD      = 1<<0,
+  TYM_I_CA_UNDERLINE = 1<<1,
+  TYM_I_CA_BLINK     = 1<<2,
+  TYM_I_CA_INVERSE   = 1<<3,
+  TYM_I_CA_INVISIBLE = 1<<4
+};
+
+struct tym_i_termcolor {
+  unsigned char index, red, green, blue;
+};
+
+struct tym_i_cell_position {
+  unsigned x, y;
+};
+
+struct tym_i_pane_internal {
+  struct tym_i_pane_internal *previous, *next;
+  int id;
+  int master, slave;
+  WINDOW* window;
+  bool nofocus;
+  struct tym_i_cell_position cursor, saved_cursor;
+  unsigned scroll_region_top, scroll_region_bottom;
+  struct tym_i_sequence_state sequence;
+  struct termios termios;
+  struct tym_superposition superposition;
+  struct tym_absolute_position coordinates;
+  size_t resize_handler_count;
+  struct tym_i_handler_ptr_pair* resize_handler_list;
+  enum tym_i_character_attribute attribute;
+  struct tym_i_termcolor fgcolor;
+  struct tym_i_termcolor bgcolor;
+};
+
+extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
+extern struct tym_i_pane_internal *tym_i_focus_pane;
+
+void tym_i_pane_update_size_all(void);
+void tym_i_pane_update_size(struct tym_i_pane_internal* pane);
+void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y);
+int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_handler_ptr_pair* cp);
+int tym_i_pane_resize_handler_remove(struct tym_i_pane_internal* pane, size_t entry);
+void tym_i_pane_add(struct tym_i_pane_internal* pane);
+struct tym_i_pane_internal* tym_i_pane_get(int pane);
+void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c);
+void tym_i_pane_remove(struct tym_i_pane_internal* pane);
+void tym_i_pane_focus(struct tym_i_pane_internal* pane);
+void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane);
+
+#endif
