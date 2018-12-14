@@ -23,7 +23,7 @@ CC_OPTS  = -fvisibility=hidden -DTYM_BUILD -I include
 CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Wno-unused-function -Werror -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
 LD_OPTS  = --shared -Wl,-gc-sections -Wl,-no-undefined
 
-LD_OPTS += -lutil -lcurses
+LD_OPTS += -lutil -lncursesw
 #-ltermcap -ltinfo
 
 CC_OPTS += $(OPTIONS)

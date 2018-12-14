@@ -238,6 +238,8 @@ bool seq_parse_update(struct tym_i_pane_internal* pane, unsigned char c){
         tym_i_debug("%s failed: %s\n", sequence->callback_name, strerror(err));
         if(err == ENOENT)
           goto escape_abort;
+      }else{
+        tym_i_debug("+ %s\n", sequence->callback_name);
       }
     }else{
       tym_i_debug("%s unimplemented\n", sequence->callback_name);
