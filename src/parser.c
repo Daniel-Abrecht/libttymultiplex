@@ -23,6 +23,13 @@
   CSQ( "^D", cursor_left ) \
 */
 
+/*
+  CSQ( ESC "P",  ) \
+  CSQ( ESC "V",  ) \
+  CSQ( ESC "W",  ) \
+  CSQ( ESC "X",  ) \
+*/
+
 #define CSQS \
   CSQ( RIS, reset ) \
   CSQ( ESC "(" C, designate_g0_character_set ) \
@@ -41,6 +48,13 @@
   CSQ( ESC "|", invoke_charset_G3_as_GR_LS3R ) \
   CSQ( ESC "}", invoke_charset_G4_as_GR_LS2R ) \
   CSQ( ESC "~", invoke_charset_G1_as_GR_LS1R ) \
+  CSQ( ESC "D", cursor_down /* index (NEL) */ ) \
+  CSQ( ESC "E", cursor_next_line /* next line */ ) \
+  CSQ( ESC "H", tab_set ) \
+  CSQ( ESC "M", cursor_up /* reverse index */ ) \
+  CSQ( ESC "N" C, g2_character_set_for_character ) \
+  CSQ( ESC "O" C, g3_character_set_for_character ) \
+  CSQ( ESC "Z", send_device_attributes_primary ) \
   CSQ( CSI "r", set_scrolling_region ) \
   CSQ( CSI NUM "r", set_scrolling_region ) \
   CSQ( CSI "!p", soft_reset ) \
@@ -164,12 +178,13 @@ static enum specialmatch_result specialmatch(unsigned char a, unsigned char b){
     case '\2': return (b >= '0' && b <= '9') || b == ';' ? SM_MATCH_CONTINUE : SM_NO_MATCH;
     case '\3': return (b >= '0' && b <= '9') ? SM_MATCH_CONTINUE : SM_NO_MATCH;
     case '\4': return b >= ' ' ? SM_MATCH_CONTINUE : SM_NO_MATCH;
-    default: return false;
+    default: return SM_NO_MATCH;
   }
 }
 
 void reset_sequence(struct tym_i_sequence_state* sequence){
   sequence->last_special_match_continue = false;
+  sequence->seq_opt_min = 0;
   sequence->seq_opt_max = -1;
   sequence->length = 0;
   sequence->index = 0;
@@ -177,93 +192,25 @@ void reset_sequence(struct tym_i_sequence_state* sequence){
   memset(sequence->integer, 0, sizeof(int) * TYM_I_MAX_INT_COUNT);
 }
 
-bool seq_parse_update(struct tym_i_pane_internal* pane, unsigned char c){
-  unsigned short n = pane->sequence.length;
-  unsigned short index = pane->sequence.index;
-  if(n >= TYM_I_MAX_SEQ_LEN)
-    goto escape_abort;
-  if(!pane->sequence.length){
-    pane->sequence.seq_opt_min = 0;
-    pane->sequence.seq_opt_max = tym_i_command_sequence_map_count-1;
+bool control_character(struct tym_i_pane_internal* pane, char c){
+  unsigned y = pane->cursor.y;
+  unsigned x = pane->cursor.x;
+  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  if(x >= w)
+    x = w;
+  if(y >= h)
+    y = h;
+  switch(c){
+    case '\b': if(x) x -= 1; break;
+    case '\r': x = 0; break;
+    case '\n': {
+      x  = 0;
+      y += 1;
+    } break;
   }
-  ssize_t min = pane->sequence.seq_opt_min;
-  ssize_t max = pane->sequence.seq_opt_max;
-  if( pane->sequence.last_special_match_continue && !specialmatch(tym_i_command_sequence_map[min].sequence[index], c) )
-    index++;
-  while( max >= min && ( tym_i_command_sequence_map[min].length <= index || (
-         tym_i_command_sequence_map[min].length > index
-      && command_sequence_comparator_ch(tym_i_command_sequence_map[min].sequence[index], c) < 0
-      && !specialmatch(tym_i_command_sequence_map[min].sequence[index], c)
-  ))) min++;
-  if( max >=min && tym_i_command_sequence_map[min].sequence[index] >= ' ' && command_sequence_comparator_ch(tym_i_command_sequence_map[min].sequence[index], c) > 0)
-  while( max >= min && (
-        tym_i_command_sequence_map[min].length <= index // Order sensitive!!
-     || tym_i_command_sequence_map[min].sequence[index] >= ' '
-     || !specialmatch(tym_i_command_sequence_map[min].sequence[index], c)
-  )) min++;
-  bool esm = false;
-  if(max >= min && tym_i_command_sequence_map[min].length > index)
-    if(specialmatch(tym_i_command_sequence_map[min].sequence[index], c))
-      esm = true;
-  while( max >= min && tym_i_command_sequence_map[max].length > index
-      && command_sequence_comparator_ch(tym_i_command_sequence_map[max].sequence[index], c) > 0
-      && (!esm||!specialmatch(tym_i_command_sequence_map[min].sequence[index], c))
-  ) max--;
-/*  if(max < min)
-    fprintf(stderr,"%*s %c\n",(int)pane->sequence.length,pane->sequence.buffer, c);*/
-  if(max < min || index >= tym_i_command_sequence_map[min].length || index >= tym_i_command_sequence_map[max].length)
-    goto escape_abort;
-  pane->sequence.seq_opt_min = min;
-  pane->sequence.seq_opt_max = max;
-  if(max >= min && tym_i_command_sequence_map[min].sequence[index] < ' '){
-    switch(tym_i_command_sequence_map[min].sequence[index]){
-      case '\2': {
-        if(!pane->sequence.integer_count)
-          pane->sequence.integer_count = 1;
-        if(c == ';'){
-          if(++pane->sequence.integer_count >= TYM_I_MAX_INT_COUNT)
-            goto escape_abort;
-        }else if(c >= '0' && c <= '9'){
-          pane->sequence.integer[pane->sequence.integer_count-1] *= 10;
-          pane->sequence.integer[pane->sequence.integer_count-1] += c - '0';
-        }else goto escape_abort;
-      } break;
-    }
-  }
-  if(min == max && index+1 == tym_i_command_sequence_map[min].length){
-    const struct tym_i_command_sequence* sequence = tym_i_command_sequence_map + min;
-    if(sequence->callback){
-      if((*sequence->callback)(pane) == -1){
-        int err = errno;
-        tym_i_debug("%s failed: %s\n", sequence->callback_name, strerror(err));
-        if(err == ENOENT)
-          goto escape_abort;
-      }else{
-        tym_i_debug("+ %s\n", sequence->callback_name);
-      }
-    }else{
-      tym_i_debug("%s unimplemented\n", sequence->callback_name);
-    }
-    reset_sequence(&pane->sequence);
-    return true;
-  }
-  pane->sequence.buffer[n] = c;
-  pane->sequence.length = n + 1;
-  if( specialmatch(tym_i_command_sequence_map[min].sequence[index], c) == SM_MATCH_CONTINUE ){
-    pane->sequence.last_special_match_continue = true;
-  }else{
-    pane->sequence.index = index + 1;
-  }
-  return true;
-escape_abort:;
-  if(pane->sequence.buffer[0] == *ESC)
-    pane->sequence.buffer[0] = '^';
-  tym_i_debug("%.*s%c\n",(int)pane->sequence.length,pane->sequence.buffer,c);
-  reset_sequence(&pane->sequence);
-  for(unsigned short i=0; i<n; i++)
-    tym_i_pane_parse(pane, pane->sequence.buffer[i]);
-  tym_i_pane_parse(pane, c);
-  return false;
+  tym_i_pane_cursor_set_cursor(pane,x,y);
+  return c < ' ';
 }
 
 static attr_t attr2curses(enum tym_i_character_attribute ca){
@@ -307,7 +254,7 @@ static int mysetattr(struct tym_i_pane_internal* pane){
   return 0;
 }
 
-void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){ // TODO: move everything in here to seq_parse_update
+void print_character(struct tym_i_pane_internal* pane, char c){
   unsigned y = pane->cursor.y;
   unsigned x = pane->cursor.x;
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
@@ -316,33 +263,114 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){ // TOD
     x = w;
   if(y >= h)
     y = h;
+  mysetattr(pane);
+  mvwaddch(pane->window, y, x, c);
+  x += 1;
+  if(x >= w){
+    x  = 0;
+    y += 1;
+  }
+  tym_i_pane_cursor_set_cursor(pane,x,y);
+}
+
+void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
+  unsigned short n = pane->sequence.length;
+  unsigned short index = pane->sequence.index;
+  if(n >= TYM_I_MAX_SEQ_LEN)
+    goto escape_abort;
   if(!pane->sequence.length){
-    switch(c){
-      case '\b': if(x) x -= 1; break;
-      case '\r': x = 0; break;
-      case '\n': {
-        x  = 0;
-        y += 1;
-      } break;
-      case '\x1B': { // *ESC
-        seq_parse_update(pane, c);
-      }; break;
-      default: {
-        if(c < ' ')
-          break;
-        mysetattr(pane);
-        mvwaddch(pane->window, y, x, c);
-        x += 1;
-        if(x >= w){
-          x  = 0;
-          y += 1;
-        }
+    pane->sequence.seq_opt_min = 0;
+    pane->sequence.seq_opt_max = tym_i_command_sequence_map_count-1;
+  }
+  ssize_t min = pane->sequence.seq_opt_min;
+  ssize_t max = pane->sequence.seq_opt_max;
+  if( pane->sequence.last_special_match_continue && !specialmatch(tym_i_command_sequence_map[min].sequence[index], c) )
+    index++;
+  while( max >= min && ( tym_i_command_sequence_map[min].length <= index || (
+         tym_i_command_sequence_map[min].length > index
+      && command_sequence_comparator_ch(tym_i_command_sequence_map[min].sequence[index], c) < 0
+      && !specialmatch(tym_i_command_sequence_map[min].sequence[index], c)
+  ))) min++;
+  if( max >=min && tym_i_command_sequence_map[min].sequence[index] >= ' ' && command_sequence_comparator_ch(tym_i_command_sequence_map[min].sequence[index], c) > 0)
+  while( max >= min && (
+        tym_i_command_sequence_map[min].length <= index // Order sensitive!!
+     || tym_i_command_sequence_map[min].sequence[index] >= ' '
+     || !specialmatch(tym_i_command_sequence_map[min].sequence[index], c)
+  )) min++;
+  bool esm = false;
+  if(max >= min && tym_i_command_sequence_map[min].length > index)
+    if(specialmatch(tym_i_command_sequence_map[min].sequence[index], c))
+      esm = true;
+  while( max >= min && tym_i_command_sequence_map[max].length > index
+      && command_sequence_comparator_ch(tym_i_command_sequence_map[max].sequence[index], c) > 0
+      && (!esm||!specialmatch(tym_i_command_sequence_map[min].sequence[index], c))
+  ) max--;
+/*  if(max < min)
+    fprintf(stderr,"%*s %c\n",(int)pane->sequence.length,pane->sequence.buffer, c);*/
+  if(max < min || index >= tym_i_command_sequence_map[min].length || index >= tym_i_command_sequence_map[max].length){
+    if(control_character(pane, c)){
+      return;
+    }else{
+      goto escape_abort;
+    }
+  }
+  pane->sequence.seq_opt_min = min;
+  pane->sequence.seq_opt_max = max;
+  if(max >= min && tym_i_command_sequence_map[min].sequence[index] < ' '){
+    switch(tym_i_command_sequence_map[min].sequence[index]){
+      case '\2': {
+        if(!pane->sequence.integer_count)
+          pane->sequence.integer_count = 1;
+        if(c == ';'){
+          if(++pane->sequence.integer_count >= TYM_I_MAX_INT_COUNT)
+            goto escape_abort;
+        }else if(c >= '0' && c <= '9'){
+          pane->sequence.integer[pane->sequence.integer_count-1] *= 10;
+          pane->sequence.integer[pane->sequence.integer_count-1] += c - '0';
+        }else goto escape_abort;
       } break;
     }
-    tym_i_pane_cursor_set_cursor(pane,x,y);
+  }
+  if(min == max && index+1 == tym_i_command_sequence_map[min].length){
+    const struct tym_i_command_sequence* sequence = tym_i_command_sequence_map + min;
+    if(sequence->callback){
+      if((*sequence->callback)(pane) == -1){
+        int err = errno;
+        tym_i_debug("%s failed: %s\n", sequence->callback_name, strerror(err));
+        if(err == ENOENT)
+          goto escape_abort;
+      }else{
+        tym_i_pane_update_cursor(pane);
+        tym_i_debug("+ %s\n", sequence->callback_name);
+      }
+    }else{
+      tym_i_debug("%s unimplemented\n", sequence->callback_name);
+    }
+    reset_sequence(&pane->sequence);
+    return;
+  }
+  pane->sequence.buffer[n] = c;
+  pane->sequence.length = n + 1;
+  if( specialmatch(tym_i_command_sequence_map[min].sequence[index], c) == SM_MATCH_CONTINUE ){
+    pane->sequence.last_special_match_continue = true;
   }else{
-    seq_parse_update(pane, c);
+    pane->sequence.index = index + 1;
+  }
+  return;
+escape_abort:;
+  char fc = pane->sequence.length ? pane->sequence.buffer[0] : c;
+  switch(fc){
+    case '\x1B': print_character(pane, fc); break;
+    default: print_character(pane, fc); break;
+  }
+  if(pane->sequence.length){
+    tym_i_debug("%.*s%c %zd %zd\n",(int)pane->sequence.length,pane->sequence.buffer,c, pane->sequence.seq_opt_min, pane->sequence.seq_opt_max);
+    reset_sequence(&pane->sequence);
+    for(unsigned short i=1; i<n; i++)
+      tym_i_pane_parse(pane, pane->sequence.buffer[i]);
+    tym_i_pane_parse(pane, c);
   }
   tym_i_pane_update_cursor(pane);
+  return;
 }
 
