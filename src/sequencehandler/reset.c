@@ -12,6 +12,7 @@ int tym_i_csq_reset(struct tym_i_pane_internal* pane){
   }
   pane->fgcolor.index = 0;
   pane->bgcolor.index = 0;
+  pane->mouse_mode = MOUSE_MODE_OFF;
   wclear(pane->window);
   tym_i_pane_cursor_set_cursor(pane, 0, 0);
   return 0;

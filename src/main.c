@@ -186,7 +186,7 @@ void* tym_i_main(void* ptr){
               unsigned x = event.x - it->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
               unsigned y = event.y - it->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
               tym_i_pane_focus(it);
-              tym_i_pts_send_mouse_event(it, event.bstate, x, y);
+              tym_i_pts_send_mouse_event(it, event.bstate, (struct tym_i_cell_position){.x=x, .y=y});
               break;
             }
           } break;

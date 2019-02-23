@@ -35,6 +35,30 @@ enum tym_i_character_attribute {
   TYM_I_CA_INVISIBLE = 1<<4
 };
 
+enum mouse_mode {
+  MOUSE_MODE_OFF,
+  MOUSE_MODE_X10,
+  MOUSE_MODE_BUTTON,
+  MOUSE_MODE_NORMAL, // VT220
+  MOUSE_MODE_ANY
+};
+
+enum tym_i_decset_decres {
+/*  TYM_I_DSDR_APPLICATION_CURSOR_KEYS = 1,
+  TYM_I_DSDR_DESIGNATE_USASCII_CHARACTER_SETS = 2,
+  TYM_I_DSDR_132_COLUMN_MODE = 3,
+  TYM_I_DSDR_SMOOTH_SCROLL = 4,
+  TYM_I_DSDR_REVERSE_VIDEO = 5,
+  TYM_I_DSDR_ORIGIN_MODE = 6,
+  TYM_I_DSDR_AUTO_WRAP_MODE = 7,
+  TYM_I_DSDR_AUTO_REPEAT_KEYS = 8,*/
+  TYM_I_DSDR_MOUSE_MODE_X10 = 9,
+  // TODO: fill in the rest...
+  TYM_I_DSDR_MOUSE_MODE_NORMAL = 1000,
+  TYM_I_DSDR_MOUSE_MODE_BUTTON = 1002,
+  TYM_I_DSDR_MOUSE_MODE_ANY = 1003,
+};
+
 struct tym_i_termcolor {
   unsigned char index, red, green, blue;
 };
@@ -60,6 +84,8 @@ struct tym_i_pane_internal {
   enum tym_i_character_attribute attribute;
   struct tym_i_termcolor fgcolor;
   struct tym_i_termcolor bgcolor;
+  enum mouse_mode mouse_mode;
+  struct tym_i_cell_position last_mouse_event_pos;
 };
 
 extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
