@@ -30,6 +30,11 @@ enum tym_unit_type {
   TYM_U_COUNT
 };
 
+enum tym_flag {
+  TYM_PF_FOCUS,
+  TYM_PF_DISALLOW_FOCUS
+};
+
 struct tym_unit {
   enum tym_unit_type type;
   union {
@@ -63,6 +68,8 @@ TYM_EXPORT int tym_pane_resize(int pane, const struct tym_superposition*restrict
 TYM_EXPORT int tym_pane_reset(int pane);
 TYM_EXPORT int tym_register_resize_handler( int pane, void* ptr, tym_resize_handler_t handler );
 TYM_EXPORT int tym_unregister_resize_handler( int pane, void* ptr, tym_resize_handler_t handler );
+TYM_EXPORT int tym_pane_set_flag(int pane, enum tym_flag flag, bool status);
+TYM_EXPORT int tym_pane_get_flag(int pane, enum tym_flag flag);
 TYM_EXPORT int tym_pane_set_env(int pane);
 TYM_EXPORT int tym_pane_get_slavefd(int pane);
 TYM_EXPORT int tym_pane_get_masterfd(int pane);

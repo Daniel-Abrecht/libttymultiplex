@@ -75,12 +75,21 @@ struct tym_i_pane_internal* tym_i_pane_get(int pane){
   return 0;
 }
 
-void tym_i_pane_focus(struct tym_i_pane_internal* pane){
-  if(pane->nofocus || tym_i_focus_pane == pane)
-    return;
-  tym_i_focus_pane = pane;
-  tym_i_pane_update_cursor(pane);
-  wrefresh(pane->window);
+int tym_i_pane_focus(struct tym_i_pane_internal* pane){
+  if(pane){
+    if(pane->nofocus){
+      errno = EPERM;
+      return -1;
+    }
+    if(tym_i_focus_pane == pane)
+      return 0;
+    tym_i_focus_pane = pane;
+    tym_i_pane_update_cursor(pane);
+    wrefresh(pane->window);
+  }else{
+    tym_i_focus_pane = 0;
+  }
+  return 0;
 }
 
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane){
@@ -106,7 +115,7 @@ void tym_i_pane_update_size_all(void){
 
 void tym_i_pane_remove(struct tym_i_pane_internal* pane){
   if(tym_i_focus_pane == pane)
-    tym_i_focus_pane = 0;
+    tym_i_pane_focus(0);
   if(tym_i_pane_list_start == pane)
     tym_i_pane_list_start = pane->next;
   if(tym_i_pane_list_end == pane)

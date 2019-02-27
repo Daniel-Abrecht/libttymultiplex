@@ -101,7 +101,7 @@ void tym_i_pane_add(struct tym_i_pane_internal* pane);
 struct tym_i_pane_internal* tym_i_pane_get(int pane);
 void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c);
 void tym_i_pane_remove(struct tym_i_pane_internal* pane);
-void tym_i_pane_focus(struct tym_i_pane_internal* pane);
+int tym_i_pane_focus(struct tym_i_pane_internal* pane);
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane);
 
 #endif

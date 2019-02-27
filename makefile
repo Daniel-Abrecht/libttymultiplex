@@ -5,6 +5,7 @@ SOURCES = $(wildcard src/sequencehandler/*.c)
 SOURCES += src/libttymultiplex.c
 SOURCES += src/main.c
 SOURCES += src/pane.c
+SOURCES += src/pane_flag.c
 SOURCES += src/calc.c
 SOURCES += src/list.c
 SOURCES += src/pseudoterminal.c
