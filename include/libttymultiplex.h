@@ -65,6 +65,7 @@ TYM_EXPORT int tym_register_resize_handler( int pane, void* ptr, tym_resize_hand
 TYM_EXPORT int tym_unregister_resize_handler( int pane, void* ptr, tym_resize_handler_t handler );
 TYM_EXPORT int tym_pane_set_env(int pane);
 TYM_EXPORT int tym_pane_get_slavefd(int pane);
+TYM_EXPORT int tym_pane_get_masterfd(int pane);
 
 #ifdef __cplusplus
 }

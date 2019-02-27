@@ -86,6 +86,7 @@ struct tym_i_pane_internal {
   struct tym_i_termcolor bgcolor;
   enum mouse_mode mouse_mode;
   struct tym_i_cell_position last_mouse_event_pos;
+  int last_button;
 };
 
 extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;

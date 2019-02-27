@@ -263,6 +263,24 @@ error:
   return -1;
 }
 
+int tym_pane_get_masterfd(int pane){
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  struct tym_i_pane_internal* ppane = tym_i_pane_get(pane);
+  if(!ppane){
+    errno = ENOENT;
+    goto error;
+  }
+  pthread_mutex_unlock(&tym_i_lock);
+  return ppane->master;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
 int tym_pane_reset(int pane){
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
