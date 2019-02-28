@@ -19,6 +19,7 @@ int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*res
   return ret == -1 ? -1 : 0;
 }
 
+// Replace mmask_t with a something not curses specific
 void tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, mmask_t buttons, struct tym_i_cell_position pos){
   char buf[64] = {0};
   int len = 0;
@@ -32,6 +33,8 @@ void tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, mmask_t button
     TRIPPLECLICK
   } events = RELEASED;
   int button = -1;
+  // Note: Since curses mouseinterval was set to 0, only released and pressed is possible anyway
+  // TODO: clean this up
   if( buttons & (BUTTON1_PRESSED | BUTTON1_CLICKED | BUTTON1_DOUBLE_CLICKED | BUTTON1_TRIPLE_CLICKED )){
     button = 0;
     if(buttons & BUTTON1_PRESSED){
