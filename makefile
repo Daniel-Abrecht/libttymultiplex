@@ -49,10 +49,16 @@ bin/libttymultiplex.so: bin/libttymultiplex.a | bin/.dir
 	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive -o $@
 
 install:
-	cp bin/libttymultiplex.so $(PREFIX)/lib/libttymultiplex.so
+	mkdir -p "$(DESTDIR)$(PREFIX)/lib"
+	mkdir -p "$(DESTDIR)$(PREFIX)/include"
+	cp bin/libttymultiplex.a "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.a"
+	cp bin/libttymultiplex.so "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so"
+	cp include/libttymultiplex.h "$(DESTDIR)$(PREFIX)/include/"
 
 uninstall:
-	rm -f $(PREFIX)/lib/libttymultiplex.so
+	rm -f "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.a"
+	rm -f "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so"
+	rm -f "$(DESTDIR)$(PREFIX)/include/libttymultiplex.h"
 
 clean:
 	rm -rf bin/ build/

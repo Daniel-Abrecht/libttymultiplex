@@ -1,0 +1,5 @@
+libttymultiplex*/
+tmp/
+files
+*.substvars
+*.log
