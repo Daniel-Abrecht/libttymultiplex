@@ -16,6 +16,8 @@ HEADERS = $(wildcard include/*.h) $(wildcard include/**/*.h)
 
 OBJS = $(patsubst src/%.c,build/%.o,$(SOURCES))
 
+PREFIX = /usr
+
 CC = gcc
 AR = ar
 
@@ -45,6 +47,12 @@ bin/libttymultiplex.a: $(OBJS) | bin/.dir
 
 bin/libttymultiplex.so: bin/libttymultiplex.a | bin/.dir
 	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive -o $@
+
+install:
+	cp bin/libttymultiplex.so $(PREFIX)/lib/libttymultiplex.so
+
+uninstall:
+	rm -f $(PREFIX)/lib/libttymultiplex.so
 
 clean:
 	rm -rf bin/ build/
