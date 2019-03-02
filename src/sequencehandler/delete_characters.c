@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <errno.h>
-#include <curses.h>
+#include <ncursesw/curses.h>
 #include <internal/pane.h>
 
 int tym_i_csq_delete_characters(struct tym_i_pane_internal* pane){

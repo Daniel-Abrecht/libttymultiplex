@@ -2,7 +2,7 @@
 #define TYM_INTERNAL_PANE_H
 
 #include <poll.h>
-#include <curses.h>
+#include <ncursesw/curses.h>
 #include <termios.h>
 #include <libttymultiplex.h>
 

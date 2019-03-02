@@ -12,7 +12,7 @@
 #include <string.h>
 #include <errno.h>
 #include <pty.h>
-#include <curses.h>
+#include <ncursesw/curses.h>
 #include <pthread.h>
 #include <internal/main.h>
 #include <internal/pane.h>
