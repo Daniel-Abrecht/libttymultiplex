@@ -318,6 +318,11 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
   pane->sequence.seq_opt_max = max;
   if(max >= min && tym_i_command_sequence_map[min].sequence[index] < ' '){
     switch(tym_i_command_sequence_map[min].sequence[index]){
+      case '\1': {
+        if(++pane->sequence.integer_count >= TYM_I_MAX_INT_COUNT)
+          goto escape_abort;
+        pane->sequence.integer[pane->sequence.integer_count-1] = c;
+      } break;
       case '\2': {
         if(!pane->sequence.integer_count)
           pane->sequence.integer_count = 1;

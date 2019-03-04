@@ -5,7 +5,7 @@ Source:
  <https://github.com/Daniel-Abrecht/libttymultiplex>
 
 Files: *
-Copyright: 2019 Daniel Abrecht public@danielabrecht.ch
+Copyright: 2019 Daniel Abrecht <public@danielabrecht.ch>
 License: AGPL-3.0
 
 Files: debian/*

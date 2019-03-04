@@ -4,6 +4,7 @@
 #include <poll.h>
 #include <ncursesw/curses.h>
 #include <termios.h>
+#include <internal/charset.h>
 #include <libttymultiplex.h>
 
 struct tym_i_handler_ptr_pair {
@@ -34,6 +35,8 @@ enum tym_i_character_attribute {
   TYM_I_CA_INVERSE   = 1<<3,
   TYM_I_CA_INVISIBLE = 1<<4
 };
+
+enum { TYM_I_G_CHARSET_COUNT=4 };
 
 enum mouse_mode {
   MOUSE_MODE_OFF,
@@ -87,6 +90,7 @@ struct tym_i_pane_internal {
   enum mouse_mode mouse_mode;
   struct tym_i_cell_position last_mouse_event_pos;
   int last_button;
+  enum tym_i_charset_type charset_g[TYM_I_G_CHARSET_COUNT];
 };
 
 extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;

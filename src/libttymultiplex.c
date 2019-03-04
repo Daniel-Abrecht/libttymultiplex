@@ -12,6 +12,7 @@
 #include <string.h>
 #include <errno.h>
 #include <pty.h>
+#include <locale.h>
 #include <ncursesw/curses.h>
 #include <pthread.h>
 #include <internal/main.h>
@@ -39,6 +40,7 @@ int tym_init(void){
   }
   tym_i_binit = INIT_STATE_INITIALISED;
   tym_i_tty = dup(STDIN_FILENO);
+  setlocale(LC_CTYPE, "C.utf8");
   if(!initscr())
     goto error;
   cbreak();
@@ -73,7 +75,7 @@ int tym_init(void){
   sigemptyset(&sigmask);
   sigaddset(&sigmask, SIGWINCH);
   sigaddset(&sigmask, SIGINT);
-  if(sigprocmask(SIG_BLOCK, &sigmask, 0) == -1)
+  if(pthread_sigmask(SIG_BLOCK, &sigmask, 0) == -1)
     goto error;
   if(pipe(tym_i_pollctl))
     goto error;
