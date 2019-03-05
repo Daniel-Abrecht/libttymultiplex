@@ -36,6 +36,13 @@
   CSQ( ESC ")" C, designate_g1_character_set ) \
   CSQ( ESC "*" C, designate_g2_character_set ) \
   CSQ( ESC "+" C, designate_g3_character_set ) \
+  CSQ( ESC "%@", select_defautl_character_set ) \
+  CSQ( ESC "%G", select_utf8_character_set ) \
+  CSQ( ESC "n", invoke_charset_G2_as_GL_SL2 ) \
+  CSQ( ESC "o", invoke_charset_G3_as_GL_SL3 ) \
+  CSQ( ESC "|", invoke_charset_G3_as_GR_LS3R ) \
+  CSQ( ESC "}", invoke_charset_G4_as_GR_LS2R ) \
+  CSQ( ESC "~", invoke_charset_G1_as_GR_LS1R ) \
   CSQ( ESC "7", save_cursor_position ) \
   CSQ( ESC "8", restore_cursor_position ) \
   CSQ( ESC "=", application_keypad ) \
@@ -43,11 +50,6 @@
   CSQ( ESC "F", cursor_to_bottom_left ) \
   CSQ( ESC "l", memory_lock ) \
   CSQ( ESC "m", memory_unlock ) \
-  CSQ( ESC "n", invoke_charset_G2_as_GL_SL2 ) \
-  CSQ( ESC "o", invoke_charset_G3_as_GL_SL3 ) \
-  CSQ( ESC "|", invoke_charset_G3_as_GR_LS3R ) \
-  CSQ( ESC "}", invoke_charset_G4_as_GR_LS2R ) \
-  CSQ( ESC "~", invoke_charset_G1_as_GR_LS1R ) \
   CSQ( ESC "D", cursor_down /* index (NEL) */ ) \
   CSQ( ESC "E", cursor_next_line /* next line */ ) \
   CSQ( ESC "H", tab_set ) \

@@ -6,13 +6,13 @@ Source:
 
 Files: *
 Copyright: 2019 Daniel Abrecht <public@danielabrecht.ch>
-License: AGPL-3.0
+License: AGPL-3.0+
 
 Files: debian/*
 Copyright: 2019 Daniel Patrick Abrecht <deb@danielabrecht.ch>
-License: AGPL-3.0
+License: AGPL-3.0+
 
-License: AGPL-3.0
+License: AGPL-3.0+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as published by
  the Free Software Foundation, either version 3 of the License, or

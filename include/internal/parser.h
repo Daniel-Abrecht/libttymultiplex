@@ -1,3 +1,6 @@
+// Copyright (c) 2018 Daniel Abrecht
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 #ifndef TYM_INTERNAL_PARSER_H
 
 #define ESC "\x1B"

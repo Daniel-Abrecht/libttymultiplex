@@ -45,13 +45,13 @@ int tym_i_csq_designate_g0_character_set(struct tym_i_pane_internal* pane){
 }
 
 int tym_i_csq_designate_g1_character_set(struct tym_i_pane_internal* pane){
-  return designate_character_set(pane, 0);
+  return designate_character_set(pane, 1);
 }
 
 int tym_i_csq_designate_g2_character_set(struct tym_i_pane_internal* pane){
-  return designate_character_set(pane, 0);
+  return designate_character_set(pane, 2);
 }
 
 int tym_i_csq_designate_g3_character_set(struct tym_i_pane_internal* pane){
-  return designate_character_set(pane, 0);
+  return designate_character_set(pane, 3);
 }

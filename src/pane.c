@@ -139,6 +139,7 @@ int tym_pane_create(const struct tym_superposition*restrict superposition){
     .master = -1,
     .slave = -1,
     .termios.c_lflag = ECHO | ICANON /* | VERASE | VKILL | VINTR*/,
+    .charset_selection = TYM_I_CHARSET_SELECTION_UTF8,
     .sequence.seq_opt_max = -1
   }));
   pane->superposition = *superposition;

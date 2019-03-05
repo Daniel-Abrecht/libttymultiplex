@@ -11,6 +11,7 @@ SOURCES += src/list.c
 SOURCES += src/pseudoterminal.c
 SOURCES += src/utils.c
 SOURCES += src/parser.c
+SOURCES += src/charset.c
 
 HEADERS = $(wildcard include/*.h) $(wildcard include/**/*.h)
 
@@ -22,7 +23,7 @@ CC = gcc
 AR = ar
 
 OPTIONS  = -fPIC -pthread -ffunction-sections -fdata-sections -g -Og
-CC_OPTS  = -fvisibility=hidden -DTYM_BUILD -I include
+CC_OPTS  = -fvisibility=hidden -DTYM_BUILD -I include -finput-charset=UTF-8
 CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Wno-unused-function -Werror -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
 LD_OPTS  = --shared -Wl,-gc-sections -Wl,-no-undefined
 

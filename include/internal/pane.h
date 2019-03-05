@@ -1,3 +1,6 @@
+// Copyright (c) 2018 Daniel Abrecht
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 #ifndef TYM_INTERNAL_PANE_H
 #define TYM_INTERNAL_PANE_H
 
@@ -91,6 +94,7 @@ struct tym_i_pane_internal {
   struct tym_i_cell_position last_mouse_event_pos;
   int last_button;
   enum tym_i_charset_type charset_g[TYM_I_G_CHARSET_COUNT];
+  enum charset_selection charset_selection;
 };
 
 extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
