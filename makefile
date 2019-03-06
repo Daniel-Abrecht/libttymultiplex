@@ -12,6 +12,7 @@ SOURCES += src/pseudoterminal.c
 SOURCES += src/utils.c
 SOURCES += src/parser.c
 SOURCES += src/charset.c
+SOURCES += src/utf8.c
 
 HEADERS = $(wildcard include/*.h) $(wildcard include/**/*.h)
 
