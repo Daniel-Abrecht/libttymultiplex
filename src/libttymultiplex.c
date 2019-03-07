@@ -13,7 +13,7 @@
 #include <errno.h>
 #include <pty.h>
 #include <locale.h>
-#include <ncursesw/curses.h>
+#include <curses.h>
 #include <pthread.h>
 #include <internal/main.h>
 #include <internal/pane.h>
@@ -40,7 +40,7 @@ int tym_init(void){
   }
   tym_i_binit = INIT_STATE_INITIALISED;
   tym_i_tty = dup(STDIN_FILENO);
-  setlocale(LC_CTYPE, "C.utf8");
+  setlocale(LC_CTYPE, "");
   if(!initscr())
     goto error;
   cbreak();

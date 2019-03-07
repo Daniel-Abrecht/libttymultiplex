@@ -5,8 +5,9 @@
 #define TYM_INTERNAL_PANE_H
 
 #include <poll.h>
-#include <ncursesw/curses.h>
+#include <ncurses.h>
 #include <termios.h>
+#include <internal/utf8.h>
 #include <internal/charset.h>
 #include <libttymultiplex.h>
 
@@ -73,6 +74,17 @@ struct tym_i_cell_position {
   unsigned x, y;
 };
 
+union tym_i_character_data {
+  struct tym_i_utf8_character_state utf8;
+  char byte;
+};
+
+struct tym_i_character {
+  enum charset_selection charset_selection;
+  enum tym_i_charset_type charset_g[TYM_I_G_CHARSET_COUNT];
+  union tym_i_character_data data;
+};
+
 struct tym_i_pane_internal {
   struct tym_i_pane_internal *previous, *next;
   int id;
@@ -93,8 +105,7 @@ struct tym_i_pane_internal {
   enum mouse_mode mouse_mode;
   struct tym_i_cell_position last_mouse_event_pos;
   int last_button;
-  enum tym_i_charset_type charset_g[TYM_I_G_CHARSET_COUNT];
-  enum charset_selection charset_selection;
+  struct tym_i_character character;
 };
 
 extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;

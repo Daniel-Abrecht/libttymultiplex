@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <errno.h>
-#include <ncursesw/curses.h>
+#include <curses.h>
 #include <internal/pane.h>
 
 int tym_i_csq_erase_in_display(struct tym_i_pane_internal* pane){

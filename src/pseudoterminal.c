@@ -3,7 +3,7 @@
 
 #include <errno.h>
 #include <unistd.h>
-#include <ncursesw/curses.h>
+#include <curses.h>
 #include <internal/main.h>
 #include <internal/parser.h>
 #include <internal/pseudoterminal.h>

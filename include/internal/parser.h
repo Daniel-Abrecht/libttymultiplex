@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #ifndef TYM_INTERNAL_PARSER_H
+#define TYM_INTERNAL_PARSER_H
+
+#include <internal/charset.h>
 
 #define ESC "\x1B"
 #define IND ESC "D"
@@ -37,5 +40,7 @@ struct tym_i_command_sequence {
   const char* callback_name;
   tym_i_csq_sequence_callback callback;
 };
+
+int tym_i_invoke_charset(struct tym_i_pane_internal* pane, enum charset_selection cs);
 
 #endif

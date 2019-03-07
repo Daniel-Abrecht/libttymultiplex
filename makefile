@@ -23,13 +23,13 @@ PREFIX = /usr
 CC = gcc
 AR = ar
 
-OPTIONS  = -fPIC -pthread -ffunction-sections -fdata-sections -g -Og
-CC_OPTS  = -fvisibility=hidden -DTYM_BUILD -I include -finput-charset=UTF-8
+OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -g -Og
+CC_OPTS += -fvisibility=hidden -DTYM_BUILD -I include -finput-charset=UTF-8
+CC_OPTS += $(shell ncursesw5-config --cflags)
 CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Wno-unused-function -Werror -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
-LD_OPTS  = --shared -Wl,-gc-sections -Wl,-no-undefined
+LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined
 
-LD_OPTS += -lutil -lncursesw
-#-ltermcap -ltinfo
+LIBS += -lutil $(shell ncursesw5-config --libs)
 
 CC_OPTS += $(OPTIONS)
 LD_OPTS += $(OPTIONS)
@@ -48,7 +48,7 @@ bin/libttymultiplex.a: $(OBJS) | bin/.dir
 	$(AR) scr $@ $^
 
 bin/libttymultiplex.so: bin/libttymultiplex.a | bin/.dir
-	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive -o $@
+	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive $(LIBS) -o $@
 
 install:
 	mkdir -p "$(DESTDIR)$(PREFIX)/lib"

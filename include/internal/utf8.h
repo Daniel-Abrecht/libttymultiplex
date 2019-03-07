@@ -28,7 +28,7 @@ enum tym_i_utf8_character_state_push_result {
 
 // TODO: handle stuff like combined characters as one character
 struct tym_i_utf8_character_state {
-  uint8_t data[TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT];
+  uint8_t data[TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT+1];
   uint8_t count;
 };
 enum tym_i_utf8_character_state_push_result tym_i_utf8_character_state_push(struct tym_i_utf8_character_state* state, char c);

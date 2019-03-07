@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <errno.h>
-#include <ncursesw/curses.h>
+#include <curses.h>
 #include <internal/pane.h>
 
 int tym_i_csq_reset(struct tym_i_pane_internal* pane){
@@ -13,7 +13,7 @@ int tym_i_csq_reset(struct tym_i_pane_internal* pane){
   pane->fgcolor.index = 0;
   pane->bgcolor.index = 0;
   pane->mouse_mode = MOUSE_MODE_OFF;
-  pane->charset_selection = TYM_I_CHARSET_SELECTION_UTF8;
+  pane->character.charset_selection = TYM_I_CHARSET_SELECTION_UTF8;
   wclear(pane->window);
   tym_i_pane_cursor_set_cursor(pane, 0, 0);
   return 0;

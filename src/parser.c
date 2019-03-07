@@ -194,7 +194,7 @@ void reset_sequence(struct tym_i_sequence_state* sequence){
   memset(sequence->integer, 0, sizeof(int) * TYM_I_MAX_INT_COUNT);
 }
 
-bool control_character(struct tym_i_pane_internal* pane, char c){
+bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
   unsigned y = pane->cursor.y;
   unsigned x = pane->cursor.x;
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
@@ -210,6 +210,8 @@ bool control_character(struct tym_i_pane_internal* pane, char c){
       x  = 0;
       y += 1;
     } break;
+    case 0x0E /*SO*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G1 | TYM_I_CHARSET_SELECTION_GR_G1); break;
+    case 0x0F /*SI*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G0 | TYM_I_CHARSET_SELECTION_GR_G0); break;
   }
   tym_i_pane_cursor_set_cursor(pane,x,y);
   return c < ' ';
@@ -252,11 +254,23 @@ static int mysetattr(struct tym_i_pane_internal* pane){
   }else if(COLOR_PAIRS >= 16){
     // TODO
   }
-  wattr_set(pane->window, attr, pair, 0);
+  (void)wattr_set(pane->window, attr, pair, 0);
   return 0;
 }
 
-void print_character(struct tym_i_pane_internal* pane, char c){
+static const struct tym_i_character UTF8_INVALID_SYMBOL = {
+  .charset_selection = TYM_I_CHARSET_SELECTION_UTF8,
+  .data = {
+    .utf8 = {
+      .data = "�", // ef bf bd
+      .count = 3,
+    }
+  }
+};
+
+void print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
+  if(character.charset_selection == TYM_I_CHARSET_SELECTION_UTF8 && !character.data.utf8.count)
+    return;
   unsigned y = pane->cursor.y;
   unsigned x = pane->cursor.x;
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
@@ -266,16 +280,61 @@ void print_character(struct tym_i_pane_internal* pane, char c){
   if(y >= h)
     y = h;
   mysetattr(pane);
-  mvwaddch(pane->window, y, x, c);
+  wmove(pane->window, y, x);
+  const char* sequence = 0;
+  if(character.charset_selection == TYM_I_CHARSET_SELECTION_UTF8){
+    sequence = (char*)character.data.utf8.data;
+    tym_i_debug("utf8 %d",(int)character.data.utf8.count);
+    for(const char* it=sequence; *it; it++)
+      tym_i_debug(" %.2X", (int)*it);
+    tym_i_debug("\n");
+  }else if(!(character.charset_selection & ~TYM_I_CHARSET_SELECTION_GLGR_MASK)){
+    bool codepage = !!(character.data.byte & 0x80);
+    uint8_t index = character.data.byte & 0x7F;
+    uint8_t gl = character.charset_selection;
+    uint8_t gr = character.charset_selection >> 8;
+    uint8_t g = codepage ? gr : gl;
+    if(g >= TYM_I_G_CHARSET_COUNT || index < ' '){
+      sequence = (char*)UTF8_INVALID_SYMBOL.data.utf8.data;
+    }else{
+      uint8_t charset = character.charset_g[g];
+      if(charset >= TYM_I_CHARSET_GENERIC_COUNT){
+        sequence = (char*)UTF8_INVALID_SYMBOL.data.utf8.data;
+      }else{
+        sequence = (char*)tym_i_translation_table[charset].table[index-' '];
+      }
+    }
+  }
+  waddstr(pane->window, sequence);
   x += 1;
   if(x >= w){
     x  = 0;
     y += 1;
   }
   tym_i_pane_cursor_set_cursor(pane,x,y);
+//  wrefresh(pane->window);
+}
+
+bool print_character_update(struct tym_i_pane_internal* pane, char c){
+  tym_i_debug("print_character_update %.2x\n", (int)c);
+  enum tym_i_utf8_character_state_push_result result = tym_i_utf8_character_state_push(&pane->character.data.utf8, c);
+  if(result & TYM_I_UCS_INVALID_ABORT_FLAG){
+    print_character(pane, UTF8_INVALID_SYMBOL);
+    memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
+    return false;
+  }else if(result == TYM_I_UCS_DONE){
+    print_character(pane, pane->character);
+    memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
+  }
+  return true;
 }
 
 void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
+  tym_i_debug("tym_i_pane_parse %.2X\n", c);
+  if(pane->character.charset_selection == TYM_I_CHARSET_SELECTION_UTF8)
+    if( pane->character.data.utf8.count )
+      if(print_character_update(pane, c))
+        return;
   unsigned short n = pane->sequence.length;
   unsigned short index = pane->sequence.index;
   if(n >= TYM_I_MAX_SEQ_LEN)
@@ -367,8 +426,8 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
 escape_abort:;
   char fc = pane->sequence.length ? pane->sequence.buffer[0] : c;
   switch(fc){
-    case '\x1B': print_character(pane, fc); break;
-    default: print_character(pane, fc); break;
+    case '\x1B': print_character_update(pane, '^'); break;
+    default: print_character_update(pane, fc); break;
   }
   if(pane->sequence.length){
     tym_i_debug("%.*s%c %zd %zd\n",(int)pane->sequence.length,pane->sequence.buffer,c, pane->sequence.seq_opt_min, pane->sequence.seq_opt_max);
