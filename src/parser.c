@@ -104,6 +104,8 @@
   CSQ( CSI NUM "S", scroll_page_up ) \
   CSQ( CSI "T", scroll_page_down ) \
   CSQ( CSI NUM "T", scroll_page_down ) \
+  CSQ( CSI "X", erase_characters ) \
+  CSQ( CSI NUM "X", erase_characters ) \
   CSQ( CSI "d", line_position_absolute ) \
   CSQ( CSI NUM "d", line_position_absolute ) \
   CSQ( CSI "f", horizontal_vertical_position ) \
@@ -400,6 +402,7 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
   if(min == max && index+1 == tym_i_command_sequence_map[min].length){
     const struct tym_i_command_sequence* sequence = tym_i_command_sequence_map + min;
     if(sequence->callback){
+      mysetattr(pane);
       if((*sequence->callback)(pane) == -1){
         int err = errno;
         tym_i_debug("%s failed: %s\n", sequence->callback_name, strerror(err));

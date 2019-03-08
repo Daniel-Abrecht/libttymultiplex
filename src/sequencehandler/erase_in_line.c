@@ -12,6 +12,7 @@ int tym_i_csq_erase_in_line(struct tym_i_pane_internal* pane){
   }
   if(pane->sequence.integer_count == 0)
     pane->sequence.integer[0] = 0;
+//  (void)wattr_set(pane->window, 0, 0, 0);
   switch(pane->sequence.integer[0]){
     case 0: {
       wmove(pane->window, pane->cursor.y, pane->cursor.x);
