@@ -70,7 +70,6 @@ int tym_init(void){
   refresh();
   mousemask(ALL_MOUSE_EVENTS|REPORT_MOUSE_POSITION, &tym_i_mouseeventmask);
   mouseinterval(0);
-  write(tym_i_tty,"\033[?1003h",8); // Mouse movement not reportet otherwise. curses/terminfo bug?
   sigset_t sigmask;
   sigemptyset(&sigmask);
   sigaddset(&sigmask, SIGWINCH);
