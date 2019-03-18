@@ -138,10 +138,67 @@ int tym_pane_create(const struct tym_superposition*restrict superposition){
   struct tym_i_pane_internal* pane = TYM_COPY(((struct tym_i_pane_internal){
     .master = -1,
     .slave = -1,
-    .termios.c_lflag = ECHO | ICANON /* | VERASE | VKILL | VINTR*/,
-    .character = {
-      .charset_selection = TYM_I_CHARSET_SELECTION_UTF8,
+    // Set some generic termios defaults
+    .termios = {
+      .c_iflag = BRKINT | ICRNL | IMAXBEL | IUTF8,
+      .c_oflag = OPOST | ONLCR | NL0 | CR0 | TAB0 | BS0 | FF0,
+      .c_cflag = CREAD,
+      .c_lflag = ICANON | IEXTEN | ECHO | ECHOE | ECHOK | ISIG | ECHOCTL | ECHOKE,
+      .c_cc = {
+#ifdef VDISCARD
+        [VDISCARD] =  017,
+#endif
+#ifdef VDSUSP
+        [VDSUSP]   =  031,
+#endif
+#ifdef VEOF
+        [VEOF]     =   04,
+#endif
+#ifdef VEOL
+        [VEOL]     =    0,
+#endif
+#ifdef VEOL2
+        [VEOL2]    =    0,
+#endif
+#ifdef VERASE
+        [VERASE]   = 0177,
+#endif
+#ifdef VINTR
+        [VINTR]    =  003,
+#endif
+#ifdef VKILL
+        [VKILL]    =  025,
+#endif
+#ifdef VLNEXT
+        [VLNEXT]   =  026,
+#endif
+#ifdef VQUIT
+        [VQUIT]    =  034,
+#endif
+#ifdef VREPRINT
+        [VREPRINT] =  022,
+#endif
+#ifdef VSTART
+        [VSTART]   =  021,
+#endif
+#ifdef VSTATUS
+        [VSTATUS]  =  024,
+#endif
+#ifdef VSTOP
+        [VSTOP]    =  023,
+#endif
+#ifdef VSUSP
+        [VSUSP]    =  032,
+#endif
+#ifdef VSWTCH
+        [VSWTCH]   =    0,
+#endif
+#ifdef VWERASE
+        [VWERASE]  =  027,
+#endif
+      }
     },
+    .character.charset_selection = TYM_I_CHARSET_SELECTION_UTF8,
     .sequence.seq_opt_max = -1
   }));
   pane->superposition = *superposition;
