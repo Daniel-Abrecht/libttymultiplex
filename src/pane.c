@@ -266,6 +266,7 @@ void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, 
   }
   pane->cursor.y = y;
   pane->cursor.x = x;
+  wmove(pane->window, y, x);
   return;
 }
 
