@@ -198,7 +198,6 @@ int tym_pane_create(const struct tym_superposition*restrict superposition){
 #endif
       }
     },
-    .character.charset_selection = TYM_I_CHARSET_SELECTION_UTF8,
     .sequence.seq_opt_max = -1
   }));
   pane->superposition = *superposition;

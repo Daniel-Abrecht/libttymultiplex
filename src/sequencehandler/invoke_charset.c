@@ -15,15 +15,17 @@ int tym_i_invoke_charset(struct tym_i_pane_internal* pane, enum charset_selectio
   return 0;
 }
 
-int tym_i_csq_select_defautl_character_set(struct tym_i_pane_internal* pane){
+int tym_i_csq_select_default_character_set(struct tym_i_pane_internal* pane){
   if(tym_i_invoke_charset(pane, 0) == -1)
     return -1;
   memset(pane->character.charset_g, 0, sizeof(*pane->character.charset_g)*TYM_I_G_CHARSET_COUNT);
+  pane->character.not_utf8 = true;
   return 0;
 }
 
 int tym_i_csq_select_utf8_character_set(struct tym_i_pane_internal* pane){
-  return tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_UTF8);
+  pane->character.not_utf8 = false;
+  return 0;
 }
 
 int tym_i_csq_tym_i_invoke_charset_G1_as_GL_SL2(struct tym_i_pane_internal* pane){

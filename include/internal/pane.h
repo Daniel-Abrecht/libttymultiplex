@@ -81,6 +81,7 @@ union tym_i_character_data {
 
 struct tym_i_character {
   enum charset_selection charset_selection;
+  bool not_utf8;
   enum tym_i_charset_type charset_g[TYM_I_G_CHARSET_COUNT];
   union tym_i_character_data data;
 };

@@ -36,7 +36,7 @@
   CSQ( ESC ")" C, designate_g1_character_set ) \
   CSQ( ESC "*" C, designate_g2_character_set ) \
   CSQ( ESC "+" C, designate_g3_character_set ) \
-  CSQ( ESC "%@", select_defautl_character_set ) \
+  CSQ( ESC "%@", select_default_character_set ) \
   CSQ( ESC "%G", select_utf8_character_set ) \
   CSQ( ESC "n", invoke_charset_G2_as_GL_SL2 ) \
   CSQ( ESC "o", invoke_charset_G3_as_GL_SL3 ) \
@@ -60,6 +60,7 @@
   CSQ( CSI "r", set_scrolling_region ) \
   CSQ( CSI NUM "r", set_scrolling_region ) \
   CSQ( CSI "!p", soft_reset ) \
+  CSQ( CSI NUM "h", set_mode ) \
   CSQ( CSI NUM "l", reset_mode ) \
   CSQ( CSI "c", send_device_attributes_primary ) \
   CSQ( CSI NUM "c", send_device_attributes_primary ) \
@@ -261,7 +262,6 @@ static int mysetattr(struct tym_i_pane_internal* pane){
 }
 
 static const struct tym_i_character UTF8_INVALID_SYMBOL = {
-  .charset_selection = TYM_I_CHARSET_SELECTION_UTF8,
   .data = {
     .utf8 = {
       .data = "�", // ef bf bd
@@ -271,7 +271,7 @@ static const struct tym_i_character UTF8_INVALID_SYMBOL = {
 };
 
 void print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
-  if(character.charset_selection == TYM_I_CHARSET_SELECTION_UTF8 && !character.data.utf8.count)
+  if(!character.not_utf8 && !character.charset_selection && !character.data.utf8.count)
     return;
   unsigned y = pane->cursor.y;
   unsigned x = pane->cursor.x;
@@ -284,12 +284,8 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
   mysetattr(pane);
   wmove(pane->window, y, x);
   const char* sequence = 0;
-  if(character.charset_selection == TYM_I_CHARSET_SELECTION_UTF8){
+  if(!character.not_utf8 && !character.charset_selection){
     sequence = (char*)character.data.utf8.data;
-    tym_i_debug("utf8 %d",(int)character.data.utf8.count);
-    for(const char* it=sequence; *it; it++)
-      tym_i_debug(" %.2X", (int)*it);
-    tym_i_debug("\n");
   }else if(!(character.charset_selection & ~TYM_I_CHARSET_SELECTION_GLGR_MASK)){
     bool codepage = !!(character.data.byte & 0x80);
     uint8_t index = character.data.byte & 0x7F;
@@ -318,7 +314,6 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
 }
 
 bool print_character_update(struct tym_i_pane_internal* pane, char c){
-  tym_i_debug("print_character_update %.2x\n", (int)c);
   enum tym_i_utf8_character_state_push_result result = tym_i_utf8_character_state_push(&pane->character.data.utf8, c);
   if(result & TYM_I_UCS_INVALID_ABORT_FLAG){
     print_character(pane, UTF8_INVALID_SYMBOL);
@@ -332,8 +327,8 @@ bool print_character_update(struct tym_i_pane_internal* pane, char c){
 }
 
 void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
-  tym_i_debug("tym_i_pane_parse %.2X\n", c);
-  if(pane->character.charset_selection == TYM_I_CHARSET_SELECTION_UTF8)
+//  tym_i_debug("tym_i_pane_parse %.2X\n", c);
+  if(!pane->character.not_utf8 && !pane->character.charset_selection)
     if( pane->character.data.utf8.count )
       if(print_character_update(pane, c))
         return;

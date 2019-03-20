@@ -35,9 +35,7 @@ static int designate_character_set(struct tym_i_pane_internal* pane, int i){
   }
   if(cset == -1)
     return 0;
-  tym_i_debug("designate_character_set %d %c %d->%d\n", i, *pane->sequence.integer, pane->character.charset_g[i], cset);
   pane->character.charset_g[i] = cset;
-  pane->character.charset_selection &= TYM_I_CHARSET_SELECTION_GLGR_MASK;
   return 0;
 }
 
