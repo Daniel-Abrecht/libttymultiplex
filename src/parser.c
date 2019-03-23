@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <internal/main.h>
 #include <internal/pane.h>
+#include <internal/backend.h>
 #include <internal/parser.h>
 
 /* VT 52
@@ -220,46 +221,6 @@ bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
   return c < ' ';
 }
 
-static attr_t attr2curses(enum tym_i_character_attribute ca){
-  attr_t r = 0;
-  if(ca & TYM_I_CA_BOLD)      r |= A_BOLD;
-  if(ca & TYM_I_CA_UNDERLINE) r |= A_UNDERLINE;
-  if(ca & TYM_I_CA_BLINK)     r |= A_BLINK;
-  if(ca & TYM_I_CA_INVERSE)   r |= A_REVERSE;
-  if(ca & TYM_I_CA_INVISIBLE) r |= A_INVIS;
-  return r;
-}
-
-static int mysetattr(struct tym_i_pane_internal* pane){
-  if(!has_colors())
-    return -1;
-  int pair = -1;
-  attr_t attr = attr2curses(pane->attribute);
-  if(COLOR_PAIRS >= 45){
-    int fi = 0;
-    int bi = 0;
-    if(pane->fgcolor.index == 0xFF){
-      // TODO
-    }else if(pane->fgcolor.index < 20){
-      fi = pane->fgcolor.index % 10;
-    }
-    if(pane->bgcolor.index == 0xFF){
-      // TODO
-    }else if(pane->bgcolor.index < 20){
-      bi = pane->bgcolor.index % 10;
-    }
-    if(fi > 8) fi = 0; 
-    if(bi > 8) bi = 0; 
-    pair = colorpair8x8_triangular_number_mirror_mapping_index[fi][bi];
-    if(pair & COLORPAIR_MAPPING_NEGATIVE_FLAG)
-      attr ^= A_REVERSE;
-    pair &= ~COLORPAIR_MAPPING_NEGATIVE_FLAG;
-  }else if(COLOR_PAIRS >= 16){
-    // TODO
-  }
-  (void)wattr_set(pane->window, attr, pair, 0);
-  return 0;
-}
 
 static const struct tym_i_character UTF8_INVALID_SYMBOL = {
   .data = {
@@ -281,8 +242,6 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
     x = w;
   if(y >= h)
     y = h;
-  mysetattr(pane);
-  wmove(pane->window, y, x);
   const char* sequence = 0;
   if(!character.not_utf8 && !character.charset_selection){
     sequence = (char*)character.data.utf8.data;
@@ -303,14 +262,14 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
       }
     }
   }
-  waddstr(pane->window, sequence);
+  if(sequence)
+    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, pane->character_format, strlen(sequence), sequence);
   x += 1;
   if(x >= w){
     x  = 0;
     y += 1;
   }
   tym_i_pane_cursor_set_cursor(pane,x,y);
-//  wrefresh(pane->window);
 }
 
 bool print_character_update(struct tym_i_pane_internal* pane, char c){
@@ -397,7 +356,6 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
   if(min == max && index+1 == tym_i_command_sequence_map[min].length){
     const struct tym_i_command_sequence* sequence = tym_i_command_sequence_map + min;
     if(sequence->callback){
-      mysetattr(pane);
       if((*sequence->callback)(pane) == -1){
         int err = errno;
         tym_i_debug("%s failed: %s\n", sequence->callback_name, strerror(err));

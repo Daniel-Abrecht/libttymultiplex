@@ -9,8 +9,6 @@
 #include <pthread.h>
 #include <pty.h>
 
-#define COLORPAIR_MAPPING_NEGATIVE_FLAG 0x80
-
 enum tym_i_special_tym_i_poll_fds {
   SPF_POLLCTLFD,
   SPF_SIGNALFD,
@@ -52,8 +50,6 @@ extern pthread_t tym_i_main_loop;
 extern struct winsize tym_i_ttysize;
 extern pthread_mutexattr_t tym_i_lock_attr;
 extern pthread_mutex_t tym_i_lock; /* reentrant mutex */
-extern int colortable8[9];
-extern uint8_t colorpair8x8_triangular_number_mirror_mapping_index[9][9];
 
 void* tym_i_main(void* ptr);
 int tym_i_pollfd_add_sub(struct pollfd pfd);

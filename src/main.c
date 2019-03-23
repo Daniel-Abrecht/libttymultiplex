@@ -10,6 +10,7 @@
 #include <internal/list.h>
 #include <internal/main.h>
 #include <internal/pane.h>
+#include <internal/backend.h>
 #include <internal/pseudoterminal.h>
 #include <libttymultiplex.h>
 
@@ -25,24 +26,12 @@ pthread_t tym_i_main_loop;
 pthread_mutexattr_t tym_i_lock_attr;
 pthread_mutex_t tym_i_lock; /* reentrant mutex */
 
-int colortable8[9] = {
-  -1, // default color
-  COLOR_BLACK,
-  COLOR_RED,
-  COLOR_GREEN,
-  COLOR_YELLOW,
-  COLOR_BLUE,
-  COLOR_MAGENTA,
-  COLOR_CYAN,
-  COLOR_WHITE
-};
-
 static FILE* tym_i_debugfd;
 
 static void init(void) __attribute__((constructor,used));
 static void init(void){
   {
-    const char* debugfd = getenv("DEBUGFD");
+    const char* debugfd = getenv("TM_DEBUGFD");
     if(debugfd){
       int fd = atoi(debugfd);
       if(fd >= 0){
@@ -230,6 +219,7 @@ void* tym_i_main(void* ptr){
   pthread_mutex_lock(&tym_i_lock);
   while(tym_i_poll_fdn)
     tym_i_pollfd_remove_sub(0);
+  tym_i_backend->cleanup();
   tym_i_binit = INIT_STATE_SHUTDOWN;
   pthread_mutex_unlock(&tym_i_lock);
   return 0;

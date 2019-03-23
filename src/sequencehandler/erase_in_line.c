@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <errno.h>
-#include <curses.h>
 #include <internal/pane.h>
+#include <internal/backend.h>
 
 int tym_i_csq_erase_in_line(struct tym_i_pane_internal* pane){
   if(pane->sequence.integer_count > 1){
@@ -12,21 +12,11 @@ int tym_i_csq_erase_in_line(struct tym_i_pane_internal* pane){
   }
   if(pane->sequence.integer_count == 0)
     pane->sequence.integer[0] = 0;
-//  (void)wattr_set(pane->window, 0, 0, 0);
+  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   switch(pane->sequence.integer[0]){
-    case 0: {
-      wmove(pane->window, pane->cursor.y, pane->cursor.x);
-      wclrtoeol(pane->window);
-    } break;
-    case 1: {
-      for(unsigned x=0, xn=pane->cursor.x; x<xn; x++)
-        mvwaddch(pane->window, pane->cursor.y, x, ' ');
-    } break;
-    case 2: {
-      wmove(pane->window, pane->cursor.y, 0);
-      wclrtoeol(pane->window);
-    } break;
-//    case 3: /* TODO */; break;
+    case 0: tym_i_backend->pane_erase_area(pane, pane->cursor, (struct tym_i_cell_position){.y=pane->cursor.y,.x=w}, false, pane->character_format); break;
+    case 1: tym_i_backend->pane_erase_area(pane, (struct tym_i_cell_position){.y=pane->cursor.y,.x=0}, pane->cursor, false, pane->character_format); break;
+    case 2: tym_i_backend->pane_erase_area(pane, (struct tym_i_cell_position){.y=pane->cursor.y,.x=0}, (struct tym_i_cell_position){.y=pane->cursor.y,.x=w}, false, pane->character_format); break;
     default: errno = ENOSYS; return -1;
   }
   return 0;

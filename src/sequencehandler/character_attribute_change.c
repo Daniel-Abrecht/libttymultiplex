@@ -13,42 +13,42 @@ int tym_i_csq_character_attribute_change(struct tym_i_pane_internal* pane){
   for(i=0; i<pane->sequence.integer_count; i++){
     int c = pane->sequence.integer[i];
     if(c == 0){
-      pane->attribute = TYM_I_CA_DEFAULT;
-      pane->bgcolor.index = 0;
-      pane->fgcolor.index = 0;
+      pane->character_format.attribute = TYM_I_CA_DEFAULT;
+      pane->character_format.bgcolor.index = 0;
+      pane->character_format.fgcolor.index = 0;
     }else if(c == 1){
-      pane->attribute |= TYM_I_CA_BOLD;
+      pane->character_format.attribute |= TYM_I_CA_BOLD;
     }else if(c == 4){
-      pane->attribute |= TYM_I_CA_UNDERLINE;
+      pane->character_format.attribute |= TYM_I_CA_UNDERLINE;
     }else if(c == 5){
-      pane->attribute |= TYM_I_CA_BLINK;
+      pane->character_format.attribute |= TYM_I_CA_BLINK;
     }else if(c == 7){
-      pane->attribute |= TYM_I_CA_INVERSE;
+      pane->character_format.attribute |= TYM_I_CA_INVERSE;
     }else if(c == 8){
-      pane->attribute |= TYM_I_CA_INVISIBLE;
+      pane->character_format.attribute |= TYM_I_CA_INVISIBLE;
     }else if(c == 22){
-      pane->attribute = TYM_I_CA_DEFAULT;
+      pane->character_format.attribute = TYM_I_CA_DEFAULT;
     }else if(c == 24){
-      pane->attribute &= ~TYM_I_CA_UNDERLINE;
+      pane->character_format.attribute &= ~TYM_I_CA_UNDERLINE;
     }else if(c == 25){
-      pane->attribute &= ~TYM_I_CA_BLINK;
+      pane->character_format.attribute &= ~TYM_I_CA_BLINK;
     }else if(c == 27){
-      pane->attribute &= ~TYM_I_CA_INVERSE;
+      pane->character_format.attribute &= ~TYM_I_CA_INVERSE;
     }else if(c == 28){
-      pane->attribute &= ~TYM_I_CA_INVISIBLE;
+      pane->character_format.attribute &= ~TYM_I_CA_INVISIBLE;
     }else if(c == 38){ // set foreground color
       if(pane->sequence.integer_count - i < 3)
         break;
-      pane->fgcolor.index = 255;
-      pane->fgcolor.red   = pane->sequence.integer[++i];
-      pane->fgcolor.green = pane->sequence.integer[++i];
-      pane->fgcolor.blue  = pane->sequence.integer[++i];
+      pane->character_format.fgcolor.index = 255;
+      pane->character_format.fgcolor.red   = pane->sequence.integer[++i];
+      pane->character_format.fgcolor.green = pane->sequence.integer[++i];
+      pane->character_format.fgcolor.blue  = pane->sequence.integer[++i];
     }else if(c == 39){ // set default foreground color
-      pane->fgcolor.index = 0;
+      pane->character_format.fgcolor.index = 0;
     }else if(c / 10 == 3){ // set foreground color
-      pane->fgcolor.index = c - 30 + 1;
+      pane->character_format.fgcolor.index = c - 30 + 1;
     }else if(c / 10 == 9){ // set foreground color
-      pane->fgcolor.index = c - 90 + 11;
+      pane->character_format.fgcolor.index = c - 90 + 11;
       if(c > 17){
         errno = EINVAL;
         return -1;
@@ -56,16 +56,16 @@ int tym_i_csq_character_attribute_change(struct tym_i_pane_internal* pane){
     }else if(c == 48){ // set background color
       if(pane->sequence.integer_count - i < 3)
         break;
-      pane->bgcolor.index = 255;
-      pane->bgcolor.red   = pane->sequence.integer[++i];
-      pane->bgcolor.green = pane->sequence.integer[++i];
-      pane->bgcolor.blue  = pane->sequence.integer[++i];
+      pane->character_format.bgcolor.index = 255;
+      pane->character_format.bgcolor.red   = pane->sequence.integer[++i];
+      pane->character_format.bgcolor.green = pane->sequence.integer[++i];
+      pane->character_format.bgcolor.blue  = pane->sequence.integer[++i];
     }else if(c == 49){ // set default background color
-      pane->bgcolor.index = 0;
+      pane->character_format.bgcolor.index = 0;
     }else if(c / 10 == 4){ // set background color
-      pane->bgcolor.index = c - 40 + 1;
+      pane->character_format.bgcolor.index = c - 40 + 1;
     }else if(c / 10 == 10){ // set background color
-      pane->bgcolor.index = c - 100 + 11;
+      pane->character_format.bgcolor.index = c - 100 + 11;
       if(c > 17){
         errno = EINVAL;
         return -1;

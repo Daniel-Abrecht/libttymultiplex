@@ -13,15 +13,11 @@
 #include <errno.h>
 #include <pty.h>
 #include <locale.h>
-#include <curses.h>
 #include <pthread.h>
 #include <internal/main.h>
 #include <internal/pane.h>
+#include <internal/backend.h>
 #include <libttymultiplex.h>
-
-static mmask_t tym_i_mouseeventmask;
-
-uint8_t colorpair8x8_triangular_number_mirror_mapping_index[9][9];
 
 static void shutdown(void) __attribute__((destructor,used));
 static void shutdown(void){
@@ -41,35 +37,10 @@ int tym_init(void){
   tym_i_binit = INIT_STATE_INITIALISED;
   tym_i_tty = dup(STDIN_FILENO);
   setlocale(LC_CTYPE, "");
-  if(!initscr())
+  if(tym_i_backend_init(getenv("TM_BACKEND")) != 0){
+    fprintf(stderr,"Failed to initialise backend\n");
     goto error;
-  cbreak();
-  nodelay(stdscr, true);
-  noecho();
-  keypad(stdscr, true);
-  if(has_colors()){
-    start_color();
-    use_default_colors();
-    if(COLOR_PAIRS >= 45){
-      for(uint8_t i=0, j=0, k=1; k<=45; k++){
-        colorpair8x8_triangular_number_mirror_mapping_index[i][j] = k | COLORPAIR_MAPPING_NEGATIVE_FLAG;
-        colorpair8x8_triangular_number_mirror_mapping_index[j][i] = k;
-        init_pair(k,colortable8[j],colortable8[i]);
-        if(i == j){
-          j += 1;
-          i  = 0;
-        }else{
-          i += 1;
-        }
-      }
-    }else if(COLOR_PAIRS >= 16){
-      // TODO
-    }
   }
-  leaveok(stdscr, false);
-  refresh();
-  mousemask(ALL_MOUSE_EVENTS|REPORT_MOUSE_POSITION, &tym_i_mouseeventmask);
-  mouseinterval(0);
   sigset_t sigmask;
   sigemptyset(&sigmask);
   sigaddset(&sigmask, SIGWINCH);
@@ -100,9 +71,6 @@ int tym_init(void){
   pthread_mutex_unlock(&tym_i_lock);
   return 0;
 error:
-  write(tym_i_tty,"\033[?1003l",8);
-  mousemask(tym_i_mouseeventmask, 0);
-  endwin();
   pthread_mutex_unlock(&tym_i_lock);
   return -1;
 }
@@ -119,9 +87,6 @@ int tym_shutdown(void){
       break;
     }
   close(tym_i_pollctl[1]);
-  write(tym_i_tty,"\033[?1003l",8);
-  mousemask(tym_i_mouseeventmask, 0);
-  endwin();
   tym_i_binit = INIT_STATE_SHUTDOWN_IN_PROGRESS;
   pthread_mutex_unlock(&tym_i_lock);
   pthread_join(tym_i_main_loop, 0);

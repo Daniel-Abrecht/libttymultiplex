@@ -31,15 +31,6 @@ struct tym_i_sequence_state {
   ssize_t seq_opt_min, seq_opt_max;
 };
 
-enum tym_i_character_attribute {
-  TYM_I_CA_DEFAULT   = 0,
-  TYM_I_CA_BOLD      = 1<<0,
-  TYM_I_CA_UNDERLINE = 1<<1,
-  TYM_I_CA_BLINK     = 1<<2,
-  TYM_I_CA_INVERSE   = 1<<3,
-  TYM_I_CA_INVISIBLE = 1<<4
-};
-
 enum { TYM_I_G_CHARSET_COUNT=4 };
 
 enum mouse_mode {
@@ -68,6 +59,21 @@ enum tym_i_decset_decres {
 
 struct tym_i_termcolor {
   unsigned char index, red, green, blue;
+};
+
+enum tym_i_character_attribute {
+  TYM_I_CA_DEFAULT   = 0,
+  TYM_I_CA_BOLD      = 1<<0,
+  TYM_I_CA_UNDERLINE = 1<<1,
+  TYM_I_CA_BLINK     = 1<<2,
+  TYM_I_CA_INVERSE   = 1<<3,
+  TYM_I_CA_INVISIBLE = 1<<4
+};
+
+struct tym_i_character_format {
+  enum tym_i_character_attribute attribute;
+  struct tym_i_termcolor fgcolor;
+  struct tym_i_termcolor bgcolor;
 };
 
 struct tym_i_cell_position {
@@ -100,17 +106,16 @@ struct tym_i_pane_internal {
   struct tym_absolute_position coordinates;
   size_t resize_handler_count;
   struct tym_i_handler_ptr_pair* resize_handler_list;
-  enum tym_i_character_attribute attribute;
-  struct tym_i_termcolor fgcolor;
-  struct tym_i_termcolor bgcolor;
   enum mouse_mode mouse_mode;
   struct tym_i_cell_position last_mouse_event_pos;
   int last_button;
+  struct tym_i_character_format character_format;
   struct tym_i_character character;
 };
 
 extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
 extern struct tym_i_pane_internal *tym_i_focus_pane;
+extern const struct tym_i_character_format default_character_format;
 
 void tym_i_pane_update_size_all(void);
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane);

@@ -17,6 +17,7 @@
 
 struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
 struct tym_i_pane_internal *tym_i_focus_pane;
+const struct tym_i_character_format default_character_format;
 
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
   tym_i_calc_absolut_position(&pane->coordinates, &pane->superposition);
@@ -135,7 +136,7 @@ int tym_pane_create(const struct tym_superposition*restrict superposition){
     errno = EINVAL;
     goto error;
   }
-  struct tym_i_pane_internal* pane = TYM_COPY(((struct tym_i_pane_internal){
+  struct tym_i_pane_internal hpane = {
     .master = -1,
     .slave = -1,
     // Set some generic termios defaults
@@ -199,7 +200,8 @@ int tym_pane_create(const struct tym_superposition*restrict superposition){
       }
     },
     .sequence.seq_opt_max = -1
-  }));
+  };
+  struct tym_i_pane_internal* pane = TYM_COPY((hpane));
   pane->superposition = *superposition;
   tym_i_calc_absolut_position(&pane->coordinates, &pane->superposition);
   struct winsize size = {0};
@@ -300,13 +302,6 @@ int tym_pane_set_env(int pane){
     goto error;
   }
   login_tty(ppane->slave);
-/*  unsigned w = ppane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - ppane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  unsigned h = ppane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - ppane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  char buf[10];
-  snprintf(buf, sizeof(buf), "%u", w);
-  setenv("LINES", buf, true);
-  snprintf(buf, sizeof(buf), "%u", h);
-  setenv("COLUMNS", buf, true);*/
   setenv("TERM", "xterm", true);
   return 0;
 error:

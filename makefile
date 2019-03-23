@@ -1,7 +1,8 @@
 # Copyright (c) 2018 Daniel Abrecht
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-SOURCES = $(wildcard src/sequencehandler/*.c)
+SOURCES += $(wildcard src/sequencehandler/*.c)
+SOURCES += $(wildcard src/backend/*.c)
 SOURCES += src/libttymultiplex.c
 SOURCES += src/main.c
 SOURCES += src/pane.c
@@ -13,6 +14,8 @@ SOURCES += src/utils.c
 SOURCES += src/parser.c
 SOURCES += src/charset.c
 SOURCES += src/utf8.c
+SOURCES += src/backend.c
+SOURCES += src/backend_default_procs.c
 
 HEADERS = $(wildcard include/*.h) $(wildcard include/**/*.h)
 
@@ -23,10 +26,10 @@ PREFIX = /usr
 CC = gcc
 AR = ar
 
-OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -g -Og
+OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -fstack-protector-all -g -Og
 CC_OPTS += -fvisibility=hidden -DTYM_BUILD -I include -finput-charset=UTF-8
 CC_OPTS += $(shell ncursesw5-config --cflags)
-CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Wno-unused-function -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
+CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror -Wno-unused-function -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
 LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined
 
 LIBS += -lutil $(shell ncursesw5-config --libs)

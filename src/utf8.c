@@ -55,6 +55,3 @@ enum tym_i_utf8_character_state_push_result tym_i_utf8_character_state_push(stru
 end:
   return ret | ret_flags;
 }
-
-// TODO
-// int tym_i_utf8_to_wchar(struct tym_i_utf8_character_state* state, wchar_t[TYM_I_UTF8_CHARACTER_MAX_WCHAR_COUNT]){}

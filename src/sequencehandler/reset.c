@@ -2,19 +2,21 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <errno.h>
-#include <curses.h>
 #include <internal/pane.h>
+#include <internal/backend.h>
 
 int tym_i_csq_reset(struct tym_i_pane_internal* pane){
   if(pane->sequence.integer_count != 0){
     errno = ENOENT;
     return -1;
   }
-  pane->fgcolor.index = 0;
-  pane->bgcolor.index = 0;
+  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  pane->character_format.fgcolor.index = 0;
+  pane->character_format.bgcolor.index = 0;
   pane->mouse_mode = MOUSE_MODE_OFF;
   pane->character.not_utf8 = false;
-  wclear(pane->window);
+  tym_i_backend->pane_erase_area(pane, (struct tym_i_cell_position){.x=0,.y=0}, (struct tym_i_cell_position){.x=w,.y=h}, false, pane->character_format);
   tym_i_pane_cursor_set_cursor(pane, 0, 0);
   return 0;
 }
