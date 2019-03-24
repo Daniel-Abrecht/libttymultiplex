@@ -3,7 +3,7 @@
 
 #include <errno.h>
 #include <unistd.h>
-#include <ncurses.h>
+#include <stdio.h>
 #include <internal/main.h>
 #include <internal/parser.h>
 #include <internal/pseudoterminal.h>
@@ -20,105 +20,34 @@ int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*res
 }
 
 // Replace mmask_t with a something not curses specific
-void tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, mmask_t buttons, struct tym_i_cell_position pos){
+void tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_i_button button, struct tym_i_cell_position pos){
   char buf[64] = {0};
   int len = 0;
   bool motion = pane->last_mouse_event_pos.x != pos.x || pane->last_mouse_event_pos.y != pos.y;
+  if(pane->last_button != button)
+    motion = false;
   pane->last_mouse_event_pos = pos;
-  enum {
-    RELEASED,
-    PRESSED,
-    CLICK,
-    DOUBLECLICK,
-    TRIPPLECLICK
-  } events = RELEASED;
-  int button = -1;
-  // Note: Since curses mouseinterval was set to 0, only released and pressed is possible anyway
-  // TODO: clean this up
-  if( buttons & (BUTTON1_PRESSED | BUTTON1_CLICKED | BUTTON1_DOUBLE_CLICKED | BUTTON1_TRIPLE_CLICKED )){
-    button = 0;
-    if(buttons & BUTTON1_PRESSED){
-      events = PRESSED;
-    }else if(buttons & BUTTON1_CLICKED){
-      events = CLICK;
-    }else if(buttons & BUTTON1_DOUBLE_CLICKED){
-      events = DOUBLECLICK;
-    }else if(buttons & BUTTON1_TRIPLE_CLICKED){
-      events = TRIPPLECLICK;
-    }
-  }else if( buttons & (BUTTON2_PRESSED | BUTTON2_CLICKED | BUTTON2_DOUBLE_CLICKED | BUTTON2_TRIPLE_CLICKED )){
-    button = 1;
-    if(buttons & BUTTON2_PRESSED){
-      events = PRESSED;
-    }else if(buttons & BUTTON2_CLICKED){
-      events = CLICK;
-    }else if(buttons & BUTTON2_DOUBLE_CLICKED){
-      events = DOUBLECLICK;
-    }else if(buttons & BUTTON2_TRIPLE_CLICKED){
-      events = TRIPPLECLICK;
-    }
-  }else if( buttons & (BUTTON3_PRESSED | BUTTON3_CLICKED | BUTTON3_DOUBLE_CLICKED | BUTTON3_TRIPLE_CLICKED )){
-    button = 2;
-    if(buttons & BUTTON3_PRESSED){
-      events = PRESSED;
-    }else if(buttons & BUTTON3_CLICKED){
-      events = CLICK;
-    }else if(buttons & BUTTON3_DOUBLE_CLICKED){
-      events = DOUBLECLICK;
-    }else if(buttons & BUTTON3_TRIPLE_CLICKED){
-      events = TRIPPLECLICK;
-    }
-  }else if( buttons & (BUTTON4_PRESSED | BUTTON4_CLICKED | BUTTON4_DOUBLE_CLICKED | BUTTON4_TRIPLE_CLICKED )){
-    button = 3;
-    if(buttons & BUTTON4_PRESSED){
-      events = PRESSED;
-    }else if(buttons & BUTTON4_CLICKED){
-      events = CLICK;
-    }else if(buttons & BUTTON4_DOUBLE_CLICKED){
-      events = DOUBLECLICK;
-    }else if(buttons & BUTTON4_TRIPLE_CLICKED){
-      events = TRIPPLECLICK;
-    }
-  }
-  int cb_btn = button;
-  if(button >= 0 && button <= 2){
-    cb_btn = button;
-  }else{
-    cb_btn = 3; // Button released code
-    events = RELEASED;
-  }
   switch(pane->mouse_mode){
     case MOUSE_MODE_X10:
-      if(events == RELEASED)
+      if(button == TYM_I_BUTTON_RELEASED)
         break;
-      if(events > PRESSED)
-        events = PRESSED;
     case MOUSE_MODE_NORMAL:
-      if(pane->last_button == cb_btn)
+      if(pane->last_button == button)
         break;
     case MOUSE_MODE_BUTTON:
-      if(pane->last_button == cb_btn && cb_btn == 3)
+      if(pane->last_button == button && button == TYM_I_BUTTON_RELEASED)
         break;
     case MOUSE_MODE_ANY: {
       if(pos.x>254 || pos.y>254)
-        break; // Can't encode coordinate in a byte each, overflow!!!
+        break; // Can't encode coordinate in a byte each, overflow!!! (TODO: implement stuff like utf8 encoded positions)
       unsigned char cb = 32;
       if(motion)
         cb += 32; // Motion indicator
-      do {
-        int s;
-        s = snprintf(buf+len, sizeof(buf)-len, CSI "M%c%c%c\n", cb+cb_btn, (unsigned char)(32+pos.x+1), (unsigned char)(32+pos.y+1));
-        if(s != -1) len += s;
-        if(events <= PRESSED || cb_btn == 3)
-          break;
-        s = snprintf(buf+len, sizeof(buf)-len, CSI "M%c%c%c\n", cb+3, (unsigned char)(32+pos.x+1), (unsigned char)(32+pos.y+1));
-        if(s != -1) len += s;
-        events -= 1;
-      } while(events > PRESSED);
+      len = snprintf(buf, sizeof(buf), CSI "M%c%c%c\n", cb+button, (unsigned char)(32+pos.x+1), (unsigned char)(32+pos.y+1));
     } break;
     case MOUSE_MODE_OFF: break;
   }
-  pane->last_button = cb_btn;
+  pane->last_button = button;
   if(len){
     tym_i_pts_send(pane, len, buf);
   }

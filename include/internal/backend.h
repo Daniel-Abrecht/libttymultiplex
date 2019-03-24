@@ -18,8 +18,13 @@ struct tym_i_cell_position;
 struct tym_i_character_format;
 
 #define TYM_I_BACKEND_CALLBACKS \
+  R(int, init, (void)) \
+  R(int, cleanup, (void)) \
+  R(int, resize, (void)) \
   R(int, pane_create, (struct tym_i_pane_internal* pane)) \
   R(void, pane_destroy, (struct tym_i_pane_internal* pane)) \
+  R(int, pane_resize, (struct tym_i_pane_internal* pane)) \
+  R(int, pane_scroll, (struct tym_i_pane_internal* pane, int n)) \
   R(int, pane_set_cursor_position, (struct tym_i_pane_internal* pane, struct tym_i_cell_position position)) \
   R(int, pane_set_character, ( \
     struct tym_i_pane_internal* pane, \
@@ -27,8 +32,7 @@ struct tym_i_character_format;
     struct tym_i_character_format format, \
     size_t length, const char utf8[length+1] \
   )) \
-  O(int, init, (void)) \
-  O(int, cleanup, (void)) \
+  O(int, pane_refresh, (struct tym_i_pane_internal* pane)) \
   O(int, pane_set_cursor_mode, (struct tym_i_pane_internal* pane, enum tym_i_cursor_mode cursor_mode)) \
   O(int, pane_erase_area, ( \
     struct tym_i_pane_internal* pane, \

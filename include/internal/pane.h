@@ -5,7 +5,8 @@
 #define TYM_INTERNAL_PANE_H
 
 #include <poll.h>
-#include <ncurses.h>
+#include <stddef.h>
+#include <stdlib.h>
 #include <termios.h>
 #include <internal/utf8.h>
 #include <internal/charset.h>
@@ -61,6 +62,13 @@ struct tym_i_termcolor {
   unsigned char index, red, green, blue;
 };
 
+enum tym_i_button {
+  TYM_I_BUTTON_LEFT_PRESSED,
+  TYM_I_BUTTON_MIDDLE_PRESSED,
+  TYM_I_BUTTON_RIGHT_PRESSED,
+  TYM_I_BUTTON_RELEASED,
+};
+
 enum tym_i_character_attribute {
   TYM_I_CA_DEFAULT   = 0,
   TYM_I_CA_BOLD      = 1<<0,
@@ -96,8 +104,8 @@ struct tym_i_pane_internal {
   struct tym_i_pane_internal *previous, *next;
   int id;
   int master, slave;
-  WINDOW* window;
   bool nofocus;
+  void* backend;
   struct tym_i_cell_position cursor, saved_cursor;
   unsigned scroll_region_top, scroll_region_bottom;
   struct tym_i_sequence_state sequence;
@@ -108,7 +116,7 @@ struct tym_i_pane_internal {
   struct tym_i_handler_ptr_pair* resize_handler_list;
   enum mouse_mode mouse_mode;
   struct tym_i_cell_position last_mouse_event_pos;
-  int last_button;
+  enum tym_i_button last_button;
   struct tym_i_character_format character_format;
   struct tym_i_character character;
 };

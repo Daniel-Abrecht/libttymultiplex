@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <sys/ioctl.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <pty.h>
@@ -13,6 +14,7 @@
 #include <internal/main.h>
 #include <internal/list.h>
 #include <internal/utils.h>
+#include <internal/backend.h>
 #include <libttymultiplex.h>
 
 struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
@@ -37,26 +39,13 @@ void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
     struct tym_i_handler_ptr_pair* cp = pane->resize_handler_list + i;
     cp->callback(cp->ptr, pane->id, &pane->superposition, &pane->coordinates);
   }
+  tym_i_backend->pane_resize(pane);
+  tym_i_backend->pane_refresh(pane);
   struct winsize size = {
     .ws_col = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer,
     .ws_row = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
   };
-  derwin(pane->window,
-    size.ws_row,
-    size.ws_col,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer
-  );
-  wrefresh(pane->window);
   ioctl(pane->master, TIOCSWINSZ, &size);
-/*
-  printf("%d: x(%u-%u) y(%u-%u)\n", pane->id,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer,
-    pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
-    pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer
-  );
-*/
 }
 
 int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_handler_ptr_pair* cp){
@@ -98,7 +87,7 @@ int tym_i_pane_focus(struct tym_i_pane_internal* pane){
       return 0;
     tym_i_focus_pane = pane;
     tym_i_pane_update_cursor(pane);
-    wrefresh(pane->window);
+    tym_i_backend->pane_refresh(pane);
   }else{
     tym_i_focus_pane = 0;
   }
@@ -108,7 +97,7 @@ int tym_i_pane_focus(struct tym_i_pane_internal* pane){
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane){
   if(pane != tym_i_focus_pane || !pane)
     return;
-  wmove(pane->window, pane->cursor.y, pane->cursor.x);
+  tym_i_backend->pane_set_cursor_position(pane, pane->cursor);
 }
 
 void tym_i_pane_update_size_all(void){
@@ -116,12 +105,7 @@ void tym_i_pane_update_size_all(void){
     perror("ioctl TIOCGWINSZ failed\n");
     abort();
   }
-  resizeterm(tym_i_ttysize.ws_row, tym_i_ttysize.ws_col);
-  cbreak();
-  nodelay(stdscr, true);
-  noecho();
-  keypad(stdscr, true);
-  leaveok(stdscr, false);
+  tym_i_backend->resize();
   for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next)
     tym_i_pane_update_size(it);
 }
@@ -224,14 +208,8 @@ int tym_pane_create(const struct tym_superposition*restrict superposition){
     goto error;
   fcntl(pane->master, F_SETFD, FD_CLOEXEC | O_NONBLOCK);
   fcntl(pane->slave, F_SETFD, FD_CLOEXEC);
-  pane->window = newwin(
-    size.ws_row,
-    size.ws_col,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer
-  );
-  scrollok(pane->window, true);
-  leaveok(pane->window, false);
+  if(tym_i_backend->pane_create(pane) != 0)
+    goto error;
   tym_i_pane_add(pane);
   if(tym_i_pollfd_add(pane->master))
     goto error;
@@ -255,8 +233,7 @@ int tym_pane_destroy(int pane){
     goto error;
   }
   tym_pane_reset(pane);
-  delwin(ppane->window);
-  ppane->window = 0;
+  tym_i_backend->pane_destroy(ppane);
   tym_i_pollfd_remove(ppane->master);
   tym_i_pane_remove(ppane);
   close(ppane->slave);
@@ -274,12 +251,12 @@ void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, 
   if(x >= w)
     x = w-1;
   if(y >= h){ // TODO: scroll down on y >= h
-    wscrl(pane->window, y - h + 1);
+    tym_i_backend->pane_scroll(pane, y - h + 1);
     y = h-1;
   }
   pane->cursor.y = y;
   pane->cursor.x = x;
-  wmove(pane->window, y, x);
+  tym_i_pane_update_cursor(pane);
   return;
 }
 

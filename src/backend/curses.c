@@ -1,7 +1,9 @@
 // Copyright (c) 2018 Daniel Abrecht
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-#include <curses.h>
+#include <ncurses.h>
+#include <stdlib.h>
+#include <internal/main.h>
 #include <internal/pane.h>
 #include <internal/backend.h>
 
@@ -18,10 +20,13 @@ static int colortable8[9] = {
   COLOR_CYAN,
   COLOR_WHITE
 };
-
 static uint8_t colorpair8x8_triangular_number_mirror_mapping_index[9][9];
-
 static mmask_t tym_i_mouseeventmask;
+
+struct curses_backend_pane {
+  WINDOW* window;
+};
+
 
 static int init(void){
   if(!initscr())
@@ -65,18 +70,64 @@ static int cleanup(void){
 }
 
 static int pane_create(struct tym_i_pane_internal* pane){
-  (void)pane;
+  struct curses_backend_pane* cbp = calloc(1,sizeof(struct curses_backend_pane));
+  if(!cbp)
+    goto error;
+  pane->backend = cbp;
+  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  cbp->window = newwin(
+    h, w,
+    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
+    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer
+  );
+  if(!cbp->window)
+    goto error_after_calloc;
+  scrollok(cbp->window, true);
+  leaveok(cbp->window, false);
   return 0;
+error_after_calloc:
+  free(cbp);
+error:
+  return -1;
 }
 
 static void pane_destroy(struct tym_i_pane_internal* pane){
-  (void)pane;
+  struct curses_backend_pane* cbp = pane->backend;
+  pane->backend = 0;
+  delwin(cbp->window);
+  free(cbp);
+}
+
+static int pane_refresh(struct tym_i_pane_internal* pane){
+  struct curses_backend_pane* cbp = pane->backend;
+  return wrefresh(cbp->window) == OK ? 0 : -1;
+}
+
+static int pane_resize(struct tym_i_pane_internal* pane){
+  struct curses_backend_pane* cbp = pane->backend;
+  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned ch=1, cw=1;
+  getmaxyx(cbp->window, ch, cw);
+  wresize(cbp->window, h > ch ? ch : h, w > cw ? cw : w);
+  if(wmove(cbp->window,
+    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
+    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer
+  ) != OK) return -1;
+  if(wresize(cbp->window, h, w) != OK)
+    return -1;
+  return 0;
+}
+
+static int pane_scroll(struct tym_i_pane_internal* pane, int n){
+  struct curses_backend_pane* cbp = pane->backend;
+  return wscrl(cbp->window, n) == OK ? 0 : -1;
 }
 
 static int pane_set_cursor_position(struct tym_i_pane_internal* pane, struct tym_i_cell_position position){
-  (void)pane;
-  (void)position;
-  return 0;
+  struct curses_backend_pane* cbp = pane->backend;
+  return wmove(cbp->window, position.y, position.x) == OK ? 0 : -1;
 }
 
 static attr_t attr2curses(enum tym_i_character_attribute ca){
@@ -93,6 +144,7 @@ static int set_attribute(
   struct tym_i_pane_internal* pane,
   struct tym_i_character_format format
 ){
+  struct curses_backend_pane* cbp = pane->backend;
   if(!has_colors())
     return -1;
   int pair = -1;
@@ -119,7 +171,7 @@ static int set_attribute(
   }else if(COLOR_PAIRS >= 16){
     // TODO
   }
-  return wattr_set(pane->window, attr, pair, 0);
+  return wattr_set(cbp->window, attr, pair, 0);
 }
 
 static int pane_set_character(
@@ -128,9 +180,20 @@ static int pane_set_character(
   struct tym_i_character_format format,
   size_t length, const char utf8[length+1]
 ){
+  struct curses_backend_pane* cbp = pane->backend;
   set_attribute(pane, format);
-  wmove(pane->window, position.y, position.x);
-  waddstr(pane->window, utf8);
+  wmove(cbp->window, position.y, position.x);
+  waddstr(cbp->window, utf8);
+  return 0;
+}
+
+int resize(void){
+  resizeterm(tym_i_ttysize.ws_row, tym_i_ttysize.ws_col);
+  cbreak();
+  nodelay(stdscr, true);
+  noecho();
+  keypad(stdscr, true);
+  leaveok(stdscr, false);
   return 0;
 }
 
@@ -155,8 +218,12 @@ static int pane_set_area_to_character(
 TYM_I_BACKEND_REGISTER(1000, "curses", (
   .init = init,
   .cleanup = cleanup,
+  .resize = resize,
   .pane_create = pane_create,
   .pane_destroy = pane_destroy,
+  .pane_resize = pane_resize,
+  .pane_scroll = pane_scroll,
+  .pane_refresh = pane_refresh,
   .pane_set_cursor_position = pane_set_cursor_position,
-  .pane_set_character = pane_set_character
+  .pane_set_character = pane_set_character,
 ))

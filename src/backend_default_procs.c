@@ -4,11 +4,8 @@
 #include <internal/backend.h>
 #include <internal/pane.h>
 
-int tym_i_init_default_proc(void){
-  return 0;
-}
-
-int tym_i_cleanup_default_proc(void){
+int tym_i_pane_refresh_default_proc(struct tym_i_pane_internal* pane){
+  (void)pane;
   return 0;
 }
 

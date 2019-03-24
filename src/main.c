@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <ncurses.h>
 #include <pty.h>
 #include <sys/signalfd.h>
 #include <internal/list.h>
@@ -21,7 +23,6 @@ int tym_i_tty;
 int tym_i_sfd;
 int tym_i_pollctl[2];
 struct winsize tym_i_ttysize;
-mmask_t tym_i_mouseeventmask;
 pthread_t tym_i_main_loop;
 pthread_mutexattr_t tym_i_lock_attr;
 pthread_mutex_t tym_i_lock; /* reentrant mutex */
@@ -158,6 +159,7 @@ void* tym_i_main(void* ptr){
     }
     if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLIN){
       while(true){
+        // TODO: abstract this away into the backend too
         int c = getch();
         if(c == ERR)
           break;
@@ -175,7 +177,18 @@ void* tym_i_main(void* ptr){
               unsigned x = event.x - it->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
               unsigned y = event.y - it->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
               tym_i_pane_focus(it);
-              tym_i_pts_send_mouse_event(it, event.bstate, (struct tym_i_cell_position){.x=x, .y=y});
+              if(event.bstate & (BUTTON1_RELEASED | BUTTON2_RELEASED | BUTTON3_RELEASED)){
+                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});
+              }
+              if(event.bstate & BUTTON1_PRESSED){
+                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_LEFT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+              }
+              if(event.bstate & BUTTON2_PRESSED){
+                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_MIDDLE_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+              }
+              if(event.bstate & BUTTON3_PRESSED){
+                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RIGHT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+              }
               break;
             }
           } break;
@@ -205,7 +218,7 @@ void* tym_i_main(void* ptr){
               continue;
             for(size_t i=0; i<(size_t)ret; i++)
               tym_i_pane_parse(it, buf[i]);
-            wrefresh(it->window);
+            tym_i_backend->pane_refresh(it);
             break;
           }
           if((size_t)ret < sizeof(buf))
