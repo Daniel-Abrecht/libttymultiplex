@@ -19,6 +19,18 @@ struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
 struct tym_i_pane_internal *tym_i_focus_pane;
 const struct tym_i_character_format default_character_format;
 
+bool tym_i_character_is_utf8(struct tym_i_character character){
+  uint8_t gl = character.charset_selection;
+  uint8_t gr = character.charset_selection >> 8;
+  if(character.not_utf8)
+    return false;
+  if(gl != 0 || gr != 0)
+    return false;
+  if(character.charset_g[gl] || character.charset_g[gr])
+    return false;
+  return true;
+}
+
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
   tym_i_calc_absolut_position(&pane->coordinates, &pane->superposition);
   for(size_t i=0; i<pane->resize_handler_count; i++){

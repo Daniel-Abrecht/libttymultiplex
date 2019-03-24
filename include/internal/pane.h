@@ -117,6 +117,7 @@ extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
 extern struct tym_i_pane_internal *tym_i_focus_pane;
 extern const struct tym_i_character_format default_character_format;
 
+bool tym_i_character_is_utf8(struct tym_i_character character);
 void tym_i_pane_update_size_all(void);
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane);
 void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y);

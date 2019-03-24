@@ -232,7 +232,7 @@ static const struct tym_i_character UTF8_INVALID_SYMBOL = {
 };
 
 void print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
-  if(!character.not_utf8 && !character.charset_selection && !character.data.utf8.count)
+  if(tym_i_character_is_utf8(character) && !character.data.utf8.count)
     return;
   unsigned y = pane->cursor.y;
   unsigned x = pane->cursor.x;
@@ -243,9 +243,9 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
   if(y >= h)
     y = h;
   const char* sequence = 0;
-  if(!character.not_utf8 && !character.charset_selection){
+  if(tym_i_character_is_utf8(character)){
     sequence = (char*)character.data.utf8.data;
-  }else if(!(character.charset_selection & ~TYM_I_CHARSET_SELECTION_GLGR_MASK)){
+  }else{
     bool codepage = !!(character.data.byte & 0x80);
     uint8_t index = character.data.byte & 0x7F;
     uint8_t gl = character.charset_selection;
@@ -273,21 +273,26 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
 }
 
 bool print_character_update(struct tym_i_pane_internal* pane, char c){
-  enum tym_i_utf8_character_state_push_result result = tym_i_utf8_character_state_push(&pane->character.data.utf8, c);
-  if(result & TYM_I_UCS_INVALID_ABORT_FLAG){
-    print_character(pane, UTF8_INVALID_SYMBOL);
-    memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
-    return false;
-  }else if(result == TYM_I_UCS_DONE){
+  if(tym_i_character_is_utf8(pane->character)){
+    enum tym_i_utf8_character_state_push_result result = tym_i_utf8_character_state_push(&pane->character.data.utf8, c);
+    if(result & TYM_I_UCS_INVALID_ABORT_FLAG){
+      print_character(pane, UTF8_INVALID_SYMBOL);
+      memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
+      return false;
+    }else if(result == TYM_I_UCS_DONE){
+      print_character(pane, pane->character);
+      memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
+    }
+  }else{
+    pane->character.data.byte = c;
     print_character(pane, pane->character);
-    memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
   }
   return true;
 }
 
 void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
 //  tym_i_debug("tym_i_pane_parse %.2X\n", c);
-  if(!pane->character.not_utf8 && !pane->character.charset_selection)
+  if(tym_i_character_is_utf8(pane->character))
     if( pane->character.data.utf8.count )
       if(print_character_update(pane, c))
         return;
