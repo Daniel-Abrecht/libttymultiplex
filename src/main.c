@@ -241,6 +241,10 @@ error:
   abort();
 }
 
+void tym_i_perror(const char* x){
+  tym_i_debug("%s: %d %s\n", x, errno, strerror(errno));
+}
+
 void tym_i_debug(const char* format, ...){
   va_list args;
   va_start(args, format);

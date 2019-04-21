@@ -7,6 +7,7 @@
 #include <poll.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 #include <termios.h>
 #include <internal/utf8.h>
 #include <internal/charset.h>
@@ -137,5 +138,6 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c);
 void tym_i_pane_remove(struct tym_i_pane_internal* pane);
 int tym_i_pane_focus(struct tym_i_pane_internal* pane);
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane);
+void tym_i_perror(const char*);
 
 #endif

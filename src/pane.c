@@ -9,6 +9,7 @@
 #include <utmp.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <signal.h>
 #include <internal/pane.h>
 #include <internal/calc.h>
 #include <internal/main.h>
@@ -45,7 +46,8 @@ void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
     .ws_col = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer,
     .ws_row = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
   };
-  ioctl(pane->master, TIOCSWINSZ, &size);
+  if(ioctl(pane->master, TIOCSWINSZ, &size) == -1)
+    tym_i_perror("ioctl TIOCSWINSZ failed");
 }
 
 int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_handler_ptr_pair* cp){
@@ -291,6 +293,9 @@ int tym_pane_set_env(int pane){
     goto error;
   }
   login_tty(ppane->slave);
+  sigset_t sigmask;
+  sigemptyset(&sigmask);
+  sigprocmask(SIG_SETMASK, &sigmask, 0); // reset all signals
   setenv("TERM", "xterm", true);
   return 0;
 error:

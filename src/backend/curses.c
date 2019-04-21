@@ -106,17 +106,22 @@ static int pane_refresh(struct tym_i_pane_internal* pane){
 
 static int pane_resize(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
-  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned x = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  unsigned y = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - x;
+  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - y;
+  tym_i_debug("pane_resize %ux%u %ux%u\n", x,y,w,h);
   unsigned ch=1, cw=1;
   getmaxyx(cbp->window, ch, cw);
   wresize(cbp->window, h > ch ? ch : h, w > cw ? cw : w);
-  if(wmove(cbp->window,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer
-  ) != OK) return -1;
-  if(wresize(cbp->window, h, w) != OK)
+  if(mvwin(cbp->window, y, x) != OK){
+    tym_i_debug("mvwin(%u,%u) failed\n", y, x);
     return -1;
+  }
+  if(wresize(cbp->window, h, w) != OK){
+    tym_i_debug("wresize(%u,%u) failed\n", h, w);
+    return -1;
+  }
   return 0;
 }
 
@@ -188,7 +193,9 @@ static int pane_set_character(
 }
 
 int resize(void){
-  resizeterm(tym_i_ttysize.ws_row, tym_i_ttysize.ws_col);
+  tym_i_debug("resize %ux%u\n", tym_i_ttysize.ws_col, tym_i_ttysize.ws_row);
+  if(resizeterm(tym_i_ttysize.ws_row, tym_i_ttysize.ws_col))
+    tym_i_debug("resizeterm(%u, %u)\n",tym_i_ttysize.ws_row, tym_i_ttysize.ws_col);
   cbreak();
   nodelay(stdscr, true);
   noecho();
