@@ -3,6 +3,7 @@
 
 #include <internal/backend.h>
 #include <internal/pane.h>
+#include <internal/main.h>
 
 int tym_i_pane_refresh_default_proc(struct tym_i_pane_internal* pane){
   (void)pane;
@@ -40,12 +41,13 @@ int tym_i_pane_set_area_to_character_default_proc(
   if(end.y > h)
     end.y = h;
   for(unsigned y=start.y; y<=end.y; y++){
-    for(unsigned x=start.x; x<end.x; x++){
-      tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, format, length, utf8);
+    unsigned e = (block || y == end.y) ? end.x : w;
+    for(unsigned x=start.x; x<e; x++){
+      if(tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, format, length, utf8) == -1)
+        tym_i_debug("pane_set_character failed");
     }
     if(!block)
       start.x = 0;
   }
-  // TODO: error handling
   return 0;
 }
