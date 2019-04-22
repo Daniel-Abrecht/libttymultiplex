@@ -76,11 +76,7 @@ static int pane_create(struct tym_i_pane_internal* pane){
   pane->backend = cbp;
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  cbp->window = newwin(
-    h, w,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
-    pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer
-  );
+  cbp->window = newpad(h, w);
   if(!cbp->window)
     goto error_after_calloc;
   scrollok(cbp->window, true);
@@ -101,7 +97,11 @@ static void pane_destroy(struct tym_i_pane_internal* pane){
 
 static int pane_refresh(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
-  return wrefresh(cbp->window) == OK ? 0 : -1;
+  unsigned ltx = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  unsigned lty = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned brx = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer;
+  unsigned bry = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer;
+  return prefresh(cbp->window, 0, 0, lty, ltx, bry, brx) == OK ? 0 : -1;
 }
 
 static int pane_resize(struct tym_i_pane_internal* pane){
@@ -110,18 +110,11 @@ static int pane_resize(struct tym_i_pane_internal* pane){
   unsigned y = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - x;
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - y;
-  tym_i_debug("pane_resize %ux%u %ux%u\n", x,y,w,h);
-  unsigned ch=1, cw=1;
-  getmaxyx(cbp->window, ch, cw);
-  wresize(cbp->window, h > ch ? ch : h, w > cw ? cw : w);
-  if(mvwin(cbp->window, y, x) != OK){
-    tym_i_debug("mvwin(%u,%u) failed\n", y, x);
-    return -1;
-  }
   if(wresize(cbp->window, h, w) != OK){
     tym_i_debug("wresize(%u,%u) failed\n", h, w);
     return -1;
   }
+  pane_refresh(pane);
   return 0;
 }
 
@@ -193,7 +186,6 @@ static int pane_set_character(
 }
 
 int resize(void){
-  tym_i_debug("resize %ux%u\n", tym_i_ttysize.ws_col, tym_i_ttysize.ws_row);
   if(resizeterm(tym_i_ttysize.ws_row, tym_i_ttysize.ws_col))
     tym_i_debug("resizeterm(%u, %u)\n",tym_i_ttysize.ws_row, tym_i_ttysize.ws_col);
   cbreak();
@@ -203,24 +195,6 @@ int resize(void){
   leaveok(stdscr, false);
   return 0;
 }
-
-/*
-static int pane_set_cursor_mode(struct tym_i_pane_internal* pane, enum tym_i_cursor_mode cursor_mode);
-static int pane_erase_area(
-  struct tym_i_pane_internal* pane,
-  struct tym_i_cell_position start,
-  struct tym_i_cell_position end,
-  bool block,
-  struct tym_i_character_format format
-);
-static int pane_set_area_to_character(
-  struct tym_i_pane_internal* pane,
-  struct tym_i_cell_position start,
-  struct tym_i_cell_position end,
-  bool block,
-  enum tym_i_character_attribute attribute,
-  size_t length, const char utf8[length+1]
-);*/
 
 TYM_I_BACKEND_REGISTER(1000, "curses", (
   .init = init,
