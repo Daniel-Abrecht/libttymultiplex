@@ -71,7 +71,7 @@ static int cleanup(void){
 
 static void initpad(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
-  scrollok(cbp->window, true);
+  scrollok(cbp->window, false);
   leaveok(cbp->window, false);
 }
 
@@ -160,11 +160,16 @@ static int pane_resize(struct tym_i_pane_internal* pane){
 
 static int pane_scroll(struct tym_i_pane_internal* pane, int n){
   struct curses_backend_pane* cbp = pane->backend;
-  return wscrl(cbp->window, n) == OK ? 0 : -1;
+  scrollok(cbp->window, true);
+  int res = wscrl(cbp->window, n) == OK ? 0 : -1;
+  scrollok(cbp->window, false);
+  return res;
 }
 
 static int pane_set_cursor_position(struct tym_i_pane_internal* pane, struct tym_i_cell_position position){
   struct curses_backend_pane* cbp = pane->backend;
+  if(!cbp->window)
+    return 0;
   return wmove(cbp->window, position.y, position.x) == OK ? 0 : -1;
 }
 
@@ -183,6 +188,8 @@ static int set_attribute(
   struct tym_i_character_format format
 ){
   struct curses_backend_pane* cbp = pane->backend;
+  if(!cbp->window)
+    return 0;
   if(!has_colors())
     return -1;
   int pair = -1;
@@ -219,6 +226,8 @@ static int pane_set_character(
   size_t length, const char utf8[length+1]
 ){
   struct curses_backend_pane* cbp = pane->backend;
+  if(!cbp->window)
+    return 0;
   set_attribute(pane, format);
   wmove(cbp->window, position.y, position.x);
   waddstr(cbp->window, utf8);
