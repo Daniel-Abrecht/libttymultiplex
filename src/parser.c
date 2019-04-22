@@ -210,6 +210,8 @@ bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
   switch(c){
     case '\b': if(x) x -= 1; break;
     case '\r': x = 0; break;
+    case '\t': x = x / 8 * 8 + 8; break;
+    case '\v': y += 1; break;
     case '\n': {
       x  = 0;
       y += 1;
