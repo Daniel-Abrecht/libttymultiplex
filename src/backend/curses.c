@@ -69,18 +69,25 @@ static int cleanup(void){
   return 0;
 }
 
+static void initpad(struct tym_i_pane_internal* pane){
+  struct curses_backend_pane* cbp = pane->backend;
+  scrollok(cbp->window, true);
+  leaveok(cbp->window, false);
+}
+
 static int pane_create(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = calloc(1,sizeof(struct curses_backend_pane));
   if(!cbp)
     goto error;
   pane->backend = cbp;
-  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  cbp->window = newpad(h, w);
-  if(!cbp->window)
-    goto error_after_calloc;
-  scrollok(cbp->window, true);
-  leaveok(cbp->window, false);
+  long w = (long)pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  long h = (long)pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  if(h>0 && w>0){
+    cbp->window = newpad(h, w);
+    if(!cbp->window)
+      goto error_after_calloc;
+    initpad(pane);
+  }
   return 0;
 error_after_calloc:
   free(cbp);
@@ -97,19 +104,52 @@ static void pane_destroy(struct tym_i_pane_internal* pane){
 
 static int pane_refresh(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
-  unsigned ltx = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  unsigned lty = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  unsigned brx = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer;
-  unsigned bry = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer;
-  return prefresh(cbp->window, 0, 0, lty, ltx, bry, brx) == OK ? 0 : -1;
+  if(!cbp->window)
+    return 0;
+  int ltx = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  int lty = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  int brx = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer;
+  int bry = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer;
+  if(ltx >= brx || lty >= bry || brx < 0 || bry < 0 || ltx >= tym_i_ttysize.ws_col || lty >= tym_i_ttysize.ws_row)
+    return -1;
+  int ofx = 0;
+  int ofy = 0;
+  if(ltx < 0){
+    ofx = -ltx;
+    ltx = 0;
+  }
+  if(lty < 0){
+    ofy = -lty;
+    lty = 0;
+  }
+  if(brx >= tym_i_ttysize.ws_col)
+    brx = tym_i_ttysize.ws_col - 1;
+  if(bry >= tym_i_ttysize.ws_row)
+    bry = tym_i_ttysize.ws_row - 1;
+  return prefresh(cbp->window, ofy, ofx, lty, ltx, bry, brx) == OK ? 0 : -1;
 }
 
 static int pane_resize(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
-  unsigned x = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  unsigned y = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - x;
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - y;
+  int x = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  int y = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  long w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - x;
+  long h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - y;
+  if(w <= 0 || h <= 0){
+    if(cbp->window){
+      delwin(cbp->window);
+      cbp->window = 0;
+    }
+    return 0;
+  }
+  if(!cbp->window){
+    cbp->window = newpad(h, w);
+    if(!cbp->window){
+      tym_i_debug("newpad(%l, %l) failed\n", h, w);
+      return -1;
+    }
+    initpad(pane);
+  }
   if(wresize(cbp->window, h, w) != OK){
     tym_i_debug("wresize(%u,%u) failed\n", h, w);
     return -1;
