@@ -9,12 +9,13 @@ int tym_i_csq_cursor_up(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned y = 1;
   if(pane->sequence.integer_count)
     y = pane->sequence.integer[0];
   unsigned new_y = 0;
-  if(y < pane->cursor.y)
-    new_y = pane->cursor.y - y;
-  tym_i_pane_cursor_set_cursor(pane, pane->cursor.x, new_y);
+  if(y < screen->cursor.y)
+    new_y = screen->cursor.y - y;
+  tym_i_pane_cursor_set_cursor(pane, screen->cursor.x, new_y);
   return 0;
 }

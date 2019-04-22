@@ -15,6 +15,9 @@ int tym_i_csq_enable(struct tym_i_pane_internal* pane){
     case TYM_I_DSDR_MOUSE_MODE_NORMAL: pane->mouse_mode = MOUSE_MODE_NORMAL; break;
     case TYM_I_DSDR_MOUSE_MODE_BUTTON: pane->mouse_mode = MOUSE_MODE_BUTTON; break;
     case TYM_I_DSDR_MOUSE_MODE_ANY   : pane->mouse_mode = MOUSE_MODE_ANY   ; break;
+    case TYM_I_DSDR_ALTERNATE_SCREEN_1:
+    case TYM_I_DSDR_ALTERNATE_SCREEN_2:
+    case TYM_I_DSDR_ALTERNATE_SCREEN_3: return tym_i_pane_set_screen(pane, TYM_I_SCREEN_ALTERNATE);
   }
   return 0;
 }

@@ -199,8 +199,9 @@ void reset_sequence(struct tym_i_sequence_state* sequence){
 }
 
 bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
-  unsigned y = pane->cursor.y;
-  unsigned x = pane->cursor.x;
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
+  unsigned y = screen->cursor.y;
+  unsigned x = screen->cursor.x;
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   if(x >= w)
@@ -236,8 +237,9 @@ static const struct tym_i_character UTF8_INVALID_SYMBOL = {
 void print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
   if(tym_i_character_is_utf8(character) && !character.data.utf8.count)
     return;
-  unsigned y = pane->cursor.y;
-  unsigned x = pane->cursor.x;
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
+  unsigned y = screen->cursor.y;
+  unsigned x = screen->cursor.x;
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   if(x >= w)
@@ -265,7 +267,7 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
     }
   }
   if(sequence)
-    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, pane->character_format, strlen(sequence), sequence);
+    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, screen->character_format, strlen(sequence), sequence);
   x += 1;
   if(x >= w){
     x  = 0;

@@ -16,6 +16,11 @@ int tym_i_pane_set_cursor_mode_default_proc(struct tym_i_pane_internal* pane, en
   return 0;
 }
 
+int tym_i_pane_change_screen_default_proc(struct tym_i_pane_internal* pane){
+  (void)pane;
+  return -1;
+}
+
 int tym_i_pane_erase_area_default_proc(
   struct tym_i_pane_internal* pane,
   struct tym_i_cell_position start,

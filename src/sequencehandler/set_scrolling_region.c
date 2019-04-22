@@ -9,13 +9,14 @@ int tym_i_csq_set_scrolling_region(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned top = 0;
   unsigned bottom = ~0u;
   if(pane->sequence.integer_count >= 1)
     top = pane->sequence.integer[0] - 1;
   if(pane->sequence.integer_count >= 2)
     bottom = pane->sequence.integer[0] - 1;
-  pane->scroll_region_top    = top;
-  pane->scroll_region_bottom = bottom;
+  screen->scroll_region_top    = top;
+  screen->scroll_region_bottom = bottom;
   return 0;
 }

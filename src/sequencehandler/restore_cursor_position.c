@@ -9,6 +9,7 @@ int tym_i_csq_restore_cursor_position(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  tym_i_pane_cursor_set_cursor(pane, pane->saved_cursor.x, pane->saved_cursor.y);
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
+  tym_i_pane_cursor_set_cursor(pane, screen->saved_cursor.x, screen->saved_cursor.y);
   return 0;
 }

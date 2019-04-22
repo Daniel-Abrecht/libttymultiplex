@@ -19,11 +19,12 @@ int tym_i_csq_device_status_report(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   char buffer[64];
   switch(pane->sequence.integer[0]){
     case STATUS_REPORT  : tym_i_pts_send(pane, S(CSI "0n")); break; // OK
     case CURSOR_POSITION: {
-      snprintf(buffer, sizeof(buffer), CSI "%u;%uR", pane->cursor.y+1, pane->cursor.x+1);
+      snprintf(buffer, sizeof(buffer), CSI "%u;%uR", screen->cursor.y+1, screen->cursor.x+1);
       tym_i_pts_send(pane, S(buffer));
     } break;
   }

@@ -12,12 +12,13 @@ int tym_i_csq_erase_characters(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   if(pane->sequence.integer_count > 0)
     n = pane->sequence.integer[0];
   struct tym_i_cell_position end = {
-    .x = ((unsigned long)pane->cursor.x + n) % w,
-    .y = pane->cursor.y + ((unsigned long)pane->cursor.x + n) / w
+    .x = ((unsigned long)screen->cursor.x + n) % w,
+    .y = screen->cursor.y + ((unsigned long)screen->cursor.x + n) / w
   };
-  tym_i_backend->pane_erase_area(pane, pane->cursor, end, false, pane->character_format);
+  tym_i_backend->pane_erase_area(pane, screen->cursor, end, false, screen->character_format);
   return 0;
 }

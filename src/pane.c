@@ -99,7 +99,8 @@ int tym_i_pane_focus(struct tym_i_pane_internal* pane){
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane){
   if(pane != tym_i_focus_pane || !pane)
     return;
-  tym_i_backend->pane_set_cursor_position(pane, pane->cursor);
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
+  tym_i_backend->pane_set_cursor_position(pane, screen->cursor);
 }
 
 void tym_i_pane_update_size_all(void){
@@ -248,6 +249,7 @@ error:
 }
 
 void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y){
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   if(x >= w)
@@ -256,8 +258,8 @@ void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, 
     tym_i_backend->pane_scroll(pane, y - h + 1);
     y = h-1;
   }
-  pane->cursor.y = y;
-  pane->cursor.x = x;
+  screen->cursor.y = y;
+  screen->cursor.x = x;
   tym_i_pane_update_cursor(pane);
   return;
 }
@@ -337,6 +339,15 @@ int tym_pane_get_masterfd(int pane){
 error:
   pthread_mutex_unlock(&tym_i_lock);
   return -1;
+}
+
+int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_screen screen){
+  enum tym_i_pane_screen old = pane->current_screen;
+  pane->current_screen = screen;
+  int res = tym_i_backend->pane_change_screen(pane);
+  if(res == -1)
+    pane->current_screen = old;
+  return res;
 }
 
 int tym_pane_reset(int pane){
