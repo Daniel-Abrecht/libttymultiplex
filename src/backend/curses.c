@@ -181,6 +181,14 @@ static int pane_set_cursor_position(struct tym_i_pane_internal* pane, struct tym
   return wmove(w, position.y, position.x) == OK ? 0 : -1;
 }
 
+int pane_delete_characters(struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n){
+  struct curses_backend_pane* cbp = pane->backend;
+  WINDOW* win = cbp->window[pane->current_screen];
+  while(n--)
+    mvwdelch(win, position.y, position.x);
+  return 0;
+}
+
 static attr_t attr2curses(enum tym_i_character_attribute ca){
   attr_t r = 0;
   if(ca & TYM_I_CA_BOLD)      r |= A_BOLD;
@@ -264,5 +272,6 @@ TYM_I_BACKEND_REGISTER(1000, "curses", (
   .pane_scroll = pane_scroll,
   .pane_refresh = pane_refresh,
   .pane_set_cursor_position = pane_set_cursor_position,
+  .pane_delete_characters = pane_delete_characters,
   .pane_set_character = pane_set_character,
 ))

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #include <errno.h>
-//#include <ncurses.h>
+#include <internal/backend.h>
 #include <internal/pane.h>
 
 int tym_i_csq_delete_characters(struct tym_i_pane_internal* pane){
@@ -10,10 +10,9 @@ int tym_i_csq_delete_characters(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-//  unsigned n = 1;
-//  if(pane->sequence.integer_count)
-//    n = pane->sequence.integer[0];
-//  while(n--)
-//    mvwdelch(pane->window, pane->cursor.y, pane->cursor.x);
+  unsigned n = 1;
+  if(pane->sequence.integer_count)
+    n = pane->sequence.integer[0];
+  tym_i_backend->pane_delete_characters(pane, pane->screen[pane->current_screen].cursor, n);
   return 0;
 }

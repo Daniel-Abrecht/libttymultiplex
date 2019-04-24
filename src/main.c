@@ -91,6 +91,11 @@ int tym_i_pollfd_remove(int fd){
 
 void* tym_i_main(void* ptr){
   (void)ptr;
+  { // This thread doesn't handle any signals. It reacts to some signals from the main thread using a signalfd though.
+    sigset_t set;
+    sigfillset(&set);
+    pthread_sigmask(SIG_SETMASK, &set, NULL);
+  };
   while(true){
     int ret = poll(tym_i_poll_fds, tym_i_poll_fdn, -1);
     pthread_mutex_lock(&tym_i_lock);
