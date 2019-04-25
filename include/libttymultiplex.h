@@ -19,6 +19,15 @@
 extern "C" {
 #endif
 
+enum tym_special_key {
+  TYM_KEY_ENTER,
+  TYM_KEY_UP,
+  TYM_KEY_DOWN,
+  TYM_KEY_RIGHT,
+  TYM_KEY_LEFT,
+  TYM_KEY_BACKSPACE
+};
+
 enum tym_position_type {
   TYM_P_UNSET,
   TYM_P_CHARFIELD,

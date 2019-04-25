@@ -10,7 +10,9 @@ int tym_i_csq_disable(struct tym_i_pane_internal* pane){
     errno = EINVAL;
     return -1;
   }
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   switch(pane->sequence.integer[0]){
+    case TYM_I_DSDR_APPLICATION_CURSOR_KEYS: screen->cursor_key_mode = TYM_I_CURSOR_KEY_MODE_NORMAL; break;
     case TYM_I_DSDR_MOUSE_MODE_X10:
     case TYM_I_DSDR_MOUSE_MODE_NORMAL:
     case TYM_I_DSDR_MOUSE_MODE_BUTTON:

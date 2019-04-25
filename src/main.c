@@ -197,12 +197,12 @@ void* tym_i_main(void* ptr){
               break;
             }
           } break;
-          case KEY_ENTER: tym_i_pts_send(tym_i_focus_pane, 1, "\n"); break;
-          case KEY_UP   : tym_i_pts_send(tym_i_focus_pane, 3, "\x1B[A"); break;
-          case KEY_DOWN : tym_i_pts_send(tym_i_focus_pane, 3, "\x1B[B"); break;
-          case KEY_RIGHT: tym_i_pts_send(tym_i_focus_pane, 3, "\x1B[C"); break;
-          case KEY_LEFT : tym_i_pts_send(tym_i_focus_pane, 3, "\x1B[D"); break;
-          case KEY_BACKSPACE: tym_i_pts_send_key('\b'); break;
+          case KEY_ENTER: tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
+          case KEY_UP   : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_UP); break;
+          case KEY_DOWN : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_DOWN); break;
+          case KEY_RIGHT: tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_RIGHT); break;
+          case KEY_LEFT : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_LEFT); break;
+          case KEY_BACKSPACE: tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
           default: tym_i_pts_send_key(c); break;
         }
       };

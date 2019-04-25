@@ -9,6 +9,8 @@
 #include <internal/pseudoterminal.h>
 #include <libttymultiplex.h>
 
+#define S(X) sizeof(X)-1, X
+
 int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*restrict data){
   if(!pane){
     errno = EINVAL;
@@ -17,6 +19,37 @@ int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*res
   ssize_t ret = 0;
   while((ret=write(pane->master, data, size)) == -1 && (errno == EAGAIN || errno == EINTR));
   return ret == -1 ? -1 : 0;
+}
+
+int tym_i_pts_send_special_key(struct tym_i_pane_internal* pane, enum tym_special_key key){
+  if(!pane){
+    errno = EINVAL;
+    return -1;
+  }
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
+  switch(key){
+    case TYM_KEY_UP: case TYM_KEY_DOWN: case TYM_KEY_RIGHT: case TYM_KEY_LEFT: {
+      switch(screen->cursor_key_mode){
+        case TYM_I_KEYPAD_MODE_NORMAL: switch(key){
+            case TYM_KEY_UP   : return tym_i_pts_send(pane, S("\x1B[A"));
+            case TYM_KEY_DOWN : return tym_i_pts_send(pane, S("\x1B[B"));
+            case TYM_KEY_RIGHT: return tym_i_pts_send(pane, S("\x1B[C"));
+            case TYM_KEY_LEFT : return tym_i_pts_send(pane, S("\x1B[D"));
+            default: return -1;
+        } break;
+        case TYM_I_KEYPAD_MODE_APPLICATION: switch(key){
+            case TYM_KEY_UP   : return tym_i_pts_send(pane, S("\x1BOA"));
+            case TYM_KEY_DOWN : return tym_i_pts_send(pane, S("\x1BOB"));
+            case TYM_KEY_RIGHT: return tym_i_pts_send(pane, S("\x1BOC"));
+            case TYM_KEY_LEFT : return tym_i_pts_send(pane, S("\x1BOD"));
+            default: return -1;
+        } break;
+      }
+    } break;
+    case TYM_KEY_ENTER: return tym_i_pts_send(pane, S("\n"));
+    case TYM_KEY_BACKSPACE: return tym_i_pts_send(pane, S("\b"));
+  }
+  return -1;
 }
 
 // Replace mmask_t with a something not curses specific

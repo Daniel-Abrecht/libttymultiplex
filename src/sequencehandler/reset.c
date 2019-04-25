@@ -10,11 +10,10 @@ int tym_i_csq_reset(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
+  memset(pane->screen, 0, sizeof(pane->screen));
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  screen->character_format.fgcolor.index = 0;
-  screen->character_format.bgcolor.index = 0;
   pane->mouse_mode = MOUSE_MODE_OFF;
   pane->character.not_utf8 = false;
   tym_i_backend->pane_erase_area(pane, (struct tym_i_cell_position){.x=0,.y=0}, (struct tym_i_cell_position){.x=w,.y=h}, false, screen->character_format);

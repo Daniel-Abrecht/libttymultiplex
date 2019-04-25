@@ -32,6 +32,7 @@ struct tym_i_character_format;
     struct tym_i_character_format format, \
     size_t length, const char utf8[length+1] \
   )) \
+  R(int, pane_delete_characters, (struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n)) \
   O(int, pane_refresh, (struct tym_i_pane_internal* pane)) \
   O(int, pane_set_cursor_mode, (struct tym_i_pane_internal* pane, enum tym_i_cursor_mode cursor_mode)) \
   O(int, pane_erase_area, ( \
@@ -40,6 +41,9 @@ struct tym_i_character_format;
     struct tym_i_cell_position end, \
     bool block, \
     struct tym_i_character_format format \
+  )) \
+  O(int, pane_change_screen, ( \
+    struct tym_i_pane_internal* pane \
   )) \
   O(int, pane_set_area_to_character, ( \
     struct tym_i_pane_internal* pane, \
