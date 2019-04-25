@@ -46,7 +46,7 @@ int tym_i_pts_send_special_key(struct tym_i_pane_internal* pane, enum tym_specia
         } break;
       }
     } break;
-    case TYM_KEY_ENTER: return tym_i_pts_send(pane, S("\n"));
+    case TYM_KEY_ENTER: return tym_i_pts_send(pane, S("\r"));
     case TYM_KEY_BACKSPACE: return tym_i_pts_send(pane, S("\b"));
   }
   return -1;

@@ -197,6 +197,7 @@ void* tym_i_main(void* ptr){
               break;
             }
           } break;
+          case '\n':
           case KEY_ENTER: tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
           case KEY_UP   : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_UP); break;
           case KEY_DOWN : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_DOWN); break;

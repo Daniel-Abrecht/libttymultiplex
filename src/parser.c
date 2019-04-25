@@ -372,7 +372,7 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
           goto escape_abort;
       }else{
         tym_i_pane_update_cursor(pane);
-//        tym_i_debug("+ %s\n", sequence->callback_name);
+        tym_i_debug("+ %s\n", sequence->callback_name);
       }
     }else{
       tym_i_debug("%s unimplemented\n", sequence->callback_name);
