@@ -46,8 +46,8 @@
   CSQ( ESC "~", invoke_charset_G1_as_GR_LS1R ) \
   CSQ( ESC "7", save_cursor_position ) \
   CSQ( ESC "8", restore_cursor_position ) \
-  CSQ( ESC "=", application_keypad ) \
-  CSQ( ESC ">", normal_keypad ) \
+  CSQ( ESC "=", application_keypad /* DECPAM */ ) \
+  CSQ( ESC ">", normal_keypad /* DECPNM */ ) \
   CSQ( ESC "F", cursor_to_bottom_left ) \
   CSQ( ESC "l", memory_lock ) \
   CSQ( ESC "m", memory_unlock ) \
@@ -267,7 +267,7 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
     }
   }
   if(sequence)
-    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, screen->character_format, strlen(sequence), sequence);
+    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, screen->character_format, strlen(sequence), sequence, screen->insert_mode);
   x += 1;
   if(x >= w){
     x  = 0;

@@ -239,14 +239,19 @@ static int pane_set_character(
   struct tym_i_pane_internal* pane,
   struct tym_i_cell_position position,
   struct tym_i_character_format format,
-  size_t length, const char utf8[length+1]
+  size_t length, const char utf8[length+1],
+  bool insert
 ){
   struct curses_backend_pane* cbp = pane->backend;
   WINDOW* w = cbp->window[pane->current_screen];
   if(!w) return 0;
   set_attribute(pane, format);
   wmove(w, position.y, position.x);
-  waddstr(w, utf8);
+  if(insert){
+    winsstr(w, utf8);
+  }else{
+    waddstr(w, utf8);
+  }
   return 0;
 }
 

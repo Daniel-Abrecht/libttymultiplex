@@ -20,12 +20,15 @@ extern "C" {
 #endif
 
 enum tym_special_key {
-  TYM_KEY_ENTER,
-  TYM_KEY_UP,
+  TYM_KEY_ENTER = '\n',
+  TYM_KEY_HOME = '\r',
+  TYM_KEY_BACKSPACE = '\b',
+  TYM_KEY_TAB = '\t',
+  TYM_KEY_UP = 0x100,
   TYM_KEY_DOWN,
   TYM_KEY_RIGHT,
   TYM_KEY_LEFT,
-  TYM_KEY_BACKSPACE
+  TYM_KEY_END,
 };
 
 enum tym_position_type {

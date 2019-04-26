@@ -30,7 +30,8 @@ struct tym_i_character_format;
     struct tym_i_pane_internal* pane, \
     struct tym_i_cell_position position, \
     struct tym_i_character_format format, \
-    size_t length, const char utf8[length+1] \
+    size_t length, const char utf8[length+1], \
+    bool insert \
   )) \
   R(int, pane_delete_characters, (struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n)) \
   O(int, pane_refresh, (struct tym_i_pane_internal* pane)) \

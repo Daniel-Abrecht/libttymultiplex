@@ -59,6 +59,13 @@ enum mouse_mode {
   MOUSE_MODE_ANY
 };
 
+enum tym_i_setmode {
+  TYM_I_SM_KEYBOARD_ACTION,
+  TYM_I_SM_INSERT,
+  TYM_I_SM_SEND_RECEIVE,
+  TYM_I_SM_AUTOMATIC_NEWLINE
+};
+
 enum tym_i_decset_decres {
   TYM_I_DSDR_APPLICATION_CURSOR_KEYS = 1,
 /*  TYM_I_DSDR_DESIGNATE_USASCII_CHARACTER_SETS = 2,
@@ -126,6 +133,7 @@ struct tym_i_pane_screen_state {
   enum tym_i_keypad_mode keypad_mode;
   enum tym_i_cursor_key_mode cursor_key_mode;
   unsigned scroll_region_top, scroll_region_bottom;
+  bool insert_mode;
 };
 
 struct tym_i_pane_internal {

@@ -12,7 +12,7 @@ int tym_i_csq_enable(struct tym_i_pane_internal* pane){
     return -1;
   }
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
-  int code = pane->sequence.integer[0];
+  enum tym_i_decset_decres code = pane->sequence.integer[0];
   switch(code){
     case TYM_I_DSDR_APPLICATION_CURSOR_KEYS: screen->cursor_key_mode = TYM_I_CURSOR_KEY_MODE_APPLICATION; break;
     case TYM_I_DSDR_MOUSE_MODE_X10   : pane->mouse_mode = MOUSE_MODE_X10   ; break;

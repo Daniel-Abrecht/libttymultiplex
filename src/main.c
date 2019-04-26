@@ -197,14 +197,15 @@ void* tym_i_main(void* ptr){
               break;
             }
           } break;
-          case '\n':
-          case KEY_ENTER: tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
-          case KEY_UP   : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_UP); break;
-          case KEY_DOWN : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_DOWN); break;
-          case KEY_RIGHT: tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_RIGHT); break;
-          case KEY_LEFT : tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_LEFT); break;
-          case KEY_BACKSPACE: tym_i_pts_send_special_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
-          default: tym_i_pts_send_key(c); break;
+          case KEY_ENTER: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
+          case KEY_UP   : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_UP); break;
+          case KEY_DOWN : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DOWN); break;
+          case KEY_RIGHT: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_RIGHT); break;
+          case KEY_LEFT : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_LEFT); break;
+          case KEY_BACKSPACE: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
+          case KEY_HOME: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_HOME); break;
+          case KEY_END: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_END); break;
+          default: tym_i_pts_send_key(tym_i_focus_pane, c); break;
         }
       };
     }

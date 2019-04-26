@@ -7,8 +7,7 @@
 #include <internal/pane.h>
 
 int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*restrict data);
-int tym_i_pts_send_special_key(struct tym_i_pane_internal* pane, enum tym_special_key key);
-void tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_i_button button, struct tym_i_cell_position pos);
-void tym_i_pts_send_key(int c);
+int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key);
+int tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_i_button button, struct tym_i_cell_position pos);
 
 #endif
