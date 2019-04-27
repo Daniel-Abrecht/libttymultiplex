@@ -248,17 +248,39 @@ error:
   return -1;
 }
 
-void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y){
+int tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y, enum set_cursor_scrolling_mode_behaviour smm){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   if(x >= w)
-    x = w-1;
+    x = w - 1;
   unsigned top = screen->scroll_region_top;
   unsigned bottom = screen->scroll_region_bottom;
   if(bottom > h)
     bottom = h;
-  if( top < bottom && !(top == 0 && bottom == h) ){
+  unsigned cy = screen->cursor.y;
+  if(cy >= h)
+    cy = h - 1;
+  bool ignore_scrolling_region = smm == TYM_I_SMB_IGNORE;
+  if( top >= bottom || (top == 0 && bottom == h))
+    ignore_scrolling_region = true;
+  if( smm == TYM_I_SMB_NORMAL && (cy < top || cy >= bottom) )
+    ignore_scrolling_region = true;
+  if( smm == TYM_I_SMB_CLAMP_TOP ){
+    if( y >= bottom && !(cy >= top && cy < bottom) ){
+      ignore_scrolling_region = true;
+    }else if( y < top ){
+      y = top;
+    }
+  }
+  if( smm == TYM_I_SMB_CLAMP_BOTTOM_SCROLL_ONE ){
+    if( y < top && !(cy >= top && cy < bottom) ){
+      ignore_scrolling_region = true;
+    }else if( y >= bottom ){
+      y = bottom;
+    }
+  }
+  if(!ignore_scrolling_region){
     if(y >= bottom){
       tym_i_backend->pane_scroll_region(pane, y - bottom + 1, top, bottom);
       y = bottom - 1;
@@ -271,7 +293,7 @@ void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, 
   screen->cursor.y = y;
   screen->cursor.x = x;
   tym_i_pane_update_cursor(pane);
-  return;
+  return 0;
 }
 
 int tym_pane_resize(int pane, const struct tym_superposition*restrict superposition){
@@ -349,6 +371,20 @@ int tym_pane_get_masterfd(int pane){
 error:
   pthread_mutex_unlock(&tym_i_lock);
   return -1;
+}
+
+int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n){
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
+  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned top = screen->scroll_region_top;
+  unsigned bottom = screen->scroll_region_bottom;
+  if(bottom > h)
+    bottom = h;
+  if( top < bottom && !(top == 0 && bottom == h)){
+    return tym_i_backend->pane_scroll_region(pane, n, top, bottom);
+  }else{
+    return tym_i_backend->pane_scroll(pane, n);
+  }
 }
 
 int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_screen screen){

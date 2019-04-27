@@ -102,14 +102,14 @@
   CSQ( CSI NUM "M", delete_lines ) \
   CSQ( CSI "P", delete_characters ) \
   CSQ( CSI NUM "P", delete_characters ) \
-  CSQ( CSI "S", scroll_page_up ) \
-  CSQ( CSI NUM "S", scroll_page_up ) \
-  CSQ( CSI "T", scroll_page_down ) \
-  CSQ( CSI NUM "T", scroll_page_down ) \
+  CSQ( CSI "S", scroll_up ) \
+  CSQ( CSI NUM "S", scroll_up ) \
+  CSQ( CSI "T", scroll_down ) \
+  CSQ( CSI NUM "T", scroll_down ) \
   CSQ( CSI "X", erase_characters ) \
   CSQ( CSI NUM "X", erase_characters ) \
-  CSQ( CSI "d", line_position_absolute ) \
-  CSQ( CSI NUM "d", line_position_absolute ) \
+  CSQ( CSI "d", cursor_position ) \
+  CSQ( CSI NUM "d", cursor_position ) \
   CSQ( CSI "f", horizontal_vertical_position ) \
   CSQ( CSI NUM "f", horizontal_vertical_position ) \
   CSQ( CSI "`", cursor_horizontal_absolute /* character position absolute */ ) \
@@ -220,7 +220,7 @@ bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
     case 0x0E /*SO*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G1 | TYM_I_CHARSET_SELECTION_GR_G1); break;
     case 0x0F /*SI*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G0 | TYM_I_CHARSET_SELECTION_GR_G0); break;
   }
-  tym_i_pane_cursor_set_cursor(pane,x,y);
+  tym_i_pane_cursor_set_cursor(pane,x,y,TYM_I_SMB_NORMAL);
   return c < ' ';
 }
 
@@ -273,7 +273,7 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
     x  = 0;
     y += 1;
   }
-  tym_i_pane_cursor_set_cursor(pane,x,y);
+  tym_i_pane_cursor_set_cursor(pane,x,y,TYM_I_SMB_NORMAL);
 }
 
 bool print_character_update(struct tym_i_pane_internal* pane, char c){

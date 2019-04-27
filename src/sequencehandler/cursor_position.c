@@ -15,6 +15,6 @@ int tym_i_csq_cursor_position(struct tym_i_pane_internal* pane){
     pane->sequence.integer[0] = 1;
   unsigned y = pane->sequence.integer[0] - 1;
   unsigned x = pane->sequence.integer[1] - 1;
-  tym_i_pane_cursor_set_cursor(pane, x, y);
+  tym_i_pane_cursor_set_cursor(pane, x, y, TYM_I_SMB_IGNORE);
   return 0;
 }

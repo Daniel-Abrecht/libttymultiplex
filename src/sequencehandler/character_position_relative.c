@@ -16,6 +16,6 @@ int tym_i_csq_character_position_relative(struct tym_i_pane_internal* pane){
   unsigned new_x = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer - 1;
   if(screen->cursor.x + x < new_x)
     new_x = screen->cursor.x + x;
-  tym_i_pane_cursor_set_cursor(pane, new_x, screen->cursor.y);
+  tym_i_pane_cursor_set_cursor(pane, new_x, screen->cursor.y, TYM_I_SMB_IGNORE);
   return 0;
 }

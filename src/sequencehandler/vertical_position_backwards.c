@@ -16,6 +16,6 @@ int tym_i_csq_vertical_position_backwards(struct tym_i_pane_internal* pane){
   unsigned new_y = 0;
   if(y < screen->cursor.y)
     new_y = screen->cursor.y - y;
-  tym_i_pane_cursor_set_cursor(pane, screen->cursor.x, new_y);
+  tym_i_pane_cursor_set_cursor(pane, screen->cursor.x, new_y, TYM_I_SMB_CLAMP_TOP);
   return 0;
 }

@@ -165,7 +165,6 @@ extern const struct tym_i_character_format default_character_format;
 bool tym_i_character_is_utf8(struct tym_i_character character);
 void tym_i_pane_update_size_all(void);
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane);
-void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y);
 int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_handler_ptr_pair* cp);
 int tym_i_pane_resize_handler_remove(struct tym_i_pane_internal* pane, size_t entry);
 void tym_i_pane_add(struct tym_i_pane_internal* pane);
@@ -175,6 +174,15 @@ void tym_i_pane_remove(struct tym_i_pane_internal* pane);
 int tym_i_pane_focus(struct tym_i_pane_internal* pane);
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane);
 int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_screen screen);
+int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n);
 void tym_i_perror(const char*);
+
+enum set_cursor_scrolling_mode_behaviour {
+  TYM_I_SMB_NORMAL,
+  TYM_I_SMB_IGNORE,
+  TYM_I_SMB_CLAMP_TOP,
+  TYM_I_SMB_CLAMP_BOTTOM_SCROLL_ONE
+};
+int tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y, enum set_cursor_scrolling_mode_behaviour);
 
 #endif
