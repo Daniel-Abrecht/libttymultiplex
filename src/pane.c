@@ -261,26 +261,16 @@ int tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, u
   unsigned cy = screen->cursor.y;
   if(cy >= h)
     cy = h - 1;
-  bool ignore_scrolling_region = smm == TYM_I_SMB_IGNORE;
+  bool ignore_scrolling_region = false;
+  if(smm == TYM_I_SMB_IGNORE)
+    ignore_scrolling_region = true;
   if( top >= bottom || (top == 0 && bottom == h))
     ignore_scrolling_region = true;
   if( smm == TYM_I_SMB_NORMAL && (cy < top || cy >= bottom) )
     ignore_scrolling_region = true;
-  if( !ignore_scrolling_region && smm == TYM_I_SMB_CLAMP_TOP ){
-    if( y >= bottom && !(cy >= top && cy < bottom) ){
-      ignore_scrolling_region = true;
-    }else if( y < top ){
-      y = top;
-    }
-  }
-  if( !ignore_scrolling_region && smm == TYM_I_SMB_CLAMP_BOTTOM_SCROLL_ONE ){
-    if( y < top && !(cy >= top && cy < bottom) ){
-      ignore_scrolling_region = true;
-    }else if( y >= bottom ){
-      y = bottom;
-    }
-  }
   if(!ignore_scrolling_region){
+    if( smm == TYM_I_SMB_ORIGIN_MODE && screen->origin_mode )
+      y += top;
     if(y >= bottom){
       tym_i_backend->pane_scroll_region(pane, y - bottom + 1, top, bottom);
       y = bottom - 1;

@@ -21,6 +21,11 @@ int tym_i_csq_disable(struct tym_i_pane_internal* pane){
     case TYM_I_DSDR_ALTERNATE_SCREEN_1:
     case TYM_I_DSDR_ALTERNATE_SCREEN_2:
     case TYM_I_DSDR_ALTERNATE_SCREEN_3: return tym_i_pane_set_screen(pane, TYM_I_SCREEN_DEFAULT);
+    case TYM_I_DSDR_ORIGIN_MODE: {
+      screen->origin_mode = false;
+      tym_i_pane_cursor_set_cursor(pane, 0, 0, TYM_I_SMB_ORIGIN_MODE);
+    } break;
+    case TYM_I_DSDR_APPLICATION_KEYPAD: screen->keypad_mode = TYM_I_KEYPAD_MODE_NORMAL; break;
   }
   return 0;
 }

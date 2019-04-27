@@ -16,6 +16,6 @@ int tym_i_csq_cursor_left(struct tym_i_pane_internal* pane){
   unsigned new_x = 0;
   if(x < screen->cursor.x)
     new_x = screen->cursor.x - x;
-  tym_i_pane_cursor_set_cursor(pane, new_x, screen->cursor.y, TYM_I_SMB_NORMAL);
+  tym_i_pane_cursor_set_cursor(pane, new_x, screen->cursor.y, TYM_I_SMB_ORIGIN_MODE);
   return 0;
 }

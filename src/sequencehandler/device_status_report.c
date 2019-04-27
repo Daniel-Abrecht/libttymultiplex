@@ -24,7 +24,11 @@ int tym_i_csq_device_status_report(struct tym_i_pane_internal* pane){
   switch(pane->sequence.integer[0]){
     case STATUS_REPORT  : tym_i_pts_send(pane, S(CSI "0n")); break; // OK
     case CURSOR_POSITION: {
-      snprintf(buffer, sizeof(buffer), CSI "%u;%uR", screen->cursor.y+1, screen->cursor.x+1);
+      unsigned y = screen->cursor.y + 1;
+      unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+      if(screen->origin_mode && screen->scroll_region_top < screen->scroll_region_bottom && screen->scroll_region_top < h)
+        y += screen->scroll_region_top;
+      snprintf(buffer, sizeof(buffer), CSI "%u;%uR", y, screen->cursor.x+1);
       tym_i_pts_send(pane, S(buffer));
     } break;
   }

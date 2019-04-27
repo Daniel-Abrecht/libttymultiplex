@@ -16,6 +16,6 @@ int tym_i_csq_cursor_down(struct tym_i_pane_internal* pane){
   unsigned new_y = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer - 1;
   if(screen->cursor.y + y < new_y)
     new_y = screen->cursor.y + y;
-  tym_i_pane_cursor_set_cursor(pane, screen->cursor.x, new_y, TYM_I_SMB_CLAMP_BOTTOM_SCROLL_ONE);
+  tym_i_pane_cursor_set_cursor(pane, screen->cursor.x, new_y, TYM_I_SMB_ORIGIN_MODE);
   return 0;
 }

@@ -22,6 +22,11 @@ int tym_i_csq_enable(struct tym_i_pane_internal* pane){
     case TYM_I_DSDR_ALTERNATE_SCREEN_1:
     case TYM_I_DSDR_ALTERNATE_SCREEN_2:
     case TYM_I_DSDR_ALTERNATE_SCREEN_3: return tym_i_pane_set_screen(pane, TYM_I_SCREEN_ALTERNATE);
+    case TYM_I_DSDR_ORIGIN_MODE: {
+      screen->origin_mode = true;
+      tym_i_pane_cursor_set_cursor(pane, 0, 0, TYM_I_SMB_ORIGIN_MODE);
+    } break;
+    case TYM_I_DSDR_APPLICATION_KEYPAD: screen->keypad_mode = TYM_I_KEYPAD_MODE_APPLICATION; break;
     default: tym_i_debug("Enable for unknown mode %d\n", code); break;
   }
   return 0;

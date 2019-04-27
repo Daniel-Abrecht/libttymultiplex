@@ -72,11 +72,14 @@ enum tym_i_decset_decres {
   TYM_I_DSDR_132_COLUMN_MODE = 3,
   TYM_I_DSDR_SMOOTH_SCROLL = 4,
   TYM_I_DSDR_REVERSE_VIDEO = 5,
+*/
   TYM_I_DSDR_ORIGIN_MODE = 6,
+/*
   TYM_I_DSDR_AUTO_WRAP_MODE = 7,
   TYM_I_DSDR_AUTO_REPEAT_KEYS = 8,*/
   TYM_I_DSDR_MOUSE_MODE_X10 = 9,
   TYM_I_DSDR_ALTERNATE_SCREEN_1 = 47,
+  TYM_I_DSDR_APPLICATION_KEYPAD = 66,
   // TODO: fill in the rest...
   TYM_I_DSDR_MOUSE_MODE_NORMAL = 1000,
   TYM_I_DSDR_MOUSE_MODE_BUTTON = 1002,
@@ -133,7 +136,8 @@ struct tym_i_pane_screen_state {
   enum tym_i_keypad_mode keypad_mode;
   enum tym_i_cursor_key_mode cursor_key_mode;
   unsigned scroll_region_top, scroll_region_bottom;
-  bool insert_mode;
+  bool insert_mode : 1;
+  bool origin_mode : 1;
 };
 
 struct tym_i_pane_internal {
@@ -180,8 +184,7 @@ void tym_i_perror(const char*);
 enum set_cursor_scrolling_mode_behaviour {
   TYM_I_SMB_NORMAL,
   TYM_I_SMB_IGNORE,
-  TYM_I_SMB_CLAMP_TOP,
-  TYM_I_SMB_CLAMP_BOTTOM_SCROLL_ONE
+  TYM_I_SMB_ORIGIN_MODE
 };
 int tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y, enum set_cursor_scrolling_mode_behaviour);
 
