@@ -254,10 +254,20 @@ void tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, 
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   if(x >= w)
     x = w-1;
-  if(y >= h){ // TODO: scroll down on y >= h
+  unsigned top = screen->scroll_region_top;
+  unsigned bottom = screen->scroll_region_bottom;
+  if(bottom > h)
+    bottom = h;
+  if( top < bottom && !(top == 0 && bottom == h) ){
+    if(y >= bottom){
+      tym_i_backend->pane_scroll_region(pane, y - bottom + 1, top, bottom);
+      y = bottom - 1;
+    }
+  }else if(y >= h){
     tym_i_backend->pane_scroll(pane, y - h + 1);
-    y = h-1;
   }
+  if(y >= h)
+    y = h - 1;
   screen->cursor.y = y;
   screen->cursor.x = x;
   tym_i_pane_update_cursor(pane);

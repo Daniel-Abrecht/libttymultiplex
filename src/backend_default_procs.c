@@ -56,3 +56,10 @@ int tym_i_pane_set_area_to_character_default_proc(
   }
   return 0;
 }
+
+int tym_i_pane_scroll_default_proc(struct tym_i_pane_internal* pane, int n){
+  if(n == 0)
+    return 0;
+  long h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  return tym_i_backend->pane_scroll_region(pane, n, 0, h);
+}

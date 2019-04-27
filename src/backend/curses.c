@@ -169,10 +169,47 @@ static int pane_change_screen(struct tym_i_pane_internal* pane){
   return pane_resize(pane);
 }
 
-static int pane_scroll(struct tym_i_pane_internal* pane, int n){
+static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned top, unsigned bottom){
+  if(n == 0)
+    return 0;
+  if(top >= bottom)
+    return -1;
   struct curses_backend_pane* cbp = pane->backend;
   struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
-  if(!cscreen->window) return 0;
+  long w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  long h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  if(top >= h)
+    return -1;
+  if(bottom > h)
+    bottom = h;
+  unsigned long m = bottom - top;
+  tym_i_debug("moving scrolling region: %u %u %lu %d\n",top,bottom,m,n);
+  if(m <= (unsigned)abs(n)){
+    return tym_i_backend->pane_erase_area(
+      pane,
+      (struct tym_i_cell_position){ .x=0, .y=top },
+      (struct tym_i_cell_position){ .x=w, .y=bottom },
+      true,
+      (struct tym_i_character_format){0}
+    );
+  }else{
+    WINDOW* region = subpad(cscreen->window, m, w, top, 0);
+    if(!region)
+      return -1;
+    scrollok(region, true);
+    int res = wscrl(region, n) == OK ? 0 : -1;
+    scrollok(region, false);
+    delwin(region);
+    touchline(cscreen->window, top, m);
+    return res;
+  }
+}
+
+static int pane_scroll(struct tym_i_pane_internal* pane, int n){
+  if(n == 0)
+    return 0;
+  struct curses_backend_pane* cbp = pane->backend;
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
   scrollok(cscreen->window, true);
   int res = wscrl(cscreen->window, n) == OK ? 0 : -1;
   scrollok(cscreen->window, false);
@@ -280,6 +317,7 @@ TYM_I_BACKEND_REGISTER(1000, "curses", (
   .pane_resize = pane_resize,
   .pane_change_screen = pane_change_screen,
   .pane_scroll = pane_scroll,
+  .pane_scroll_region = pane_scroll_region,
   .pane_refresh = pane_refresh,
   .pane_set_cursor_position = pane_set_cursor_position,
   .pane_delete_characters = pane_delete_characters,
