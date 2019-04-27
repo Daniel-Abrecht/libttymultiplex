@@ -74,9 +74,8 @@ enum tym_i_decset_decres {
   TYM_I_DSDR_REVERSE_VIDEO = 5,
 */
   TYM_I_DSDR_ORIGIN_MODE = 6,
-/*
   TYM_I_DSDR_AUTO_WRAP_MODE = 7,
-  TYM_I_DSDR_AUTO_REPEAT_KEYS = 8,*/
+/*  TYM_I_DSDR_AUTO_REPEAT_KEYS = 8,*/
   TYM_I_DSDR_MOUSE_MODE_X10 = 9,
   TYM_I_DSDR_ALTERNATE_SCREEN_1 = 47,
   TYM_I_DSDR_APPLICATION_KEYPAD = 66,
@@ -138,6 +137,7 @@ struct tym_i_pane_screen_state {
   unsigned scroll_region_top, scroll_region_bottom;
   bool insert_mode : 1;
   bool origin_mode : 1;
+  bool wraparound_mode_off : 1;
 };
 
 struct tym_i_pane_internal {

@@ -26,6 +26,7 @@ int tym_i_csq_enable(struct tym_i_pane_internal* pane){
       screen->origin_mode = true;
       tym_i_pane_cursor_set_cursor(pane, 0, 0, TYM_I_SMB_ORIGIN_MODE);
     } break;
+    case TYM_I_DSDR_AUTO_WRAP_MODE: screen->wraparound_mode_off = false; break;
     case TYM_I_DSDR_APPLICATION_KEYPAD: screen->keypad_mode = TYM_I_KEYPAD_MODE_APPLICATION; break;
     default: tym_i_debug("Enable for unknown mode %d\n", code); break;
   }

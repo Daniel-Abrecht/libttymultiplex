@@ -271,7 +271,8 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
   x += 1;
   if(x >= w){
     x  = 0;
-    y += 1;
+    if(!screen->wraparound_mode_off)
+      y += 1;
   }
   tym_i_pane_cursor_set_cursor(pane,x,y,TYM_I_SMB_NORMAL);
 }
