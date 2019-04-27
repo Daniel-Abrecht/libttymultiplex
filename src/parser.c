@@ -108,10 +108,10 @@
   CSQ( CSI NUM "T", scroll_down ) \
   CSQ( CSI "X", erase_characters ) \
   CSQ( CSI NUM "X", erase_characters ) \
-  CSQ( CSI "d", cursor_position ) \
-  CSQ( CSI NUM "d", cursor_position ) \
-  CSQ( CSI "f", horizontal_vertical_position ) \
-  CSQ( CSI NUM "f", horizontal_vertical_position ) \
+  CSQ( CSI "d", line_position_absolute ) \
+  CSQ( CSI NUM "d", line_position_absolute ) \
+  CSQ( CSI "f", cursor_position ) \
+  CSQ( CSI NUM "f", cursor_position ) \
   CSQ( CSI "`", cursor_horizontal_absolute /* character position absolute */ ) \
   CSQ( CSI NUM "`", cursor_horizontal_absolute /* character position absolute */ ) \
   CSQ( CSI "m", character_attribute_change ) \

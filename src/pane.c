@@ -266,14 +266,14 @@ int tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, u
     ignore_scrolling_region = true;
   if( smm == TYM_I_SMB_NORMAL && (cy < top || cy >= bottom) )
     ignore_scrolling_region = true;
-  if( smm == TYM_I_SMB_CLAMP_TOP ){
+  if( !ignore_scrolling_region && smm == TYM_I_SMB_CLAMP_TOP ){
     if( y >= bottom && !(cy >= top && cy < bottom) ){
       ignore_scrolling_region = true;
     }else if( y < top ){
       y = top;
     }
   }
-  if( smm == TYM_I_SMB_CLAMP_BOTTOM_SCROLL_ONE ){
+  if( !ignore_scrolling_region && smm == TYM_I_SMB_CLAMP_BOTTOM_SCROLL_ONE ){
     if( y < top && !(cy >= top && cy < bottom) ){
       ignore_scrolling_region = true;
     }else if( y >= bottom ){
