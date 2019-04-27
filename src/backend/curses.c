@@ -23,8 +23,12 @@ static int colortable8[9] = {
 static uint8_t colorpair8x8_triangular_number_mirror_mapping_index[9][9];
 static mmask_t tym_i_mouseeventmask;
 
+struct curses_screen_state {
+  WINDOW* window;
+};
+
 struct curses_backend_pane {
-  WINDOW* window[TYM_I_SCREEN_COUNT];
+  struct curses_screen_state screen[TYM_I_SCREEN_COUNT];
 };
 
 
@@ -71,8 +75,8 @@ static int cleanup(void){
 
 static void initpad(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
-  WINDOW* w = cbp->window[pane->current_screen];
-  if(!w) return;
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
+  if(!cscreen->window) return;
 }
 
 static int pane_create(struct tym_i_pane_internal* pane){
@@ -83,8 +87,8 @@ static int pane_create(struct tym_i_pane_internal* pane){
   long w = (long)pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   long h = (long)pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   if(h>0 && w>0){
-    cbp->window[TYM_I_SCREEN_DEFAULT] = newpad(h, w);
-    if(!cbp->window[TYM_I_SCREEN_DEFAULT])
+    cbp->screen[TYM_I_SCREEN_DEFAULT].window = newpad(h, w);
+    if(!cbp->screen[TYM_I_SCREEN_DEFAULT].window)
       goto error_after_calloc;
     initpad(pane);
   }
@@ -99,15 +103,15 @@ static void pane_destroy(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
   pane->backend = 0;
   for(int i=0; i<TYM_I_SCREEN_COUNT; i++)
-    if(cbp->window[i])
-      delwin(cbp->window[i]);
+    if(cbp->screen[i].window)
+      delwin(cbp->screen[i].window);
   free(cbp);
 }
 
 static int pane_refresh(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
-  WINDOW* w = cbp->window[pane->current_screen];
-  if(!w) return 0;
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
+  if(!cscreen->window) return 0;
   int ltx = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   int lty = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   int brx = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer;
@@ -128,31 +132,32 @@ static int pane_refresh(struct tym_i_pane_internal* pane){
     brx = tym_i_ttysize.ws_col - 1;
   if(bry >= tym_i_ttysize.ws_row)
     bry = tym_i_ttysize.ws_row - 1;
-  return prefresh(w, ofy, ofx, lty, ltx, bry, brx) == OK ? 0 : -1;
+  return prefresh(cscreen->window, ofy, ofx, lty, ltx, bry, brx) == OK ? 0 : -1;
 }
 
 static int pane_resize(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
   int x = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
   int y = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   long w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - x;
   long h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - y;
   if(w <= 0 || h <= 0){
-    if(cbp->window[pane->current_screen]){
-      delwin(cbp->window[pane->current_screen]);
-      cbp->window[pane->current_screen] = 0;
+    if(cscreen->window){
+      delwin(cscreen->window);
+      cscreen->window = 0;
     }
     return 0;
   }
-  if(!cbp->window[pane->current_screen]){
-    cbp->window[pane->current_screen] = newpad(h, w);
-    if(!cbp->window[pane->current_screen]){
+  if(!cscreen->window){
+    cscreen->window = newpad(h, w);
+    if(!cscreen->window){
       tym_i_debug("newpad(%l, %l) failed\n", h, w);
       return -1;
     }
     initpad(pane);
   }
-  if(wresize(cbp->window[pane->current_screen], h, w) != OK){
+  if(wresize(cscreen->window, h, w) != OK){
     tym_i_debug("wresize(%u, %u) failed\n", h, w);
     return -1;
   }
@@ -166,26 +171,26 @@ static int pane_change_screen(struct tym_i_pane_internal* pane){
 
 static int pane_scroll(struct tym_i_pane_internal* pane, int n){
   struct curses_backend_pane* cbp = pane->backend;
-  WINDOW* w = cbp->window[pane->current_screen];
-  if(!w) return 0;
-  scrollok(w, true);
-  int res = wscrl(w, n) == OK ? 0 : -1;
-  scrollok(w, false);
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
+  if(!cscreen->window) return 0;
+  scrollok(cscreen->window, true);
+  int res = wscrl(cscreen->window, n) == OK ? 0 : -1;
+  scrollok(cscreen->window, false);
   return res;
 }
 
 static int pane_set_cursor_position(struct tym_i_pane_internal* pane, struct tym_i_cell_position position){
   struct curses_backend_pane* cbp = pane->backend;
-  WINDOW* w = cbp->window[pane->current_screen];
-  if(!w) return 0;
-  return wmove(w, position.y, position.x) == OK ? 0 : -1;
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
+  if(!cscreen->window) return 0;
+  return wmove(cscreen->window, position.y, position.x) == OK ? 0 : -1;
 }
 
 int pane_delete_characters(struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n){
   struct curses_backend_pane* cbp = pane->backend;
-  WINDOW* win = cbp->window[pane->current_screen];
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
   while(n--)
-    mvwdelch(win, position.y, position.x);
+    mvwdelch(cscreen->window, position.y, position.x);
   return 0;
 }
 
@@ -204,8 +209,8 @@ static int set_attribute(
   struct tym_i_character_format format
 ){
   struct curses_backend_pane* cbp = pane->backend;
-  WINDOW* w = cbp->window[pane->current_screen];
-  if(!w) return 0;
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
+  if(!cscreen->window) return 0;
   if(!has_colors())
     return -1;
   int pair = -1;
@@ -232,7 +237,7 @@ static int set_attribute(
   }else if(COLOR_PAIRS >= 16){
     // TODO
   }
-  return wattr_set(w, attr, pair, 0);
+  return wattr_set(cscreen->window, attr, pair, 0);
 }
 
 static int pane_set_character(
@@ -243,14 +248,14 @@ static int pane_set_character(
   bool insert
 ){
   struct curses_backend_pane* cbp = pane->backend;
-  WINDOW* w = cbp->window[pane->current_screen];
-  if(!w) return 0;
+  struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
+  if(!cscreen->window) return 0;
   set_attribute(pane, format);
-  wmove(w, position.y, position.x);
+  wmove(cscreen->window, position.y, position.x);
   if(insert){
-    winsstr(w, utf8);
+    winsstr(cscreen->window, utf8);
   }else{
-    waddstr(w, utf8);
+    waddstr(cscreen->window, utf8);
   }
   return 0;
 }
