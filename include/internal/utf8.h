@@ -5,11 +5,9 @@
 #define TYM_INTERNAL_UTF8_H
 
 #include <stdint.h>
-#include <wchar.h>
 
 enum {
-  TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT = 4,
-  TYM_I_UTF8_CHARACTER_MAX_WCHAR_COUNT = TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT / sizeof(wchar_t) < 1 ? 1 : TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT / sizeof(wchar_t),
+  TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT = 4
 };
 
 enum tym_i_utf8_character_state_push_result {
@@ -31,9 +29,7 @@ struct tym_i_utf8_character_state {
   uint8_t data[TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT+1];
   uint8_t count;
 };
-enum tym_i_utf8_character_state_push_result tym_i_utf8_character_state_push(struct tym_i_utf8_character_state* state, char c);
 
-// Use this for compatiblity with functions requiring wchar_t only, use plain utf8 otherwise
-int tym_i_utf8_to_wchar(struct tym_i_utf8_character_state* state, wchar_t[TYM_I_UTF8_CHARACTER_MAX_WCHAR_COUNT]);
+enum tym_i_utf8_character_state_push_result tym_i_utf8_character_state_push(struct tym_i_utf8_character_state* state, char c);
 
 #endif

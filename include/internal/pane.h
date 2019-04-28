@@ -178,14 +178,31 @@ void tym_i_pane_remove(struct tym_i_pane_internal* pane);
 int tym_i_pane_focus(struct tym_i_pane_internal* pane);
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane);
 int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_screen screen);
+int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned top, unsigned bottom, int n);
 int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n);
 void tym_i_perror(const char*);
 
-enum set_cursor_scrolling_mode_behaviour {
-  TYM_I_SMB_NORMAL,
-  TYM_I_SMB_IGNORE,
-  TYM_I_SMB_ORIGIN_MODE
+enum tym_i_scp_scroll_region_behaviour {
+  TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE,
+  TYM_I_SCP_SCROLLING_REGION_IRRELEVANT,
+  TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE,
 };
-int tym_i_pane_cursor_set_cursor(struct tym_i_pane_internal* pane, unsigned x, unsigned y, enum set_cursor_scrolling_mode_behaviour);
+enum tym_i_scp_scrolling_mode {
+  TYM_I_SCP_SMM_NO_SCROLLING,
+  TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY,
+  TYM_I_SCP_SMM_SCROLL_BACKWARD_ONLY,
+  TYM_I_SCP_SMM_UNRESTRICTED_SCROLLING,
+};
+enum tym_i_scp_position_mode {
+  TYM_I_SCP_PM_ABSOLUTE,
+  TYM_I_SCP_PM_RELATIVE,
+  TYM_I_SCP_PM_ORIGIN_RELATIVE,
+};
+int tym_i_pane_set_cursor_position(
+  struct tym_i_pane_internal* pane,
+  enum tym_i_scp_position_mode pm_x, long x,
+  enum tym_i_scp_scrolling_mode smm_y, enum tym_i_scp_position_mode pm_y, long y,
+  enum tym_i_scp_scroll_region_behaviour srb
+);
 
 #endif

@@ -55,6 +55,11 @@ void* tym_i_main(void* ptr);
 int tym_i_pollfd_add_sub(struct pollfd pfd);
 int tym_i_pollfd_add(int fd);
 int tym_i_pollfd_remove(int fd);
+
+#ifdef __GNUC__
+void tym_i_debug(const char* format, ...) __attribute__((format(printf, 1, 2)));
+#else
 void tym_i_debug(const char* format, ...);
+#endif
 
 #endif

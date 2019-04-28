@@ -9,13 +9,13 @@ int tym_i_csq_cursor_next_line(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned y = 1;
   if(pane->sequence.integer_count)
     y = pane->sequence.integer[0];
-  unsigned new_y = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer - 1;
-  if(screen->cursor.y + y < new_y)
-    new_y = screen->cursor.y + y;
-  tym_i_pane_cursor_set_cursor(pane, 0, new_y, TYM_I_SMB_ORIGIN_MODE);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_ABSOLUTE, 0,
+    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, y,
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+  );
   return 0;
 }

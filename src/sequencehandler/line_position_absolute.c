@@ -9,10 +9,14 @@ int tym_i_csq_line_position_absolute(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
-  if(pane->sequence.integer_count <= 0)
-    pane->sequence.integer[0] = 1;
-  unsigned y = pane->sequence.integer[0] - 1;
-  tym_i_pane_cursor_set_cursor(pane, screen->cursor.x, y, TYM_I_SMB_IGNORE);
+  unsigned y = 0;
+  if(pane->sequence.integer_count >= 1)
+    y = pane->sequence.integer[0];
+  if(y) y -= 1;
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_RELATIVE, 0,
+    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ORIGIN_RELATIVE, y,
+    TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE
+  );
   return 0;
 }

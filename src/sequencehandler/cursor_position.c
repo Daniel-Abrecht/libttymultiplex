@@ -15,6 +15,10 @@ int tym_i_csq_cursor_position(struct tym_i_pane_internal* pane){
     pane->sequence.integer[0] = 1;
   unsigned y = pane->sequence.integer[0] - 1;
   unsigned x = pane->sequence.integer[1] - 1;
-  tym_i_pane_cursor_set_cursor(pane, x, y, TYM_I_SMB_ORIGIN_MODE);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_ORIGIN_RELATIVE, x,
+    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ORIGIN_RELATIVE, y,
+    TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE
+  );
   return 0;
 }

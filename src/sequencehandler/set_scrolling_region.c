@@ -30,6 +30,10 @@ int tym_i_csq_set_scrolling_region(struct tym_i_pane_internal* pane){
   }
   screen->scroll_region_top    = top;
   screen->scroll_region_bottom = bottom;
-  tym_i_pane_cursor_set_cursor(pane, 0, 0, TYM_I_SMB_ORIGIN_MODE);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
+    TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+  );
   return 0;
 }

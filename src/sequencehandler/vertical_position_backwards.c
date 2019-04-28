@@ -9,13 +9,13 @@ int tym_i_csq_vertical_position_backwards(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned y = 1;
   if(pane->sequence.integer_count)
     y = pane->sequence.integer[0];
-  unsigned new_y = 0;
-  if(y < screen->cursor.y)
-    new_y = screen->cursor.y - y;
-  tym_i_pane_cursor_set_cursor(pane, screen->cursor.x, new_y, TYM_I_SMB_ORIGIN_MODE);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_RELATIVE, 0,
+    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, -y,
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+  );
   return 0;
 }

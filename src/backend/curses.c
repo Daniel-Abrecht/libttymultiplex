@@ -152,13 +152,13 @@ static int pane_resize(struct tym_i_pane_internal* pane){
   if(!cscreen->window){
     cscreen->window = newpad(h, w);
     if(!cscreen->window){
-      tym_i_debug("newpad(%l, %l) failed\n", h, w);
+      tym_i_debug("newpad(%ld, %ld) failed\n", h, w);
       return -1;
     }
     initpad(pane);
   }
   if(wresize(cscreen->window, h, w) != OK){
-    tym_i_debug("wresize(%u, %u) failed\n", h, w);
+    tym_i_debug("wresize(%ld, %ld) failed\n", h, w);
     return -1;
   }
   pane_refresh(pane);

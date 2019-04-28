@@ -24,7 +24,11 @@ int tym_i_csq_enable(struct tym_i_pane_internal* pane){
     case TYM_I_DSDR_ALTERNATE_SCREEN_3: return tym_i_pane_set_screen(pane, TYM_I_SCREEN_ALTERNATE);
     case TYM_I_DSDR_ORIGIN_MODE: {
       screen->origin_mode = true;
-      tym_i_pane_cursor_set_cursor(pane, 0, 0, TYM_I_SMB_ORIGIN_MODE);
+      tym_i_pane_set_cursor_position( pane,
+        TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
+        TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
+        TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+      );
     } break;
     case TYM_I_DSDR_AUTO_WRAP_MODE: screen->wraparound_mode_off = false; break;
     case TYM_I_DSDR_APPLICATION_KEYPAD: screen->keypad_mode = TYM_I_KEYPAD_MODE_APPLICATION; break;

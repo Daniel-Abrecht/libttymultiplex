@@ -54,7 +54,7 @@
   CSQ( ESC "D", cursor_down /* index (NEL) */ ) \
   CSQ( ESC "E", cursor_next_line /* next line */ ) \
   CSQ( ESC "H", tab_set ) \
-  CSQ( ESC "M", cursor_up /* reverse index */ ) \
+  CSQ( ESC "M", reverse_index ) \
   CSQ( ESC "N" C, g2_character_set_for_character ) \
   CSQ( ESC "O" C, g3_character_set_for_character ) \
   CSQ( ESC "Z", send_device_attributes_primary ) \
@@ -220,7 +220,11 @@ bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
     case 0x0E /*SO*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G1 | TYM_I_CHARSET_SELECTION_GR_G1); break;
     case 0x0F /*SI*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G0 | TYM_I_CHARSET_SELECTION_GR_G0); break;
   }
-  tym_i_pane_cursor_set_cursor(pane,x,y,TYM_I_SMB_NORMAL);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_ABSOLUTE, x,
+    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ABSOLUTE, y,
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+  );
   return c < ' ';
 }
 
@@ -274,7 +278,11 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
     if(!screen->wraparound_mode_off)
       y += 1;
   }
-  tym_i_pane_cursor_set_cursor(pane,x,y,TYM_I_SMB_NORMAL);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_ABSOLUTE, x,
+    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ABSOLUTE, y,
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+  );
 }
 
 bool print_character_update(struct tym_i_pane_internal* pane, char c){

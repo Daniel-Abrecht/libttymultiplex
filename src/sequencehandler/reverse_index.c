@@ -4,17 +4,14 @@
 #include <errno.h>
 #include <internal/pane.h>
 
-int tym_i_csq_vertical_position_relative(struct tym_i_pane_internal* pane){
-  if(pane->sequence.integer_count > 1){
+int tym_i_csq_reverse_index(struct tym_i_pane_internal* pane){
+  if(pane->sequence.integer_count != 0){
     errno = ENOENT;
     return -1;
   }
-  unsigned y = 1;
-  if(pane->sequence.integer_count)
-    y = pane->sequence.integer[0];
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_RELATIVE, 0,
-    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, y,
+    TYM_I_SCP_SMM_SCROLL_BACKWARD_ONLY, TYM_I_SCP_PM_RELATIVE, -1,
     TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
   );
   return 0;
