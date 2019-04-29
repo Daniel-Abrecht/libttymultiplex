@@ -26,10 +26,17 @@ PREFIX = /usr
 CC = gcc
 AR = ar
 
+INCLUDES = $(shell ncursesw5-config --cflags) -Iinclude
+DEFAULT_INCLUDES = $(shell $(CC) -Wp,-v -x c++ -fsyntax-only /dev/null 2>&1 | sed -n '/search starts here/,/End of search list/p' | grep '^ ')
+
+CPPCHECK_OPTIONS += --enable=all
+CPPCHECK_OPTIONS += $(INCLUDES) $(addprefix -I,$(DEFAULT_INCLUDES)) --std=c99 -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE -DTYM_BUILD
+CPPCHECK_OPTIONS += --std=c99 -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE -DTYM_BUILD
+
 OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -fstack-protector-all -g -Og
-CC_OPTS += -fvisibility=hidden -DTYM_BUILD -I include -finput-charset=UTF-8
-CC_OPTS += $(shell ncursesw5-config --cflags)
-CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror -Wno-unused-function -Wno-implicit-fallthrough -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
+CC_OPTS += -fvisibility=hidden -DTYM_BUILD -finput-charset=UTF-8
+CC_OPTS += $(INCLUDES)
+CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror -Wno-implicit-fallthrough -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
 LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined
 
 LIBS += -lutil $(shell ncursesw5-config --libs)
@@ -52,6 +59,9 @@ bin/libttymultiplex.a: $(OBJS) | bin/.dir
 
 bin/libttymultiplex.so: bin/libttymultiplex.a | bin/.dir
 	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive $(LIBS) -o $@
+
+cppcheck:
+	cppcheck $(CPPCHECK_OPTIONS) $(SOURCES)
 
 install:
 	mkdir -p "$(DESTDIR)$(PREFIX)/lib"
