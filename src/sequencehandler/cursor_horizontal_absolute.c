@@ -9,7 +9,7 @@ int tym_i_csq_cursor_horizontal_absolute(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  unsigned x = 0;
+  long long x = 0;
   if(pane->sequence.integer_count >= 1)
     x = pane->sequence.integer[0];
   if(x) x -= 1;

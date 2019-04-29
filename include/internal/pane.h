@@ -200,8 +200,8 @@ enum tym_i_scp_position_mode {
 };
 int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,
-  enum tym_i_scp_position_mode pm_x, long x,
-  enum tym_i_scp_scrolling_mode smm_y, enum tym_i_scp_position_mode pm_y, long y,
+  enum tym_i_scp_position_mode pm_x, long long x,
+  enum tym_i_scp_scrolling_mode smm_y, enum tym_i_scp_position_mode pm_y, long long y,
   enum tym_i_scp_scroll_region_behaviour srb
 );
 

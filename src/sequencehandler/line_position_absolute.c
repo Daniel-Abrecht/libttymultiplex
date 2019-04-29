@@ -9,7 +9,7 @@ int tym_i_csq_line_position_absolute(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  unsigned y = 0;
+  long long y = 0;
   if(pane->sequence.integer_count >= 1)
     y = pane->sequence.integer[0];
   if(y) y -= 1;

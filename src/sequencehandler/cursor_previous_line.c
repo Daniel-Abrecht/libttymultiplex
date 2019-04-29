@@ -9,7 +9,7 @@ int tym_i_csq_cursor_previous_line(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  unsigned y = 1;
+  long long y = 1;
   if(pane->sequence.integer_count)
     y = pane->sequence.integer[0];
   tym_i_pane_set_cursor_position( pane,

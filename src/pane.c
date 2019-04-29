@@ -127,7 +127,7 @@ void tym_i_pane_remove(struct tym_i_pane_internal* pane){
 }
 
 int tym_pane_create(const struct tym_superposition*restrict superposition){
-  static const struct tym_superposition zeropos = {0};
+  static const struct tym_superposition zeropos;
   if(!superposition)
     superposition = &zeropos;
   pthread_mutex_lock(&tym_i_lock);
@@ -250,8 +250,8 @@ error:
 
 int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,
-  enum tym_i_scp_position_mode pm_x, long x,
-  enum tym_i_scp_scrolling_mode smm_y, enum tym_i_scp_position_mode pm_y, long y,
+  enum tym_i_scp_position_mode pm_x, long long x,
+  enum tym_i_scp_scrolling_mode smm_y, enum tym_i_scp_position_mode pm_y, long long y,
   enum tym_i_scp_scroll_region_behaviour srb
 ){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
@@ -261,10 +261,6 @@ int tym_i_pane_set_cursor_position(
   bool origin_mode = screen->origin_mode && scroll_region_valid;
   unsigned sr_top    = scroll_region_valid ? screen->scroll_region_top : 0;
   unsigned sr_bottom = scroll_region_valid ? screen->scroll_region_bottom : h;
-
-  tym_i_debug("scroll_region_valid: %s origin_mode: %s\n", scroll_region_valid ? "true" : "false", origin_mode ? "true" : "false");
-  tym_i_debug("ox->x: %u %ld oy->y: %u %ld\n", screen->cursor.x, x, screen->cursor.y, y);
-  tym_i_debug("sr top: %u sr bottom: %u\n", sr_top, sr_bottom);
 
   switch(pm_x){
     case TYM_I_SCP_PM_ABSOLUTE: break;
@@ -281,21 +277,19 @@ int tym_i_pane_set_cursor_position(
     } break;
   }
 
-  tym_i_debug("1 ax: %ld ay: %ld\n", x, y);
-
-  unsigned top = 0;
-  unsigned bottom = h;
-  unsigned left = 0;
-  unsigned right = w;
+  long long top = 0;
+  long long bottom = h;
+  long long left = 0;
+  long long right = w;
 
   switch(srb){
     case TYM_I_SCP_SCROLLING_REGION_IRRELEVANT: break;
     case TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE: {
       if( screen->cursor.y >= sr_top && y < sr_top )
         goto set_scrolling_region_boundary;
-      if( screen->cursor.y < sr_bottom && y <= sr_bottom )
+      if( screen->cursor.y < (long long)sr_bottom && y <= (long long)sr_bottom )
         goto set_scrolling_region_boundary;
-      if( screen->cursor.y < sr_bottom && screen->cursor.y >= sr_top )
+      if( screen->cursor.y < (long long)sr_bottom && screen->cursor.y >= (long long)sr_top )
         goto set_scrolling_region_boundary;
     } break;
     case TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE:
@@ -310,17 +304,11 @@ int tym_i_pane_set_cursor_position(
     } break;
   }
 
-  tym_i_debug("top: %u bottom: %u\n", top, bottom);
-
-  tym_i_debug("2 ax: %ld ay: %ld\n", x, y);
-
   switch(smm_y){
     case TYM_I_SCP_SMM_NO_SCROLLING: break;
     case TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY: {
-      if(y >= bottom){
-        tym_i_debug("!!!: %ld %u %ld\n", y, bottom, y - bottom + 1);
+      if(y >= bottom)
         tym_i_scroll_def_scrolling_region(pane, top, bottom, y - bottom + 1);
-      }
     } break;
     case TYM_I_SCP_SMM_SCROLL_BACKWARD_ONLY: {
       if(y < top)
@@ -342,8 +330,6 @@ int tym_i_pane_set_cursor_position(
     x = right - 1;
   if(x < left)
     x = left;
-
-  tym_i_debug("fx: %ld fy: %ld\n", x, y);
 
   screen->cursor.y = y;
   screen->cursor.x = x;
@@ -430,7 +416,6 @@ error:
 
 int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned top, unsigned bottom, int n){
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  tym_i_debug("tym_i_scroll_def_scrolling_region t %u b %u h %u n %d\n", top, bottom, h, n);
   if(bottom > h)
     bottom = h;
   if( top < bottom && !(top == 0 && bottom == h)){
