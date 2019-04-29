@@ -82,7 +82,7 @@ int tym_i_backend_init(const char* backend);
 extern const struct tym_i_backend* tym_i_backend;
 
 #define TYM_I_BACKEND_REGISTER(P,N,X) \
-  static void TYM_LUNIQUE(register_backend)(void) __attribute__((constructor(P))); \
+  static void TYM_LUNIQUE(register_backend)(void) __attribute__((constructor(P),used)); \
   static void TYM_LUNIQUE(register_backend)(void){ \
     static struct tym_i_backend_entry entry = { \
       .name = N, \

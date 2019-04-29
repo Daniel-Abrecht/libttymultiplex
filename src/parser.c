@@ -39,11 +39,11 @@
   CSQ( ESC "+" C, designate_g3_character_set ) \
   CSQ( ESC "%@", select_default_character_set ) \
   CSQ( ESC "%G", select_utf8_character_set ) \
-  CSQ( ESC "n", invoke_charset_G2_as_GL_SL2 ) \
-  CSQ( ESC "o", invoke_charset_G3_as_GL_SL3 ) \
-  CSQ( ESC "|", invoke_charset_G3_as_GR_LS3R ) \
-  CSQ( ESC "}", invoke_charset_G4_as_GR_LS2R ) \
-  CSQ( ESC "~", invoke_charset_G1_as_GR_LS1R ) \
+  CSQ( ESC "n", invoke_charset_G1_as_GL_SL2 ) \
+  CSQ( ESC "o", invoke_charset_G2_as_GL_SL3 ) \
+  CSQ( ESC "|", invoke_charset_G2_as_GR_LS3R ) \
+  CSQ( ESC "}", invoke_charset_G3_as_GR_LS2R ) \
+  CSQ( ESC "~", invoke_charset_G0_as_GR_LS1R ) \
   CSQ( ESC "7", save_cursor_position ) \
   CSQ( ESC "8", restore_cursor_position ) \
   CSQ( ESC "=", application_keypad /* DECPAM */ ) \

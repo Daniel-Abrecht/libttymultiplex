@@ -28,22 +28,22 @@ int tym_i_csq_select_utf8_character_set(struct tym_i_pane_internal* pane){
   return 0;
 }
 
-int tym_i_csq_tym_i_invoke_charset_G1_as_GL_SL2(struct tym_i_pane_internal* pane){
+int tym_i_csq_invoke_charset_G1_as_GL_SL2(struct tym_i_pane_internal* pane){
   return tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G1 | (pane->character.charset_selection & TYM_I_CHARSET_SELECTION_GR_MASK));
 }
 
-int tym_i_csq_tym_i_invoke_charset_G2_as_GL_SL3(struct tym_i_pane_internal* pane){
+int tym_i_csq_invoke_charset_G2_as_GL_SL3(struct tym_i_pane_internal* pane){
   return tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G2 | (pane->character.charset_selection & TYM_I_CHARSET_SELECTION_GR_MASK));
 }
 
-int tym_i_csq_tym_i_invoke_charset_G2_as_GR_LS3R(struct tym_i_pane_internal* pane){
+int tym_i_csq_invoke_charset_G2_as_GR_LS3R(struct tym_i_pane_internal* pane){
   return tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GR_G2 | (pane->character.charset_selection & TYM_I_CHARSET_SELECTION_GL_MASK));
 }
 
-int tym_i_csq_tym_i_invoke_charset_G3_as_GR_LS2R(struct tym_i_pane_internal* pane){
+int tym_i_csq_invoke_charset_G3_as_GR_LS2R(struct tym_i_pane_internal* pane){
   return tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GR_G3 | (pane->character.charset_selection & TYM_I_CHARSET_SELECTION_GL_MASK));
 }
 
-int tym_i_csq_tym_i_invoke_charset_G0_as_GR_LS1R(struct tym_i_pane_internal* pane){
+int tym_i_csq_invoke_charset_G0_as_GR_LS1R(struct tym_i_pane_internal* pane){
   return tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GR_G0 | (pane->character.charset_selection & TYM_I_CHARSET_SELECTION_GL_MASK));
 }

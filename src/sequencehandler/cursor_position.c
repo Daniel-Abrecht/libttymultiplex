@@ -11,7 +11,7 @@ int tym_i_csq_cursor_position(struct tym_i_pane_internal* pane){
   }
   if(pane->sequence.integer_count <= 1)
     pane->sequence.integer[1] = 1;
-  if(pane->sequence.integer_count <= 0)
+  if(pane->sequence.integer_count == 0)
     pane->sequence.integer[0] = 1;
   unsigned y = pane->sequence.integer[0] - 1;
   unsigned x = pane->sequence.integer[1] - 1;
