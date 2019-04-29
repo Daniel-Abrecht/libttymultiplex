@@ -32,6 +32,7 @@ DEFAULT_INCLUDES = $(shell $(CC) -Wp,-v -x c++ -fsyntax-only /dev/null 2>&1 | se
 CPPCHECK_OPTIONS += --enable=all
 CPPCHECK_OPTIONS += $(INCLUDES) $(addprefix -I,$(DEFAULT_INCLUDES)) --std=c99 -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE -DTYM_BUILD
 CPPCHECK_OPTIONS += --std=c99 -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE -DTYM_BUILD
+CPPCHECK_OPTIONS += $(CPPCHECK_OPTS)
 
 OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -fstack-protector-all -g -Og
 CC_OPTS += -fvisibility=hidden -DTYM_BUILD -finput-charset=UTF-8
