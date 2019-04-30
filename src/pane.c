@@ -252,7 +252,7 @@ int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,
   enum tym_i_scp_position_mode pm_x, long long x,
   enum tym_i_scp_scrolling_mode smm_y, enum tym_i_scp_position_mode pm_y, long long y,
-  enum tym_i_scp_scroll_region_behaviour srb
+  enum tym_i_scp_scroll_region_behaviour srb, bool allow_cursor_on_right_edge
 ){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
@@ -327,7 +327,7 @@ int tym_i_pane_set_cursor_position(
   if(y < top)
     y = top;
   if(x >= right)
-    x = right - 1;
+    x = right - !allow_cursor_on_right_edge;
   if(x < left)
     x = left;
 
@@ -428,6 +428,13 @@ int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned
 int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   return tym_i_scroll_def_scrolling_region(pane, screen->scroll_region_top, screen->scroll_region_bottom, n);
+}
+
+int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y, int n){
+  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  if(y >= h)
+    return 0;
+  return tym_i_scroll_def_scrolling_region(pane, y, h, n);
 }
 
 int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_screen screen){

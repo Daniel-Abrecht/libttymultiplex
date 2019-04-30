@@ -33,7 +33,7 @@ int tym_i_csq_set_scrolling_region(struct tym_i_pane_internal* pane){
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
     TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
-    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, false
   );
   return 0;
 }

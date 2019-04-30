@@ -180,6 +180,7 @@ void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane);
 int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_screen screen);
 int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned top, unsigned bottom, int n);
 int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n);
+int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y, int n);
 void tym_i_perror(const char*);
 
 enum tym_i_scp_scroll_region_behaviour {
@@ -202,7 +203,7 @@ int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,
   enum tym_i_scp_position_mode pm_x, long long x,
   enum tym_i_scp_scrolling_mode smm_y, enum tym_i_scp_position_mode pm_y, long long y,
-  enum tym_i_scp_scroll_region_behaviour srb
+  enum tym_i_scp_scroll_region_behaviour srb, bool allow_cursor_on_right_edge
 );
 
 #endif

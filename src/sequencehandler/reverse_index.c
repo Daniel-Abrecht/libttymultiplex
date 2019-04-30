@@ -12,7 +12,7 @@ int tym_i_csq_reverse_index(struct tym_i_pane_internal* pane){
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_RELATIVE, 0,
     TYM_I_SCP_SMM_SCROLL_BACKWARD_ONLY, TYM_I_SCP_PM_RELATIVE, -1,
-    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, false
   );
   return 0;
 }

@@ -13,7 +13,7 @@ int tym_i_csq_restore_cursor_position(struct tym_i_pane_internal* pane){
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ABSOLUTE, screen->saved_cursor.x,
     TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_ABSOLUTE, screen->saved_cursor.y,
-    TYM_I_SCP_SCROLLING_REGION_IRRELEVANT
+    TYM_I_SCP_SCROLLING_REGION_IRRELEVANT, false
   );
   return 0;
 }

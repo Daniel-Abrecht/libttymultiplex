@@ -33,6 +33,11 @@
 
 #define CSQS \
   CSQ( RIS, reset ) \
+  CSQ( ESC "#3", double_height_line_top_half ) \
+  CSQ( ESC "#4", double_height_line_bottom_half ) \
+  CSQ( ESC "#5", single_width_line ) \
+  CSQ( ESC "#6", double_width_line ) \
+  CSQ( ESC "#8", screen_alignment_test ) \
   CSQ( ESC "(" C, designate_g0_character_set ) \
   CSQ( ESC ")" C, designate_g1_character_set ) \
   CSQ( ESC "*" C, designate_g2_character_set ) \
@@ -71,6 +76,8 @@
   CSQ( CSI NUM "a", character_position_relative ) \
   CSQ( CSI "k", vertical_position_backwards /* VPB */ ) \
   CSQ( CSI NUM "k", vertical_position_backwards ) \
+  CSQ( CSI "@", insert_character /* ICH */ ) \
+  CSQ( CSI NUM "@", insert_character ) \
   CSQ( CSI "A", cursor_up ) \
   CSQ( CSI NUM "A", cursor_up ) \
   CSQ( CSI "B", cursor_down ) \
@@ -87,6 +94,8 @@
   CSQ( CSI NUM "G", cursor_horizontal_absolute ) \
   CSQ( CSI "H", cursor_position ) \
   CSQ( CSI NUM "H", cursor_position ) \
+  CSQ( CSI "I", cursor_forward_tabulation ) \
+  CSQ( CSI NUM "I", cursor_forward_tabulation ) \
   CSQ( CSI "?" NUM "c", erase_in_display ) \
   CSQ( CSI "J", erase_in_display ) \
   CSQ( CSI "?" "J", erase_in_display ) \
@@ -220,14 +229,15 @@ bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
     case 0x0E /*SO*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G1 | TYM_I_CHARSET_SELECTION_GR_G1); break;
     case 0x0F /*SI*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G0 | TYM_I_CHARSET_SELECTION_GR_G0); break;
   }
+  if(c >= ' ')
+    return false;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ABSOLUTE, x,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ABSOLUTE, y,
-    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, false
   );
-  return c < ' ';
+  return true;
 }
-
 
 static const struct tym_i_character UTF8_INVALID_SYMBOL = {
   .data = {
@@ -270,18 +280,18 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
       }
     }
   }
-  if(sequence)
-    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, screen->character_format, strlen(sequence), sequence, screen->insert_mode);
-  x += 1;
   if(x >= w){
-    x  = 0;
+    x = 0;
     if(!screen->wraparound_mode_off)
       y += 1;
   }
+  if(sequence)
+    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, screen->character_format, strlen(sequence), sequence, screen->insert_mode);
+  x += 1;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ABSOLUTE, x,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ABSOLUTE, y,
-    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, true
   );
 }
 
