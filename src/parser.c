@@ -177,8 +177,16 @@ int command_sequence_comparator(const void*restrict pa, const void*restrict pb){
 static void init(void) __attribute__((constructor,used));
 static void init(void){
   qsort(tym_i_command_sequence_map, tym_i_command_sequence_map_count, sizeof(*tym_i_command_sequence_map), command_sequence_comparator);
-//  for(size_t i=0; i<tym_i_command_sequence_map_count; i++)
-//    fprintf(stderr,": %s\n",tym_i_command_sequence_map[i].sequence);
+  bool notice_printed = false;
+  for(size_t i=0; i<tym_i_command_sequence_map_count; i++){
+    if(tym_i_command_sequence_map[i].callback)
+      continue;
+    if(!notice_printed){
+      tym_i_debug("The following escape sequence actions aren't implemented yet:\n");
+      notice_printed = true;
+    }
+    tym_i_debug(" - %s\n",tym_i_command_sequence_map[i].callback_name);
+  }
 }
 
 enum specialmatch_result {
