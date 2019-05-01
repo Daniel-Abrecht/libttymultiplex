@@ -47,7 +47,7 @@ static void init(void){
   pthread_mutex_init(&tym_i_lock, &tym_i_lock_attr);
 }
 
-enum tym_unit_type tym_positon_unit_map[] = {
+const enum tym_unit_type tym_positon_unit_map[] = {
   [TYM_P_CHARFIELD] = TYM_U_INTEGER,
   [TYM_P_RATIO] = TYM_U_REAL,
 };
@@ -205,6 +205,7 @@ void* tym_i_main(void* ptr){
           case KEY_BACKSPACE: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
           case KEY_HOME: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_HOME); break;
           case KEY_END: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_END); break;
+          case KEY_DC: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DELETE); break;
           default: tym_i_pts_send_key(tym_i_focus_pane, c); break;
         }
       };

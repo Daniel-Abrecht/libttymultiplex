@@ -54,6 +54,7 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
     case TYM_KEY_ENTER: return tym_i_pts_send(pane, S("\r"));
     case TYM_KEY_TAB: break;
     case TYM_KEY_BACKSPACE: break;
+    case TYM_KEY_DELETE: return tym_i_pts_send(pane, S(CSI "3~"));
   }
   if(key >= 0 && key < 0x100)
     return tym_i_pts_send(pane, 1, (char[]){key});

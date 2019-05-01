@@ -24,6 +24,7 @@ enum tym_special_key {
   TYM_KEY_HOME = '\r',
   TYM_KEY_BACKSPACE = '\b',
   TYM_KEY_TAB = '\t',
+  TYM_KEY_DELETE = '\x7F',
   TYM_KEY_UP = 0x100,
   TYM_KEY_DOWN,
   TYM_KEY_RIGHT,
@@ -73,7 +74,7 @@ struct tym_absolute_position {
 
 typedef void(*tym_resize_handler_t)(void* ptr, int pane, const struct tym_superposition* input, const struct tym_absolute_position* computed );
 
-extern enum tym_unit_type tym_positon_unit_map[];
+extern const enum tym_unit_type tym_positon_unit_map[];
 
 TYM_EXPORT int tym_init(void);
 TYM_EXPORT int tym_shutdown(void);
