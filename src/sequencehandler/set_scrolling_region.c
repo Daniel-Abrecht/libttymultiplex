@@ -14,7 +14,7 @@ int tym_i_csq_set_scrolling_region(struct tym_i_pane_internal* pane){
   unsigned bottom = ~0u;
   if(pane->sequence.integer_count >= 1){
     top = pane->sequence.integer[0] - 1;
-    if(!pane->sequence.integer[0])
+    if(pane->sequence.integer[0] <= 0)
       top = 0;
   }
   if(pane->sequence.integer_count >= 2)

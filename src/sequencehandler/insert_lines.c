@@ -13,6 +13,12 @@ int tym_i_csq_insert_lines(struct tym_i_pane_internal* pane){
   int n = 1;
   if(pane->sequence.integer_count)
     n = pane->sequence.integer[0];
+  if(n <= 0) n = 1;
   tym_i_pane_insert_delete_lines(pane, screen->cursor.y, -n);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_ABSOLUTE, 0,
+    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, 0,
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, false
+  );
   return 0;
 }

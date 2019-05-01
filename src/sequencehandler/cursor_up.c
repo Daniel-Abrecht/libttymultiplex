@@ -12,6 +12,7 @@ int tym_i_csq_cursor_up(struct tym_i_pane_internal* pane){
   long long y = 1;
   if(pane->sequence.integer_count)
     y = pane->sequence.integer[0];
+  if(y <= 0) y = 1;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_RELATIVE, 0,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, -y,

@@ -12,6 +12,7 @@ int tym_i_csq_scroll_up(struct tym_i_pane_internal* pane){
   long long y = 1;
   if(pane->sequence.integer_count)
     y = pane->sequence.integer[0];
+  if(y == 0) y = 1;
   tym_i_scroll_scrolling_region(pane, y);
   return 0;
 }

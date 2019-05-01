@@ -11,8 +11,8 @@ int tym_i_csq_line_position_absolute(struct tym_i_pane_internal* pane){
   }
   long long y = 0;
   if(pane->sequence.integer_count >= 1)
-    y = pane->sequence.integer[0];
-  if(y) y -= 1;
+    y = pane->sequence.integer[0] - 1;
+  if(y < 0) y = 0;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_RELATIVE, 0,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ORIGIN_RELATIVE, y,

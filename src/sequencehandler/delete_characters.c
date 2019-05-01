@@ -13,6 +13,7 @@ int tym_i_csq_delete_characters(struct tym_i_pane_internal* pane){
   unsigned n = 1;
   if(pane->sequence.integer_count)
     n = pane->sequence.integer[0];
+  if(n == 0) n = 1;
   tym_i_backend->pane_delete_characters(pane, pane->screen[pane->current_screen].cursor, n);
   return 0;
 }

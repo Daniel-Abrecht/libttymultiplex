@@ -11,8 +11,8 @@ int tym_i_csq_cursor_horizontal_absolute(struct tym_i_pane_internal* pane){
   }
   long long x = 0;
   if(pane->sequence.integer_count >= 1)
-    x = pane->sequence.integer[0];
-  if(x) x -= 1;
+    x = pane->sequence.integer[0] - 1;
+  if(x < 0) x = 0;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ORIGIN_RELATIVE, x,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, 0,

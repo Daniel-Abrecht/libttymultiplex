@@ -13,7 +13,7 @@ int tym_i_csq_insert_character(struct tym_i_pane_internal* pane){
   unsigned n = 1;
   if(pane->sequence.integer_count)
     n = pane->sequence.integer[0];
-
+  if(n == 0) n = 1;
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned y = screen->cursor.y;
   unsigned x = screen->cursor.x;

@@ -259,8 +259,8 @@ int tym_i_pane_set_cursor_position(
   unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
   bool scroll_region_valid = screen->scroll_region_top < screen->scroll_region_bottom && screen->scroll_region_top < h;
   bool origin_mode = screen->origin_mode && scroll_region_valid;
-  unsigned sr_top    = scroll_region_valid ? screen->scroll_region_top : 0;
-  unsigned sr_bottom = scroll_region_valid ? screen->scroll_region_bottom : h;
+  unsigned sr_top    = origin_mode ? screen->scroll_region_top : 0;
+  unsigned sr_bottom = origin_mode ? screen->scroll_region_bottom : h;
 
   switch(pm_x){
     case TYM_I_SCP_PM_ABSOLUTE: break;
@@ -292,10 +292,10 @@ int tym_i_pane_set_cursor_position(
       if( screen->cursor.y < (long long)sr_bottom && screen->cursor.y >= (long long)sr_top )
         goto set_scrolling_region_boundary;
     } break;
-    case TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE:
+    case TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE: {
       if(origin_mode)
         goto set_scrolling_region_boundary;
-      break;
+    } break;
     set_scrolling_region_boundary: {
       if(!scroll_region_valid)
         break;

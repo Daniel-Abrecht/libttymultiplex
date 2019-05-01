@@ -15,6 +15,7 @@ int tym_i_csq_erase_characters(struct tym_i_pane_internal* pane){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   if(pane->sequence.integer_count > 0)
     n = pane->sequence.integer[0];
+  if(n == 0) n = 1;
   struct tym_i_cell_position end = {
     .x = ((unsigned long)screen->cursor.x + n) % w,
     .y = screen->cursor.y + ((unsigned long)screen->cursor.x + n) / w
