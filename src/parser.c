@@ -230,15 +230,13 @@ bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
     case '\r': x = 0; break;
     case '\t': x = x / 8 * 8 + 8; break;
     case '\v': y += 1; break;
-    case '\n': {
-      x  = 0;
-      y += 1;
-    } break;
+    case '\n': y += 1; break; // TODO: implement automatic new line
     case 0x0E /*SO*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G1 | TYM_I_CHARSET_SELECTION_GR_G1); break;
     case 0x0F /*SI*/: tym_i_invoke_charset(pane, TYM_I_CHARSET_SELECTION_GL_G0 | TYM_I_CHARSET_SELECTION_GR_G0); break;
   }
   if(c >= ' ')
     return false;
+  tym_i_debug("Control character: x%02X\n",(int)c);
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ABSOLUTE, x,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ABSOLUTE, y,
@@ -321,6 +319,18 @@ bool print_character_update(struct tym_i_pane_internal* pane, char c){
   return true;
 }
 
+void tym_i_debug_sequence_params(const struct tym_i_command_sequence* command, const struct tym_i_sequence_state* state){
+  tym_i_debug("%s", command->callback_name);
+  if(state->integer_count){
+    tym_i_debug(" i(");
+    for(size_t i=0; i<state->integer_count; i++){
+      int x = state->integer[i];
+      tym_i_debug(i ? ", %d" : "%d", x);
+    }
+    tym_i_debug(")");
+  }
+}
+
 void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
 //  tym_i_debug("tym_i_pane_parse %.2X\n", c);
   if(tym_i_character_is_utf8(pane->character))
@@ -390,19 +400,25 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
     }
   }
   if(min == max && index+1 == tym_i_command_sequence_map[min].length){
-    const struct tym_i_command_sequence* sequence = tym_i_command_sequence_map + min;
-    if(sequence->callback){
-      if((*sequence->callback)(pane) == -1){
+    const struct tym_i_command_sequence* command = tym_i_command_sequence_map + min;
+    if(command->callback){
+      if((*command->callback)(pane) == -1){
         int err = errno;
-        tym_i_debug("%s failed: %s\n", sequence->callback_name, strerror(err));
+        tym_i_debug("- ");
+        tym_i_debug_sequence_params(command, &pane->sequence);
+        tym_i_debug(": %d %s\n", err, strerror(err));
         if(err == ENOENT)
           goto escape_abort;
       }else{
         tym_i_pane_update_cursor(pane);
-        tym_i_debug("+ %s\n", sequence->callback_name);
+        tym_i_debug("+ ");
+        tym_i_debug_sequence_params(command, &pane->sequence);
+        tym_i_debug("\n");
       }
     }else{
-      tym_i_debug("%s unimplemented\n", sequence->callback_name);
+      tym_i_debug("? ");
+      tym_i_debug_sequence_params(command, &pane->sequence);
+      tym_i_debug("\n");
     }
     reset_sequence(&pane->sequence);
     return;
