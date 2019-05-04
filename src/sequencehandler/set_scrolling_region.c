@@ -19,7 +19,7 @@ int tym_i_csq_set_scrolling_region(struct tym_i_pane_internal* pane){
   }
   if(pane->sequence.integer_count >= 2)
     bottom = pane->sequence.integer[1];
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(bottom > h)
     bottom = h;
   if(top == 0 && bottom == h)

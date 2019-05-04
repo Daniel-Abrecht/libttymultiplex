@@ -84,8 +84,8 @@ static int pane_create(struct tym_i_pane_internal* pane){
   if(!cbp)
     goto error;
   pane->backend = cbp;
-  long w = (long)pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  long h = (long)pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  long w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  long h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(h>0 && w>0){
     cbp->screen[TYM_I_SCREEN_DEFAULT].window = newpad(h, w);
     if(!cbp->screen[TYM_I_SCREEN_DEFAULT].window)
@@ -112,11 +112,13 @@ static int pane_refresh(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
   struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
   if(!cscreen->window) return 0;
-  int ltx = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  int lty = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  int brx = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer;
-  int bry = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer;
-  if(ltx >= brx || lty >= bry || brx < 0 || bry < 0 || ltx >= tym_i_ttysize.ws_col || lty >= tym_i_ttysize.ws_row)
+  int ltx = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_LEFT  );
+  int lty = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_TOP   );
+  int brx = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_RIGHT );
+  int bry = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_BOTTOM);
+  int scw = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  int sch = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_VERTICAL);
+  if(ltx >= brx || lty >= bry || brx < 0 || bry < 0 || ltx >= scw || lty >= sch)
     return -1;
   int ofx = 0;
   int ofy = 0;
@@ -128,20 +130,18 @@ static int pane_refresh(struct tym_i_pane_internal* pane){
     ofy = -lty;
     lty = 0;
   }
-  if(brx >= tym_i_ttysize.ws_col)
-    brx = tym_i_ttysize.ws_col - 1;
-  if(bry >= tym_i_ttysize.ws_row)
-    bry = tym_i_ttysize.ws_row - 1;
+  if(brx >= scw)
+    brx = scw;
+  if(bry >= sch)
+    bry = sch - 1;
   return prefresh(cscreen->window, ofy, ofx, lty, ltx, bry, brx) == OK ? 0 : -1;
 }
 
 static int pane_resize(struct tym_i_pane_internal* pane){
   struct curses_backend_pane* cbp = pane->backend;
   struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
-  int x = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  int y = pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
-  long w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - x;
-  long h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - y;
+  long w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  long h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(w <= 0 || h <= 0){
     if(cscreen->window){
       delwin(cscreen->window);
@@ -176,8 +176,8 @@ static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned 
     return -1;
   struct curses_backend_pane* cbp = pane->backend;
   struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
-  long w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  long h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  long w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  long h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(top >= h)
     return -1;
   if(bottom > h)
@@ -298,8 +298,10 @@ static int pane_set_character(
 }
 
 int resize(void){
-  if(resizeterm(tym_i_ttysize.ws_row, tym_i_ttysize.ws_col))
-    tym_i_debug("resizeterm(%u, %u)\n",tym_i_ttysize.ws_row, tym_i_ttysize.ws_col);
+  int scw = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  int sch = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_VERTICAL);
+  resizeterm(sch, scw);
+  tym_i_debug("resizeterm(%u, %u)\n", scw, sch);
   cbreak();
   nodelay(stdscr, true);
   noecho();

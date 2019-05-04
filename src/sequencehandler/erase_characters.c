@@ -7,7 +7,7 @@
 
 int tym_i_csq_erase_characters(struct tym_i_pane_internal* pane){
   size_t n = 1;
-  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
+  unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
   if(pane->sequence.integer_count > 1){
     errno = ENOENT;
     return -1;

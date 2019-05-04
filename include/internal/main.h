@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <pthread.h>
 #include <pty.h>
+#include <libttymultiplex.h>
 
 enum tym_i_special_tym_i_poll_fds {
   SPF_POLLCTLFD,
@@ -47,7 +48,7 @@ extern int tym_i_tty;
 extern int tym_i_sfd;
 extern int tym_i_pollctl[2];
 extern pthread_t tym_i_main_loop;
-extern struct winsize tym_i_ttysize;
+extern struct tym_absolute_position_rectangle tym_i_bounds;
 extern pthread_mutexattr_t tym_i_lock_attr;
 extern pthread_mutex_t tym_i_lock; /* reentrant mutex */
 

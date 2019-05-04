@@ -39,8 +39,8 @@ int tym_i_pane_set_area_to_character_default_proc(
   struct tym_i_character_format format,
   size_t length, const char utf8[length+1]
 ){
-  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(end.x > w)
     end.x = w;
   if(end.y > h)
@@ -60,6 +60,6 @@ int tym_i_pane_set_area_to_character_default_proc(
 int tym_i_pane_scroll_default_proc(struct tym_i_pane_internal* pane, int n){
   if(n == 0)
     return 0;
-  long h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  long h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   return tym_i_backend->pane_scroll_region(pane, n, 0, h);
 }

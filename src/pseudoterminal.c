@@ -62,8 +62,19 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
   return -1;
 }
 
-// Replace mmask_t with a something not curses specific
-int tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_i_button button, struct tym_i_cell_position pos){
+int tym_i_pts_send_keys(struct tym_i_pane_internal* pane, size_t count, const int_least16_t keys[count]){
+  for(size_t i=0; i<count; i++)
+    tym_i_pts_send_key(pane, keys[count]);
+  return 0;
+}
+
+int tym_i_pts_type(struct tym_i_pane_internal* pane, size_t count, const char keys[count]){
+  for(size_t i=0; i<count; i++)
+    tym_i_pts_send_key(pane, keys[count]);
+  return 0;
+}
+
+int tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_button button, struct tym_i_cell_position pos){
   char buf[64] = {0};
   int len = 0;
   bool motion = pane->last_mouse_event_pos.x != pos.x || pane->last_mouse_event_pos.y != pos.y;

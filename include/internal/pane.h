@@ -91,13 +91,6 @@ struct tym_i_termcolor {
   unsigned char index, red, green, blue;
 };
 
-enum tym_i_button {
-  TYM_I_BUTTON_LEFT_PRESSED,
-  TYM_I_BUTTON_MIDDLE_PRESSED,
-  TYM_I_BUTTON_RIGHT_PRESSED,
-  TYM_I_BUTTON_RELEASED,
-};
-
 enum tym_i_character_attribute {
   TYM_I_CA_DEFAULT   = 0,
   TYM_I_CA_BOLD      = 1<<0,
@@ -148,15 +141,15 @@ struct tym_i_pane_internal {
   void* backend;
   struct tym_i_sequence_state sequence;
   struct termios termios;
-  struct tym_superposition superposition;
-  struct tym_absolute_position coordinates;
+  struct tym_super_position_rectangle super_position;
+  struct tym_absolute_position_rectangle absolute_position;
   size_t resize_handler_count;
   struct tym_i_handler_ptr_pair* resize_handler_list;
 
   struct tym_i_character character;
   enum tym_i_pane_screen current_screen;
   struct tym_i_cell_position last_mouse_event_pos;
-  enum tym_i_button last_button;
+  enum tym_button last_button;
   enum mouse_mode mouse_mode;
 
   struct tym_i_pane_screen_state screen[TYM_I_SCREEN_COUNT];

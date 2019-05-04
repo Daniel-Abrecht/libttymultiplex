@@ -22,7 +22,7 @@ struct pollfd* tym_i_poll_fds;
 int tym_i_tty;
 int tym_i_sfd;
 int tym_i_pollctl[2];
-struct winsize tym_i_ttysize;
+struct tym_absolute_position_rectangle tym_i_bounds;
 pthread_t tym_i_main_loop;
 pthread_mutexattr_t tym_i_lock_attr;
 pthread_mutex_t tym_i_lock; /* reentrant mutex */
@@ -44,13 +44,14 @@ static void init(void){
   }
   pthread_mutexattr_init(&tym_i_lock_attr);
   pthread_mutexattr_settype(&tym_i_lock_attr, PTHREAD_MUTEX_RECURSIVE);
+  pthread_mutexattr_setpshared(&tym_i_lock_attr, PTHREAD_PROCESS_SHARED);
   pthread_mutex_init(&tym_i_lock, &tym_i_lock_attr);
 }
 
-const enum tym_unit_type tym_positon_unit_map[] = {
-  [TYM_P_CHARFIELD] = TYM_U_INTEGER,
-  [TYM_P_RATIO] = TYM_U_REAL,
-};
+static void shutdown(void) __attribute__((destructor,used));
+static void shutdown(void){
+  tym_shutdown();
+}
 
 int tym_i_pollfd_add_sub(struct pollfd pfd){
   return tym_i_list_add(sizeof(*tym_i_poll_fds), &tym_i_poll_fdn, (void**)&tym_i_poll_fds, &pfd);
@@ -169,13 +170,14 @@ void* tym_i_main(void* ptr){
             if(getmouse(&event) != OK)
               break;
             for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
-              if( it->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer >  event.x
-               || it->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer <= event.x
-               || it->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer >  event.y
-               || it->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer <= event.y
-              ) continue;
-              unsigned x = event.x - it->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-              unsigned y = event.y - it->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+              int left   = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_LEFT  );
+              int right  = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_RIGHT );
+              int top    = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_TOP   );
+              int bottom = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_BOTTOM);
+              if( left > (int)event.x || right <= (int)event.x || top > (int)event.y || bottom <= (int)event.y )
+                continue;
+              unsigned x = event.x - left;
+              unsigned y = event.y - top;
               tym_i_pane_focus(it);
               if(event.bstate & (BUTTON1_RELEASED | BUTTON2_RELEASED | BUTTON3_RELEASED)){
                 tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});

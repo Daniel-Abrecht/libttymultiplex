@@ -16,13 +16,9 @@
 #include <pthread.h>
 #include <internal/main.h>
 #include <internal/pane.h>
+#include <internal/calc.h>
 #include <internal/backend.h>
 #include <libttymultiplex.h>
-
-static void shutdown(void) __attribute__((destructor,used));
-static void shutdown(void){
-  tym_shutdown();
-}
 
 int tym_init(void){
   pthread_mutex_lock(&tym_i_lock);
@@ -34,6 +30,11 @@ int tym_init(void){
     errno = EINVAL;
     goto error;
   }
+  memset(&tym_i_bounds, 0, sizeof(tym_i_bounds));
+  tym_i_calc_init_absolute_position(&tym_i_bounds.edge[TYM_RECT_TOP_LEFT]);
+  tym_i_calc_init_absolute_position(&tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT]);
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], RATIO, TYM_AXIS_HORIZONTAL) = 1;
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], RATIO, TYM_AXIS_VERTICAL) = 1;
   tym_i_binit = INIT_STATE_INITIALISED;
   tym_i_tty = dup(STDIN_FILENO);
   setlocale(LC_CTYPE, "");
@@ -111,7 +112,7 @@ int tym_register_resize_handler( int pane, void* ptr, tym_resize_handler_t handl
     .callback = handler,
     .ptr = ptr
   })) goto error;
-  (*handler)(ptr, pane, &ppane->superposition, &ppane->coordinates);
+  (*handler)(ptr, pane, &ppane->super_position, &ppane->absolute_position);
   return 0;
 error:
   pthread_mutex_unlock(&tym_i_lock);

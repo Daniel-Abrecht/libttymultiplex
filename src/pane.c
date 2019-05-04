@@ -15,6 +15,7 @@
 #include <internal/main.h>
 #include <internal/list.h>
 #include <internal/utils.h>
+#include <internal/pseudoterminal.h>
 #include <internal/backend.h>
 #include <libttymultiplex.h>
 
@@ -35,16 +36,18 @@ bool tym_i_character_is_utf8(struct tym_i_character character){
 }
 
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
-  tym_i_calc_absolut_position(&pane->coordinates, &pane->superposition);
+  tym_i_calc_rectangle_absolut_position(&pane->absolute_position, &pane->super_position);
   for(size_t i=0; i<pane->resize_handler_count; i++){
     struct tym_i_handler_ptr_pair* cp = pane->resize_handler_list + i;
-    cp->callback(cp->ptr, pane->id, &pane->superposition, &pane->coordinates);
+    cp->callback(cp->ptr, pane->id, &pane->super_position, &pane->absolute_position);
   }
   tym_i_backend->pane_resize(pane);
   tym_i_backend->pane_refresh(pane);
+  unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   struct winsize size = {
-    .ws_col = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer,
-    .ws_row = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer,
+    .ws_col = w,
+    .ws_row = h,
   };
   if(ioctl(pane->master, TIOCSWINSZ, &size) == -1)
     tym_i_perror("ioctl TIOCSWINSZ failed");
@@ -104,10 +107,13 @@ void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane){
 }
 
 void tym_i_pane_update_size_all(void){
-  if(ioctl(tym_i_tty, TIOCGWINSZ, &tym_i_ttysize) == -1){
+  struct winsize size;
+  if(ioctl(tym_i_tty, TIOCGWINSZ, &size) == -1){
     perror("ioctl TIOCGWINSZ failed\n");
     abort();
   }
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_HORIZONTAL) = size.ws_col;
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_VERTICAL) = size.ws_row;
   tym_i_backend->resize();
   for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next)
     tym_i_pane_update_size(it);
@@ -126,10 +132,10 @@ void tym_i_pane_remove(struct tym_i_pane_internal* pane){
     pane->next->previous = pane->previous;
 }
 
-int tym_pane_create(const struct tym_superposition*restrict superposition){
-  static const struct tym_superposition zeropos;
-  if(!superposition)
-    superposition = &zeropos;
+int tym_pane_create(const struct tym_super_position_rectangle*restrict super_position){
+  static const struct tym_super_position_rectangle zeropos;
+  if(!super_position)
+    super_position = &zeropos;
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
     errno = EINVAL;
@@ -201,11 +207,14 @@ int tym_pane_create(const struct tym_superposition*restrict superposition){
     .sequence.seq_opt_max = -1
   };
   struct tym_i_pane_internal* pane = TYM_COPY((hpane));
-  pane->superposition = *superposition;
-  tym_i_calc_absolut_position(&pane->coordinates, &pane->superposition);
-  struct winsize size = {0};
-  size.ws_col = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  size.ws_row = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  pane->super_position = *super_position;
+  tym_i_calc_rectangle_absolut_position(&pane->absolute_position, &pane->super_position);
+  unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
+  struct winsize size = {
+    .ws_col = w,
+    .ws_row = h,
+  };
   int ret = openpty(&pane->master, &pane->slave, 0, &pane->termios, &size);
   if(ret)
     goto error;
@@ -255,8 +264,8 @@ int tym_i_pane_set_cursor_position(
   enum tym_i_scp_scroll_region_behaviour srb, bool allow_cursor_on_right_edge
 ){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
-  unsigned w = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[0].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[0].value.integer;
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   bool scroll_region_valid = screen->scroll_region_top < screen->scroll_region_bottom && screen->scroll_region_top < h;
   bool origin_mode = screen->origin_mode && scroll_region_valid;
   unsigned sr_top    = origin_mode ? screen->scroll_region_top : 0;
@@ -337,7 +346,7 @@ int tym_i_pane_set_cursor_position(
   return 0;
 }
 
-int tym_pane_resize(int pane, const struct tym_superposition*restrict superposition){
+int tym_pane_resize(int pane, const struct tym_super_position_rectangle*restrict super_position){
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
     errno = EINVAL;
@@ -348,8 +357,9 @@ int tym_pane_resize(int pane, const struct tym_superposition*restrict superposit
     errno = ENOENT;
     goto error;
   }
-  ppane->superposition = *superposition;
+  ppane->super_position = *super_position;
   tym_i_pane_update_size(ppane);
+  pthread_mutex_unlock(&tym_i_lock);
   return 0;
 error:
   pthread_mutex_unlock(&tym_i_lock);
@@ -372,6 +382,7 @@ int tym_pane_set_env(int pane){
   sigemptyset(&sigmask);
   sigprocmask(SIG_SETMASK, &sigmask, 0); // reset all signals
   setenv("TERM", "xterm", true);
+  pthread_mutex_unlock(&tym_i_lock);
   return 0;
 error:
   pthread_mutex_unlock(&tym_i_lock);
@@ -389,33 +400,16 @@ int tym_pane_get_slavefd(int pane){
     errno = ENOENT;
     goto error;
   }
+  int fd = ppane->slave;
   pthread_mutex_unlock(&tym_i_lock);
-  return ppane->slave;
-error:
-  pthread_mutex_unlock(&tym_i_lock);
-  return -1;
-}
-
-int tym_pane_get_masterfd(int pane){
-  pthread_mutex_lock(&tym_i_lock);
-  if(tym_i_binit != INIT_STATE_INITIALISED){
-    errno = EINVAL;
-    goto error;
-  }
-  struct tym_i_pane_internal* ppane = tym_i_pane_get(pane);
-  if(!ppane){
-    errno = ENOENT;
-    goto error;
-  }
-  pthread_mutex_unlock(&tym_i_lock);
-  return ppane->master;
+  return fd;
 error:
   pthread_mutex_unlock(&tym_i_lock);
   return -1;
 }
 
 int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned top, unsigned bottom, int n){
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(bottom > h)
     bottom = h;
   if( top < bottom && !(top == 0 && bottom == h)){
@@ -431,7 +425,7 @@ int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n){
 }
 
 int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y, int n){
-  unsigned h = pane->coordinates.position[TYM_P_CHARFIELD][1].axis[1].value.integer - pane->coordinates.position[TYM_P_CHARFIELD][0].axis[1].value.integer;
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(y >= h)
     return 0;
   return tym_i_scroll_def_scrolling_region(pane, y, h, n);
@@ -454,6 +448,92 @@ int tym_pane_reset(int pane){
   }
   (void)pane;
   errno = ENOSYS;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_pane_send_key(int pane, int_least16_t key){
+  int ret = 0;
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  struct tym_i_pane_internal* ppane = tym_i_pane_get(pane);
+  if(!ppane){
+    errno = ENOENT;
+    goto error;
+  }
+  ret = tym_i_pts_send_key(ppane, key);
+  pthread_mutex_unlock(&tym_i_lock);
+  return ret;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_pane_send_keys(int pane, size_t count, const int_least16_t keys[count]){
+  int ret = 0;
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  struct tym_i_pane_internal* ppane = tym_i_pane_get(pane);
+  if(!ppane){
+    errno = ENOENT;
+    goto error;
+  }
+  ret = tym_i_pts_send_keys(ppane, count, keys);
+  pthread_mutex_unlock(&tym_i_lock);
+  return ret;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_pane_type(int pane, size_t count, const char keys[count]){
+  int ret = 0;
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  struct tym_i_pane_internal* ppane = tym_i_pane_get(pane);
+  if(!ppane){
+    errno = ENOENT;
+    goto error;
+  }
+  ret = tym_i_pts_type(ppane, count, keys);
+  pthread_mutex_unlock(&tym_i_lock);
+  return ret;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_pane_send_mouse_event(int pane, enum tym_button button, const struct tym_super_position*restrict position){
+  int ret = 0;
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  struct tym_i_pane_internal* ppane = tym_i_pane_get(pane);
+  if(!ppane){
+    errno = ENOENT;
+    goto error;
+  }
+  struct tym_absolute_position pos;
+  tym_i_calc_absolut_position(&pos, &tym_i_bounds, position, true);
+  struct tym_i_cell_position cell_position = {
+    .x = TYM_POS_REF(pos, CHARFIELD, TYM_AXIS_VERTICAL),
+    .y = TYM_POS_REF(pos, CHARFIELD, TYM_AXIS_HORIZONTAL),
+  };
+  ret = tym_i_pts_send_mouse_event(ppane, button, cell_position);
+  pthread_mutex_unlock(&tym_i_lock);
+  return ret;
 error:
   pthread_mutex_unlock(&tym_i_lock);
   return -1;

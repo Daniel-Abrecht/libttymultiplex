@@ -6,7 +6,13 @@
 
 #include <libttymultiplex.h>
 
-void tym_i_calc_init_pos_cords(struct tym_position position[TYM_P_COUNT][2]);
-void tym_i_calc_absolut_position( struct tym_absolute_position*restrict result, const struct tym_superposition*restrict superposition );
+void tym_i_calc_init_absolute_position(struct tym_absolute_position* position);
+void tym_i_calc_rectangle_absolut_position( struct tym_absolute_position_rectangle*restrict result, const struct tym_super_position_rectangle*restrict superposition );
+void tym_i_calc_absolut_position(
+  struct tym_absolute_position*restrict result,
+  const struct tym_absolute_position_rectangle* boundaries,
+  const struct tym_super_position*restrict input,
+  bool bounds_relative
+);
 
 #endif
