@@ -62,7 +62,7 @@ int tym_i_pane_resize_handler_remove(struct tym_i_pane_internal* pane, size_t en
 }
 
 void tym_i_pane_add(struct tym_i_pane_internal* pane){
-  int id = 1;
+  int id = 2;
   pane->previous = tym_i_pane_list_start;
   if(!tym_i_pane_list_start)
     tym_i_pane_list_start = pane;
@@ -76,6 +76,8 @@ void tym_i_pane_add(struct tym_i_pane_internal* pane){
 }
 
 struct tym_i_pane_internal* tym_i_pane_get(int pane){
+  if(pane == TYM_PANE_FOCUS)
+    return tym_i_focus_pane;
   for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next)
     if(it->id == pane)
       return it;
@@ -510,6 +512,21 @@ int tym_pane_type(int pane, size_t count, const char keys[count]){
   return ret;
 error:
   pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_pane_send_special_key_by_name(int pane, const char* key_name){
+  size_t length = strlen(key_name);
+  for(size_t i=0; i<tym_special_key_count; i++){
+    if(tym_special_key_list[i].name_length != length)
+      continue;
+    if(memcmp(tym_special_key_list[i].name, key_name, length))
+      continue;
+    return tym_pane_send_key(pane, tym_special_key_list[i].key);
+  }
+  if(length == 1)
+    return tym_pane_send_key(TYM_PANE_FOCUS, (signed char)key_name[0]);
+  errno = ENOENT;
   return -1;
 }
 

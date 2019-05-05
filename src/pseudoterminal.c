@@ -64,13 +64,13 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
 
 int tym_i_pts_send_keys(struct tym_i_pane_internal* pane, size_t count, const int_least16_t keys[count]){
   for(size_t i=0; i<count; i++)
-    tym_i_pts_send_key(pane, keys[count]);
+    tym_i_pts_send_key(pane, keys[i]);
   return 0;
 }
 
 int tym_i_pts_type(struct tym_i_pane_internal* pane, size_t count, const char keys[count]){
   for(size_t i=0; i<count; i++)
-    tym_i_pts_send_key(pane, keys[count]);
+    tym_i_pts_send_key(pane, keys[i]);
   return 0;
 }
 

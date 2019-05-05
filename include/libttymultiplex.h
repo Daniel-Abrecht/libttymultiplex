@@ -23,18 +23,32 @@
 extern "C" {
 #endif
 
+#define TYM_SPECIAL_KEYS \
+  X(ENTER    , '\n'  ) \
+  X(HOME     , '\r'  ) \
+  X(BACKSPACE, '\b'  ) \
+  X(TAB      , '\t'  ) \
+  X(DELETE   , '\x7F') \
+  X(UP       , 0x100 ) \
+  X(DOWN     , 0x101 ) \
+  X(RIGHT    , 0x102 ) \
+  X(LEFT     , 0x103 ) \
+  X(END      , 0x104 )
+
 enum tym_special_key {
-  TYM_KEY_ENTER = '\n',
-  TYM_KEY_HOME = '\r',
-  TYM_KEY_BACKSPACE = '\b',
-  TYM_KEY_TAB = '\t',
-  TYM_KEY_DELETE = '\x7F',
-  TYM_KEY_UP = 0x100,
-  TYM_KEY_DOWN,
-  TYM_KEY_RIGHT,
-  TYM_KEY_LEFT,
-  TYM_KEY_END,
+#define X(ID, VAL) TYM_KEY_ ## ID = VAL,
+TYM_SPECIAL_KEYS
+#undef X
 };
+
+struct tym_special_key_name {
+  enum tym_special_key key;
+  const char* name;
+  size_t name_length;
+};
+
+extern const struct tym_special_key_name tym_special_key_list[];
+extern const size_t tym_special_key_count;
 
 enum tym_button {
   TYM_I_BUTTON_LEFT_PRESSED,
@@ -52,7 +66,7 @@ enum tym_button {
 
 enum tym_position_type {
   TYM_P_UNSET,
-#define X(ID) TYM_CONCAT(TYM_P_, ID),
+#define X(ID) TYM_P_ ## ID,
   TYM_POSITION_TYPE_LIST
 #undef X
   TYM_P_COUNT
@@ -60,7 +74,7 @@ enum tym_position_type {
 
 enum tym_unit_type {
   TYM_U_UNSET,
-#define E(PT, U, T, N) TYM_CONCAT(TYM_U_, U),
+#define E(PT, U, T, N) TYM_U_ ## U,
 #define X(ID) TYM_CONCAT(TYM_POSITION_TYPE__, ID)(E)
   TYM_POSITION_TYPE_LIST
 #undef X
@@ -92,6 +106,8 @@ enum tym_flag {
   TYM_PF_FOCUS,
   TYM_PF_DISALLOW_FOCUS
 };
+
+#define TYM_PANE_FOCUS 1
 
 struct tym_unit {
   enum tym_unit_type type;
@@ -125,7 +141,7 @@ TYM_I_POSITION_SPECIALISATION(absolute)
 #define TYM_I_PT_UNIT_NAME(PT, U, T, N) N
 
 #define TYM_POS_REF(POSITION, POSITION_TYPE, AXIS) \
-  (POSITION).type[TYM_CONCAT(TYM_P_, POSITION_TYPE)].axis[(AXIS)].value.TYM_CONCAT(TYM_POSITION_TYPE__, POSITION_TYPE)(TYM_I_PT_UNIT_NAME)
+  (POSITION).type[TYM_P_ ## POSITION_TYPE].axis[(AXIS)].value.TYM_CONCAT(TYM_POSITION_TYPE__, POSITION_TYPE)(TYM_I_PT_UNIT_NAME)
 #define TYM_RECT_POS_REF(RECT, POSITION_TYPE, POSITION) \
   TYM_POS_REF((RECT).edge[(POSITION) % TYM_EDGE_COUNT], POSITION_TYPE, (POSITION) / TYM_EDGE_COUNT)
 #define TYM_RECT_SIZE(RECT, POSITION_TYPE, AXIS) \
@@ -150,6 +166,7 @@ TYM_EXPORT int tym_pane_get_slavefd(int pane);
 
 TYM_EXPORT int tym_pane_send_key(int pane, int_least16_t key);
 TYM_EXPORT int tym_pane_send_keys(int pane, size_t count, const int_least16_t keys[count]);
+TYM_EXPORT int tym_pane_send_special_key_by_name(int pane, const char* key_name);
 TYM_EXPORT int tym_pane_type(int pane, size_t count, const char keys[count]);
 TYM_EXPORT int tym_pane_send_mouse_event(int pane, enum tym_button button, const struct tym_super_position*restrict super_position);
 
