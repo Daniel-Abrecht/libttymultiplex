@@ -97,7 +97,7 @@ int tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_button
       unsigned char cb = 32;
       if(motion)
         cb += 32; // Motion indicator
-      len = snprintf(buf, sizeof(buf), CSI "M%c%c%c\n", cb+button, (unsigned char)(32+pos.x+1), (unsigned char)(32+pos.y+1));
+      len = snprintf(buf, sizeof(buf), CSI "M%c%c%c", cb+button, (unsigned char)(32+pos.x+1), (unsigned char)(32+pos.y+1));
     } break;
     case MOUSE_MODE_OFF: break;
   }
