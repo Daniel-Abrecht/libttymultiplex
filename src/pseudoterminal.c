@@ -51,9 +51,12 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
         } break;
       }
     } break;
+    case TYM_KEY_PAGE_UP: return tym_i_pts_send(pane, S(CSI "5~"));
+    case TYM_KEY_PAGE_DOWN: return tym_i_pts_send(pane, S(CSI "6~"));
     case TYM_KEY_ENTER: return tym_i_pts_send(pane, S("\r"));
     case TYM_KEY_TAB: break;
     case TYM_KEY_BACKSPACE: break;
+    case TYM_KEY_ESCAPE: break;
     case TYM_KEY_DELETE: return tym_i_pts_send(pane, S(CSI "3~"));
   }
   if(key >= 0 && key < 0x100)

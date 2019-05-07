@@ -37,7 +37,7 @@ int tym_init(void){
   TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], RATIO, TYM_AXIS_VERTICAL) = 1;
   tym_i_binit = INIT_STATE_INITIALISED;
   tym_i_tty = dup(STDIN_FILENO);
-  setlocale(LC_CTYPE, "");
+  setlocale(LC_CTYPE, "C.UTF-8");
   if(tym_i_backend_init(getenv("TM_BACKEND")) != 0){
     fprintf(stderr,"Failed to initialise backend\n");
     goto error;

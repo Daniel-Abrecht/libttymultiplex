@@ -28,12 +28,15 @@ extern "C" {
   X(HOME     , '\r'  ) \
   X(BACKSPACE, '\b'  ) \
   X(TAB      , '\t'  ) \
+  X(ESCAPE   , '\x1B') \
   X(DELETE   , '\x7F') \
   X(UP       , 0x100 ) \
   X(DOWN     , 0x101 ) \
   X(RIGHT    , 0x102 ) \
   X(LEFT     , 0x103 ) \
-  X(END      , 0x104 )
+  X(END      , 0x104 ) \
+  X(PAGE_UP  , 0x105 ) \
+  X(PAGE_DOWN, 0x106 ) \
 
 enum tym_special_key {
 #define X(ID, VAL) TYM_KEY_ ## ID = VAL,
