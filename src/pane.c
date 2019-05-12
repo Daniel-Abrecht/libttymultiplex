@@ -259,6 +259,14 @@ error:
   return -1;
 }
 
+/**
+ * This function sets the cursor position & handles bound checks and scrolling if necessary.
+ * This functions is split into 4 steps:
+ *  1) Calculate absolute desired position in pane based on given coordinate (x,y) and what these relate to (pm_x,pm_y)
+ *  2) What are the boundaries for our cursor movement?
+ *  3) Do we need to scroll the scrolling region?
+ *  4) Clamp the cursor coordinates to the boundary it's allowed in & finally set the cursor position.
+ **/
 int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,
   enum tym_i_scp_position_mode pm_x, long long x,
@@ -270,8 +278,10 @@ int tym_i_pane_set_cursor_position(
   unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   bool scroll_region_valid = screen->scroll_region_top < screen->scroll_region_bottom && screen->scroll_region_top < h;
   bool origin_mode = screen->origin_mode && scroll_region_valid;
-  unsigned sr_top    = origin_mode ? screen->scroll_region_top : 0;
-  unsigned sr_bottom = origin_mode ? screen->scroll_region_bottom : h;
+  unsigned sr_top    = scroll_region_valid ? screen->scroll_region_top : 0;
+  unsigned sr_bottom = scroll_region_valid ? screen->scroll_region_bottom : h;
+
+  //// Calculating the desired position ////
 
   switch(pm_x){
     case TYM_I_SCP_PM_ABSOLUTE: break;
@@ -288,6 +298,8 @@ int tym_i_pane_set_cursor_position(
     } break;
   }
 
+  //// Calculate boundaries of possible cursor positions ////
+
   long long top = 0;
   long long bottom = h;
   long long left = 0;
@@ -298,7 +310,7 @@ int tym_i_pane_set_cursor_position(
     case TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE: {
       if( screen->cursor.y >= sr_top && y < sr_top )
         goto set_scrolling_region_boundary;
-      if( screen->cursor.y < (long long)sr_bottom && y <= (long long)sr_bottom )
+      if( screen->cursor.y < (long long)sr_bottom && y >= (long long)sr_bottom )
         goto set_scrolling_region_boundary;
       if( screen->cursor.y < (long long)sr_bottom && screen->cursor.y >= (long long)sr_top )
         goto set_scrolling_region_boundary;
@@ -314,6 +326,8 @@ int tym_i_pane_set_cursor_position(
       bottom = sr_bottom;
     } break;
   }
+
+  //// Do we need to scroll the scrolling region? ////
 
   switch(smm_y){
     case TYM_I_SCP_SMM_NO_SCROLLING: break;
@@ -333,6 +347,8 @@ int tym_i_pane_set_cursor_position(
     }; break;
   }
 
+  //// Clamp the cursor coordinates to the allowed range & set the cursor position ////
+
   if(y >= bottom)
     y = bottom - 1;
   if(y < top)
@@ -344,7 +360,9 @@ int tym_i_pane_set_cursor_position(
 
   screen->cursor.y = y;
   screen->cursor.x = x;
+
   tym_i_pane_update_cursor(pane);
+
   return 0;
 }
 
