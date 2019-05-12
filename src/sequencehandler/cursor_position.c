@@ -19,7 +19,7 @@ int tym_i_csq_cursor_position(struct tym_i_pane_internal* pane){
   if(y < 0) y = 0;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ORIGIN_RELATIVE, x,
-    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ORIGIN_RELATIVE, y,
+    TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_ORIGIN_RELATIVE, y,
     TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE, false
   );
   return 0;

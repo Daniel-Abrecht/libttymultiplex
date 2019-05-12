@@ -15,7 +15,7 @@ int tym_i_csq_character_position_relative(struct tym_i_pane_internal* pane){
   if(x <= 0) x = 1;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_RELATIVE, x,
-    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, 0,
+    TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_RELATIVE, 0,
     TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, false
   );
   return 0;

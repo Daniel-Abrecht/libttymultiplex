@@ -15,7 +15,7 @@ int tym_i_csq_vertical_position_backwards(struct tym_i_pane_internal* pane){
   if(y <= 0) y = 1;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_RELATIVE, 0,
-    TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_RELATIVE, -y,
+    TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_RELATIVE, -y,
     TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, false
   );
   return 0;
