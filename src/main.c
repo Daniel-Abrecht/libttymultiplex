@@ -129,7 +129,7 @@ void* tym_i_main(void* ptr){
         case TYM_PC_ADD: {
           tym_i_pollfd_add_sub((struct pollfd){
             .fd = ctl.data.add.fd,
-            .events = POLLIN | POLLHUP | POLLPRI
+            .events = POLLIN | POLLHUP/* | POLLPRI*/
           });
         } break;
         case TYM_PC_REMOVE: {
@@ -165,59 +165,56 @@ void* tym_i_main(void* ptr){
       }
     }
     if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLHUP){
-      // TODO
+      break;
     }
     if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLPRI){
       // TODO
     }
     if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLIN){
-      while(true){
-        // TODO: abstract this away into the backend too
-        int c = getch();
-        if(c == ERR)
-          break;
-        switch(c){
-          case KEY_MOUSE: {
-            MEVENT event;
-            if(getmouse(&event) != OK)
-              break;
-            for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
-              int left   = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_LEFT  );
-              int right  = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_RIGHT );
-              int top    = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_TOP   );
-              int bottom = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_BOTTOM);
-              if( left > (int)event.x || right <= (int)event.x || top > (int)event.y || bottom <= (int)event.y )
-                continue;
-              unsigned x = event.x - left;
-              unsigned y = event.y - top;
-              tym_i_pane_focus(it);
-              if(event.bstate & (BUTTON1_RELEASED | BUTTON2_RELEASED | BUTTON3_RELEASED)){
-                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});
-              }
-              if(event.bstate & BUTTON1_PRESSED){
-                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_LEFT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
-              }
-              if(event.bstate & BUTTON2_PRESSED){
-                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_MIDDLE_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
-              }
-              if(event.bstate & BUTTON3_PRESSED){
-                tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RIGHT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
-              }
-              break;
+      // TODO: abstract this away into the backend too
+      int c = getch();
+      if(c != ERR)
+      switch(c){
+        case KEY_MOUSE: {
+          MEVENT event;
+          if(getmouse(&event) != OK)
+            break;
+          for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
+            int left   = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_LEFT  );
+            int right  = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_RIGHT );
+            int top    = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_TOP   );
+            int bottom = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_BOTTOM);
+            if( left > (int)event.x || right <= (int)event.x || top > (int)event.y || bottom <= (int)event.y )
+              continue;
+            unsigned x = event.x - left;
+            unsigned y = event.y - top;
+            tym_i_pane_focus(it);
+            if(event.bstate & (BUTTON1_RELEASED | BUTTON2_RELEASED | BUTTON3_RELEASED)){
+              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});
             }
-          } break;
-          case KEY_ENTER: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
-          case KEY_UP   : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_UP); break;
-          case KEY_DOWN : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DOWN); break;
-          case KEY_RIGHT: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_RIGHT); break;
-          case KEY_LEFT : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_LEFT); break;
-          case KEY_BACKSPACE: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
-          case KEY_HOME: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_HOME); break;
-          case KEY_END: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_END); break;
-          case KEY_DC: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DELETE); break;
-          default: tym_i_pts_send_key(tym_i_focus_pane, c); break;
-        }
-      };
+            if(event.bstate & BUTTON1_PRESSED){
+              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_LEFT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+            }
+            if(event.bstate & BUTTON2_PRESSED){
+              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_MIDDLE_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+            }
+            if(event.bstate & BUTTON3_PRESSED){
+              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RIGHT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+            }
+            break;
+          }
+        } break;
+        case KEY_ENTER: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
+        case KEY_UP   : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_UP); break;
+        case KEY_DOWN : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DOWN); break;
+        case KEY_RIGHT: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_RIGHT); break;
+        case KEY_LEFT : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_LEFT); break;
+        case KEY_BACKSPACE: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
+        case KEY_HOME: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_HOME); break;
+        case KEY_END: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_END); break;
+        case KEY_DC: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DELETE); break;
+        default: tym_i_pts_send_key(tym_i_focus_pane, c); break;
+      }
     }
     for(size_t i=SPF_COUNT; i<tym_i_poll_fdn; i++){
       if(!tym_i_poll_fds[i].revents)
@@ -228,7 +225,11 @@ void* tym_i_main(void* ptr){
           ssize_t ret = read(tym_i_poll_fds[i].fd, buf, sizeof(buf));
           if(ret == -1 && errno == EINTR)
             continue;
-          if((ret == -1 && errno == EAGAIN) || !ret)
+          if(ret == -1 && errno == EBADF){
+            tym_i_pollfd_remove_sub(i);
+            break;
+          }
+          if(ret == -1 && !ret)
             break;
           for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
             if(it->master != tym_i_poll_fds[i].fd)
@@ -238,8 +239,7 @@ void* tym_i_main(void* ptr){
             tym_i_backend->pane_refresh(it);
             break;
           }
-          if((size_t)ret < sizeof(buf))
-            break;
+          break;
         }
       }
     }
