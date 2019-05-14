@@ -113,7 +113,7 @@ void* tym_i_main(void* ptr){
       perror("poll failed");
       goto error;
     }
-    if(tym_i_poll_fds[SPF_POLLCTLFD].revents & POLLHUP){
+    if(tym_i_poll_fds[SPF_POLLCTLFD].revents & (POLLHUP|POLLERR|POLLNVAL)){
       pthread_mutex_unlock(&tym_i_lock);
       break;
     }
@@ -129,7 +129,7 @@ void* tym_i_main(void* ptr){
         case TYM_PC_ADD: {
           tym_i_pollfd_add_sub((struct pollfd){
             .fd = ctl.data.add.fd,
-            .events = POLLIN | POLLHUP/* | POLLPRI*/
+            .events = POLLIN | POLLHUP
           });
         } break;
         case TYM_PC_REMOVE: {
@@ -140,6 +140,9 @@ void* tym_i_main(void* ptr){
             }
         } break;
       }
+    }else if(tym_i_poll_fds[SPF_POLLCTLFD].revents){
+      pthread_mutex_unlock(&tym_i_lock);
+      break;
     }
     if(tym_i_poll_fds[SPF_SIGNALFD].revents & POLLIN){
       struct signalfd_siginfo info;
@@ -163,14 +166,14 @@ void* tym_i_main(void* ptr){
 #endif
         } break;
       }
-    }
-    if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLHUP){
+    }else if(tym_i_poll_fds[SPF_SIGNALFD].revents){
+      pthread_mutex_unlock(&tym_i_lock);
       break;
     }
-    if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLPRI){
-      // TODO
-    }
-    if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLIN){
+    if(tym_i_poll_fds[SPF_TERMINPUT].revents & (POLLHUP|POLLERR|POLLNVAL)){
+      pthread_mutex_unlock(&tym_i_lock);
+      break;
+    }else if(tym_i_poll_fds[SPF_TERMINPUT].revents & POLLIN){
       // TODO: abstract this away into the backend too
       int c = getch();
       if(c != ERR)
@@ -215,32 +218,34 @@ void* tym_i_main(void* ptr){
         case KEY_DC: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DELETE); break;
         default: tym_i_pts_send_key(tym_i_focus_pane, c); break;
       }
+    }else if(tym_i_poll_fds[SPF_TERMINPUT].revents){
+      pthread_mutex_unlock(&tym_i_lock);
+      break;
     }
     for(size_t i=SPF_COUNT; i<tym_i_poll_fdn; i++){
       if(!tym_i_poll_fds[i].revents)
         continue;
-      if(tym_i_poll_fds[i].revents & POLLIN){
-        while(true){
-          static char buf[256];
-          ssize_t ret = read(tym_i_poll_fds[i].fd, buf, sizeof(buf));
-          if(ret == -1 && errno == EINTR)
+      if(tym_i_poll_fds[i].revents & (POLLERR|POLLNVAL)){
+        tym_i_pollfd_remove_sub(i);
+      }else if(tym_i_poll_fds[i].revents & POLLIN){
+        static char buf[256];
+        ssize_t ret;
+        do {
+          ret = read(tym_i_poll_fds[i].fd, buf, sizeof(buf));
+        } while(ret == -1 && errno == EINTR);
+        if(ret == -1 && errno == EBADF)
+          tym_i_pollfd_remove_sub(i);
+        if(ret > 0)
+        for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
+          if(it->master != tym_i_poll_fds[i].fd)
             continue;
-          if(ret == -1 && errno == EBADF){
-            tym_i_pollfd_remove_sub(i);
-            break;
-          }
-          if(ret == -1 && !ret)
-            break;
-          for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
-            if(it->master != tym_i_poll_fds[i].fd)
-              continue;
-            for(size_t i=0; i<(size_t)ret; i++)
-              tym_i_pane_parse(it, buf[i]);
-            tym_i_backend->pane_refresh(it);
-            break;
-          }
+          for(size_t i=0; i<(size_t)ret; i++)
+            tym_i_pane_parse(it, buf[i]);
+          tym_i_backend->pane_refresh(it);
           break;
         }
+      }else{
+        tym_i_pollfd_remove_sub(i);
       }
     }
   cont:

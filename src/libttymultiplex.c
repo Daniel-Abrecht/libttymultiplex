@@ -63,7 +63,7 @@ int tym_init(void){
     .fd = tym_i_sfd
   })) goto error;
   if(tym_i_pollfd_add_sub((struct pollfd){
-    .events = POLLIN | POLLHUP | POLLPRI,
+    .events = POLLIN | POLLHUP,
     .fd = tym_i_tty
   })) goto error;
   tym_i_pane_update_size_all();
