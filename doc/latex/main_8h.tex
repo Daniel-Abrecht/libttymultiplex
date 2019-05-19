@@ -1,0 +1,312 @@
+\hypertarget{main_8h}{}\section{include/internal/main.h File Reference}
+\label{main_8h}\index{include/internal/main.\+h@{include/internal/main.\+h}}
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$pty.\+h$>$}\newline
+{\ttfamily \#include $<$libttymultiplex.\+h$>$}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__i__poll__ctl}{tym\+\_\+i\+\_\+poll\+\_\+ctl}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{main_8h_a6da339013533e54ed0af7ec05e0f916d}{tym\+\_\+i\+\_\+special\+\_\+tym\+\_\+i\+\_\+poll\+\_\+fds} \{ \newline
+\hyperlink{main_8h_a6da339013533e54ed0af7ec05e0f916da21cb9cf6706e4ac9f0039acd2852e003}{S\+P\+F\+\_\+\+P\+O\+L\+L\+C\+T\+L\+FD}, 
+\newline
+\hyperlink{main_8h_a6da339013533e54ed0af7ec05e0f916daf4134cfa1bd6787ad61b748658c096ee}{S\+P\+F\+\_\+\+S\+I\+G\+N\+A\+L\+FD}, 
+\newline
+\hyperlink{main_8h_a6da339013533e54ed0af7ec05e0f916dabde704d878e4e1b909df44935c7afdc8}{S\+P\+F\+\_\+\+T\+E\+R\+M\+I\+N\+P\+UT}, 
+\newline
+\hyperlink{main_8h_a6da339013533e54ed0af7ec05e0f916dab91847eb739d07ffd4172aba52ecee90}{S\+P\+F\+\_\+\+C\+O\+U\+NT}
+ \}
+\item 
+enum \hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502}{tym\+\_\+i\+\_\+init\+\_\+state} \{ \newline
+\hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502ab7e685628e4f5eb7da6f8d333d4821b5}{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+N\+O\+I\+N\+IT}, 
+\newline
+\hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502ae93c3e0c29e39033fce5121df5642ecf}{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+S\+ED}, 
+\newline
+\hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502a75911d31edb4bf1deacb6891360c92ea}{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+I\+N\+\_\+\+P\+R\+O\+G\+R\+E\+SS}, 
+\newline
+\hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502a597724500269cc744ecfb737f9d3ae3d}{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+WN} = I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+N\+O\+I\+N\+IT
+ \}
+\item 
+enum \hyperlink{main_8h_a1666a0160e6b99e74467ae6da7abb7b2}{tym\+\_\+i\+\_\+poll\+\_\+ctl\+\_\+type} \{ \newline
+\hyperlink{main_8h_a1666a0160e6b99e74467ae6da7abb7b2a0724fd5335cdf7f233ec7b09298646cf}{T\+Y\+M\+\_\+\+P\+C\+\_\+\+A\+DD}, 
+\newline
+\hyperlink{main_8h_a1666a0160e6b99e74467ae6da7abb7b2ad7137e112c1044d7fbce76cfee799f02}{T\+Y\+M\+\_\+\+P\+C\+\_\+\+R\+E\+M\+O\+VE}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{main_8h_ada052d9cdf56fb41afef2190a8e1a62d}{tym\+\_\+i\+\_\+main} (void $\ast$ptr)
+\item 
+int \hyperlink{main_8h_a4ea5338ea92204d7030c15f7116fdba9}{tym\+\_\+i\+\_\+pollfd\+\_\+add\+\_\+sub} (struct pollfd pfd)
+\item 
+int \hyperlink{main_8h_a2930d9f48b90b817c2d7153a3b02dda2}{tym\+\_\+i\+\_\+pollfd\+\_\+add} (int fd)
+\item 
+int \hyperlink{main_8h_af9b4f43ea80547939a0e953e0277fb98}{tym\+\_\+i\+\_\+pollfd\+\_\+remove} (int fd)
+\item 
+void \hyperlink{main_8h_abe59a082e3003f2f73a3f4c8bd522f6c}{tym\+\_\+i\+\_\+debug} (const char $\ast$format,...)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502}{tym\+\_\+i\+\_\+init\+\_\+state} \hyperlink{main_8h_a2f232b01c84a7399c8eb97c1293fc517}{tym\+\_\+i\+\_\+binit}
+\item 
+size\+\_\+t \hyperlink{main_8h_ab8a3f956e0693e985c6af6d21301d0ef}{tym\+\_\+i\+\_\+poll\+\_\+fdn}
+\item 
+struct pollfd $\ast$ \hyperlink{main_8h_ae7b3f450f3d3d31ba17fdf97590f87f5}{tym\+\_\+i\+\_\+poll\+\_\+fds}
+\item 
+int \hyperlink{main_8h_ab918951c0e74297ed9058761ce8d25c8}{tym\+\_\+i\+\_\+tty}
+\item 
+int \hyperlink{main_8h_a68685bad5736b9b39706674b0511805f}{tym\+\_\+i\+\_\+sfd}
+\item 
+int \hyperlink{main_8h_a0c9fd9dbfcfba8e0370b6be85cd8d1b5}{tym\+\_\+i\+\_\+pollctl} \mbox{[}2\mbox{]}
+\item 
+pthread\+\_\+t \hyperlink{main_8h_a6f5006f1b1a8e2a0c0cdd1f46f538d97}{tym\+\_\+i\+\_\+main\+\_\+loop}
+\item 
+struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} \hyperlink{main_8h_ade92ce9ad00ab6517977ed26d588e94b}{tym\+\_\+i\+\_\+bounds}
+\item 
+pthread\+\_\+mutexattr\+\_\+t \hyperlink{main_8h_ad21b4961d999cd2504fec170df458547}{tym\+\_\+i\+\_\+lock\+\_\+attr}
+\item 
+pthread\+\_\+mutex\+\_\+t \hyperlink{main_8h_aa14f28f091a814b0704184b32e40e6ad}{tym\+\_\+i\+\_\+lock}
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502}\label{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+init\+\_\+state@{tym\+\_\+i\+\_\+init\+\_\+state}}
+\index{tym\+\_\+i\+\_\+init\+\_\+state@{tym\+\_\+i\+\_\+init\+\_\+state}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+init\+\_\+state}{tym\_i\_init\_state}}
+{\footnotesize\ttfamily enum \hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502}{tym\+\_\+i\+\_\+init\+\_\+state}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+N\+O\+I\+N\+IT@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+N\+O\+I\+N\+IT}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+N\+O\+I\+N\+IT@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+N\+O\+I\+N\+IT}}}\mbox{\Hypertarget{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502ab7e685628e4f5eb7da6f8d333d4821b5}\label{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502ab7e685628e4f5eb7da6f8d333d4821b5}} 
+I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+N\+O\+I\+N\+IT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+S\+ED@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+S\+ED}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+S\+ED@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+S\+ED}}}\mbox{\Hypertarget{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502ae93c3e0c29e39033fce5121df5642ecf}\label{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502ae93c3e0c29e39033fce5121df5642ecf}} 
+I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+S\+ED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+I\+N\+\_\+\+P\+R\+O\+G\+R\+E\+SS@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+I\+N\+\_\+\+P\+R\+O\+G\+R\+E\+SS}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+I\+N\+\_\+\+P\+R\+O\+G\+R\+E\+SS@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+I\+N\+\_\+\+P\+R\+O\+G\+R\+E\+SS}}}\mbox{\Hypertarget{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502a75911d31edb4bf1deacb6891360c92ea}\label{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502a75911d31edb4bf1deacb6891360c92ea}} 
+I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+W\+N\+\_\+\+I\+N\+\_\+\+P\+R\+O\+G\+R\+E\+SS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+WN@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+WN}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+WN@{I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+WN}}}\mbox{\Hypertarget{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502a597724500269cc744ecfb737f9d3ae3d}\label{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502a597724500269cc744ecfb737f9d3ae3d}} 
+I\+N\+I\+T\+\_\+\+S\+T\+A\+T\+E\+\_\+\+S\+H\+U\+T\+D\+O\+WN&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 20 of file main.\+h.
+
+\mbox{\Hypertarget{main_8h_a1666a0160e6b99e74467ae6da7abb7b2}\label{main_8h_a1666a0160e6b99e74467ae6da7abb7b2}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+poll\+\_\+ctl\+\_\+type@{tym\+\_\+i\+\_\+poll\+\_\+ctl\+\_\+type}}
+\index{tym\+\_\+i\+\_\+poll\+\_\+ctl\+\_\+type@{tym\+\_\+i\+\_\+poll\+\_\+ctl\+\_\+type}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+poll\+\_\+ctl\+\_\+type}{tym\_i\_poll\_ctl\_type}}
+{\footnotesize\ttfamily enum \hyperlink{main_8h_a1666a0160e6b99e74467ae6da7abb7b2}{tym\+\_\+i\+\_\+poll\+\_\+ctl\+\_\+type}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+C\+\_\+\+A\+DD@{T\+Y\+M\+\_\+\+P\+C\+\_\+\+A\+DD}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!T\+Y\+M\+\_\+\+P\+C\+\_\+\+A\+DD@{T\+Y\+M\+\_\+\+P\+C\+\_\+\+A\+DD}}}\mbox{\Hypertarget{main_8h_a1666a0160e6b99e74467ae6da7abb7b2a0724fd5335cdf7f233ec7b09298646cf}\label{main_8h_a1666a0160e6b99e74467ae6da7abb7b2a0724fd5335cdf7f233ec7b09298646cf}} 
+T\+Y\+M\+\_\+\+P\+C\+\_\+\+A\+DD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+C\+\_\+\+R\+E\+M\+O\+VE@{T\+Y\+M\+\_\+\+P\+C\+\_\+\+R\+E\+M\+O\+VE}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!T\+Y\+M\+\_\+\+P\+C\+\_\+\+R\+E\+M\+O\+VE@{T\+Y\+M\+\_\+\+P\+C\+\_\+\+R\+E\+M\+O\+VE}}}\mbox{\Hypertarget{main_8h_a1666a0160e6b99e74467ae6da7abb7b2ad7137e112c1044d7fbce76cfee799f02}\label{main_8h_a1666a0160e6b99e74467ae6da7abb7b2ad7137e112c1044d7fbce76cfee799f02}} 
+T\+Y\+M\+\_\+\+P\+C\+\_\+\+R\+E\+M\+O\+VE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 27 of file main.\+h.
+
+\mbox{\Hypertarget{main_8h_a6da339013533e54ed0af7ec05e0f916d}\label{main_8h_a6da339013533e54ed0af7ec05e0f916d}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+special\+\_\+tym\+\_\+i\+\_\+poll\+\_\+fds@{tym\+\_\+i\+\_\+special\+\_\+tym\+\_\+i\+\_\+poll\+\_\+fds}}
+\index{tym\+\_\+i\+\_\+special\+\_\+tym\+\_\+i\+\_\+poll\+\_\+fds@{tym\+\_\+i\+\_\+special\+\_\+tym\+\_\+i\+\_\+poll\+\_\+fds}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+special\+\_\+tym\+\_\+i\+\_\+poll\+\_\+fds}{tym\_i\_special\_tym\_i\_poll\_fds}}
+{\footnotesize\ttfamily enum \hyperlink{main_8h_a6da339013533e54ed0af7ec05e0f916d}{tym\+\_\+i\+\_\+special\+\_\+tym\+\_\+i\+\_\+poll\+\_\+fds}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+P\+F\+\_\+\+P\+O\+L\+L\+C\+T\+L\+FD@{S\+P\+F\+\_\+\+P\+O\+L\+L\+C\+T\+L\+FD}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!S\+P\+F\+\_\+\+P\+O\+L\+L\+C\+T\+L\+FD@{S\+P\+F\+\_\+\+P\+O\+L\+L\+C\+T\+L\+FD}}}\mbox{\Hypertarget{main_8h_a6da339013533e54ed0af7ec05e0f916da21cb9cf6706e4ac9f0039acd2852e003}\label{main_8h_a6da339013533e54ed0af7ec05e0f916da21cb9cf6706e4ac9f0039acd2852e003}} 
+S\+P\+F\+\_\+\+P\+O\+L\+L\+C\+T\+L\+FD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+P\+F\+\_\+\+S\+I\+G\+N\+A\+L\+FD@{S\+P\+F\+\_\+\+S\+I\+G\+N\+A\+L\+FD}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!S\+P\+F\+\_\+\+S\+I\+G\+N\+A\+L\+FD@{S\+P\+F\+\_\+\+S\+I\+G\+N\+A\+L\+FD}}}\mbox{\Hypertarget{main_8h_a6da339013533e54ed0af7ec05e0f916daf4134cfa1bd6787ad61b748658c096ee}\label{main_8h_a6da339013533e54ed0af7ec05e0f916daf4134cfa1bd6787ad61b748658c096ee}} 
+S\+P\+F\+\_\+\+S\+I\+G\+N\+A\+L\+FD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+P\+F\+\_\+\+T\+E\+R\+M\+I\+N\+P\+UT@{S\+P\+F\+\_\+\+T\+E\+R\+M\+I\+N\+P\+UT}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!S\+P\+F\+\_\+\+T\+E\+R\+M\+I\+N\+P\+UT@{S\+P\+F\+\_\+\+T\+E\+R\+M\+I\+N\+P\+UT}}}\mbox{\Hypertarget{main_8h_a6da339013533e54ed0af7ec05e0f916dabde704d878e4e1b909df44935c7afdc8}\label{main_8h_a6da339013533e54ed0af7ec05e0f916dabde704d878e4e1b909df44935c7afdc8}} 
+S\+P\+F\+\_\+\+T\+E\+R\+M\+I\+N\+P\+UT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+P\+F\+\_\+\+C\+O\+U\+NT@{S\+P\+F\+\_\+\+C\+O\+U\+NT}!main.\+h@{main.\+h}}\index{main.\+h@{main.\+h}!S\+P\+F\+\_\+\+C\+O\+U\+NT@{S\+P\+F\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{main_8h_a6da339013533e54ed0af7ec05e0f916dab91847eb739d07ffd4172aba52ecee90}\label{main_8h_a6da339013533e54ed0af7ec05e0f916dab91847eb739d07ffd4172aba52ecee90}} 
+S\+P\+F\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 13 of file main.\+h.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8h_abe59a082e3003f2f73a3f4c8bd522f6c}\label{main_8h_abe59a082e3003f2f73a3f4c8bd522f6c}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+debug@{tym\+\_\+i\+\_\+debug}}
+\index{tym\+\_\+i\+\_\+debug@{tym\+\_\+i\+\_\+debug}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+debug()}{tym\_i\_debug()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+debug (\begin{DoxyParamCaption}\item[{const char $\ast$}]{format,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Definition at line 270 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_ada052d9cdf56fb41afef2190a8e1a62d}\label{main_8h_ada052d9cdf56fb41afef2190a8e1a62d}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+main@{tym\+\_\+i\+\_\+main}}
+\index{tym\+\_\+i\+\_\+main@{tym\+\_\+i\+\_\+main}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+main()}{tym\_i\_main()}}
+{\footnotesize\ttfamily void$\ast$ tym\+\_\+i\+\_\+main (\begin{DoxyParamCaption}\item[{void $\ast$}]{ptr }\end{DoxyParamCaption})}
+
+
+
+Definition at line 105 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_a2930d9f48b90b817c2d7153a3b02dda2}\label{main_8h_a2930d9f48b90b817c2d7153a3b02dda2}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+pollfd\+\_\+add@{tym\+\_\+i\+\_\+pollfd\+\_\+add}}
+\index{tym\+\_\+i\+\_\+pollfd\+\_\+add@{tym\+\_\+i\+\_\+pollfd\+\_\+add}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pollfd\+\_\+add()}{tym\_i\_pollfd\_add()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pollfd\+\_\+add (\begin{DoxyParamCaption}\item[{int}]{fd }\end{DoxyParamCaption})}
+
+
+
+Definition at line 81 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_a4ea5338ea92204d7030c15f7116fdba9}\label{main_8h_a4ea5338ea92204d7030c15f7116fdba9}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+pollfd\+\_\+add\+\_\+sub@{tym\+\_\+i\+\_\+pollfd\+\_\+add\+\_\+sub}}
+\index{tym\+\_\+i\+\_\+pollfd\+\_\+add\+\_\+sub@{tym\+\_\+i\+\_\+pollfd\+\_\+add\+\_\+sub}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pollfd\+\_\+add\+\_\+sub()}{tym\_i\_pollfd\_add\_sub()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pollfd\+\_\+add\+\_\+sub (\begin{DoxyParamCaption}\item[{struct pollfd}]{pfd }\end{DoxyParamCaption})}
+
+
+
+Definition at line 68 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_af9b4f43ea80547939a0e953e0277fb98}\label{main_8h_af9b4f43ea80547939a0e953e0277fb98}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+pollfd\+\_\+remove@{tym\+\_\+i\+\_\+pollfd\+\_\+remove}}
+\index{tym\+\_\+i\+\_\+pollfd\+\_\+remove@{tym\+\_\+i\+\_\+pollfd\+\_\+remove}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pollfd\+\_\+remove()}{tym\_i\_pollfd\_remove()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pollfd\+\_\+remove (\begin{DoxyParamCaption}\item[{int}]{fd }\end{DoxyParamCaption})}
+
+
+
+Definition at line 93 of file main.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{main_8h_a2f232b01c84a7399c8eb97c1293fc517}\label{main_8h_a2f232b01c84a7399c8eb97c1293fc517}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+binit@{tym\+\_\+i\+\_\+binit}}
+\index{tym\+\_\+i\+\_\+binit@{tym\+\_\+i\+\_\+binit}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+binit}{tym\_i\_binit}}
+{\footnotesize\ttfamily enum \hyperlink{main_8h_aca8189ee92ae1ab4ea8ee6738dcad502}{tym\+\_\+i\+\_\+init\+\_\+state} tym\+\_\+i\+\_\+binit}
+
+
+
+Definition at line 19 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_ade92ce9ad00ab6517977ed26d588e94b}\label{main_8h_ade92ce9ad00ab6517977ed26d588e94b}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+bounds@{tym\+\_\+i\+\_\+bounds}}
+\index{tym\+\_\+i\+\_\+bounds@{tym\+\_\+i\+\_\+bounds}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+bounds}{tym\_i\_bounds}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} tym\+\_\+i\+\_\+bounds}
+
+
+
+Definition at line 25 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_aa14f28f091a814b0704184b32e40e6ad}\label{main_8h_aa14f28f091a814b0704184b32e40e6ad}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+lock@{tym\+\_\+i\+\_\+lock}}
+\index{tym\+\_\+i\+\_\+lock@{tym\+\_\+i\+\_\+lock}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+lock}{tym\_i\_lock}}
+{\footnotesize\ttfamily pthread\+\_\+mutex\+\_\+t tym\+\_\+i\+\_\+lock}
+
+
+
+Definition at line 28 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_ad21b4961d999cd2504fec170df458547}\label{main_8h_ad21b4961d999cd2504fec170df458547}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+lock\+\_\+attr@{tym\+\_\+i\+\_\+lock\+\_\+attr}}
+\index{tym\+\_\+i\+\_\+lock\+\_\+attr@{tym\+\_\+i\+\_\+lock\+\_\+attr}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+lock\+\_\+attr}{tym\_i\_lock\_attr}}
+{\footnotesize\ttfamily pthread\+\_\+mutexattr\+\_\+t tym\+\_\+i\+\_\+lock\+\_\+attr}
+
+
+
+Definition at line 27 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_a6f5006f1b1a8e2a0c0cdd1f46f538d97}\label{main_8h_a6f5006f1b1a8e2a0c0cdd1f46f538d97}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+main\+\_\+loop@{tym\+\_\+i\+\_\+main\+\_\+loop}}
+\index{tym\+\_\+i\+\_\+main\+\_\+loop@{tym\+\_\+i\+\_\+main\+\_\+loop}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+main\+\_\+loop}{tym\_i\_main\_loop}}
+{\footnotesize\ttfamily pthread\+\_\+t tym\+\_\+i\+\_\+main\+\_\+loop}
+
+
+
+Definition at line 26 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_ab8a3f956e0693e985c6af6d21301d0ef}\label{main_8h_ab8a3f956e0693e985c6af6d21301d0ef}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+poll\+\_\+fdn@{tym\+\_\+i\+\_\+poll\+\_\+fdn}}
+\index{tym\+\_\+i\+\_\+poll\+\_\+fdn@{tym\+\_\+i\+\_\+poll\+\_\+fdn}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+poll\+\_\+fdn}{tym\_i\_poll\_fdn}}
+{\footnotesize\ttfamily size\+\_\+t tym\+\_\+i\+\_\+poll\+\_\+fdn}
+
+
+
+Definition at line 20 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_ae7b3f450f3d3d31ba17fdf97590f87f5}\label{main_8h_ae7b3f450f3d3d31ba17fdf97590f87f5}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+poll\+\_\+fds@{tym\+\_\+i\+\_\+poll\+\_\+fds}}
+\index{tym\+\_\+i\+\_\+poll\+\_\+fds@{tym\+\_\+i\+\_\+poll\+\_\+fds}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+poll\+\_\+fds}{tym\_i\_poll\_fds}}
+{\footnotesize\ttfamily struct pollfd$\ast$ tym\+\_\+i\+\_\+poll\+\_\+fds}
+
+
+
+Definition at line 21 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_a0c9fd9dbfcfba8e0370b6be85cd8d1b5}\label{main_8h_a0c9fd9dbfcfba8e0370b6be85cd8d1b5}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+pollctl@{tym\+\_\+i\+\_\+pollctl}}
+\index{tym\+\_\+i\+\_\+pollctl@{tym\+\_\+i\+\_\+pollctl}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pollctl}{tym\_i\_pollctl}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pollctl\mbox{[}2\mbox{]}}
+
+
+
+Definition at line 24 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_a68685bad5736b9b39706674b0511805f}\label{main_8h_a68685bad5736b9b39706674b0511805f}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+sfd@{tym\+\_\+i\+\_\+sfd}}
+\index{tym\+\_\+i\+\_\+sfd@{tym\+\_\+i\+\_\+sfd}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+sfd}{tym\_i\_sfd}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+sfd}
+
+
+
+Definition at line 23 of file main.\+c.
+
+\mbox{\Hypertarget{main_8h_ab918951c0e74297ed9058761ce8d25c8}\label{main_8h_ab918951c0e74297ed9058761ce8d25c8}} 
+\index{main.\+h@{main.\+h}!tym\+\_\+i\+\_\+tty@{tym\+\_\+i\+\_\+tty}}
+\index{tym\+\_\+i\+\_\+tty@{tym\+\_\+i\+\_\+tty}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+tty}{tym\_i\_tty}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+tty}
+
+
+
+Definition at line 22 of file main.\+c.
+

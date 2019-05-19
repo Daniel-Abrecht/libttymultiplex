@@ -1,0 +1,391 @@
+\hypertarget{pane_8c}{}\section{src/pane.c File Reference}
+\label{pane_8c}\index{src/pane.\+c@{src/pane.\+c}}
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$pty.\+h$>$}\newline
+{\ttfamily \#include $<$utmp.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$internal/pane.\+h$>$}\newline
+{\ttfamily \#include $<$internal/calc.\+h$>$}\newline
+{\ttfamily \#include $<$internal/main.\+h$>$}\newline
+{\ttfamily \#include $<$internal/list.\+h$>$}\newline
+{\ttfamily \#include $<$internal/utils.\+h$>$}\newline
+{\ttfamily \#include $<$internal/pseudoterminal.\+h$>$}\newline
+{\ttfamily \#include $<$internal/backend.\+h$>$}\newline
+{\ttfamily \#include $<$libttymultiplex.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{pane_8c_a702a394752738cea696cce9fee08a465}{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8} (struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character} character)
+\item 
+void \hyperlink{pane_8c_ad9e25466cfc39e1d3ea7cf9ccec7269c}{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+int \hyperlink{pane_8c_a42f9aa76052d765c1a8d17ce36081d38}{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, const struct \hyperlink{structtym__i__handler__ptr__pair}{tym\+\_\+i\+\_\+handler\+\_\+ptr\+\_\+pair} $\ast$cp)
+\item 
+int \hyperlink{pane_8c_ad9cd28579052b67c07b511440aa02818}{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, size\+\_\+t entry)
+\item 
+void \hyperlink{pane_8c_a9a52edf8fe5dc0b0df72f8997d843ad9}{tym\+\_\+i\+\_\+pane\+\_\+add} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8c_a5221d9602ef28414eafd39e504963824}{tym\+\_\+i\+\_\+pane\+\_\+get} (int pane)
+\item 
+int \hyperlink{pane_8c_a8e89812e35d112523e090330da9b855c}{tym\+\_\+i\+\_\+pane\+\_\+focus} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+void \hyperlink{pane_8c_a4e67642bf9320199e9068d95087f05a5}{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+void \hyperlink{pane_8c_a6eadb6f57165b1abfe26fb75509849b3}{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all} (void)
+\item 
+void \hyperlink{pane_8c_aba2890508b27cf0889471661d1c6af9d}{tym\+\_\+i\+\_\+pane\+\_\+remove} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+int \hyperlink{pane_8c_a957d3155520a3720827f9b76c1407cda}{tym\+\_\+pane\+\_\+create} (const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict super\+\_\+position)
+\item 
+int \hyperlink{pane_8c_ab734f1177040e7ad662a503fdd55b6b1}{tym\+\_\+pane\+\_\+destroy} (int pane)
+\item 
+int \hyperlink{pane_8c_a16ea902d270c2c491ef844f36094593a}{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode} pm\+\_\+x, long long x, enum \hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode} smm\+\_\+y, enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode} pm\+\_\+y, long long y, enum \hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour} srb, bool allow\+\_\+cursor\+\_\+on\+\_\+right\+\_\+edge)
+\item 
+int \hyperlink{pane_8c_a4d39024d897690ee926d4812f16451e8}{tym\+\_\+pane\+\_\+resize} (int pane, const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict super\+\_\+position)
+\item 
+int \hyperlink{pane_8c_a649e4ba707bc2cd4371fb3119e1bd2b4}{tym\+\_\+pane\+\_\+set\+\_\+env} (int pane)
+\item 
+int \hyperlink{pane_8c_a3e533d7a5376aaf6667b92540c7d3fce}{tym\+\_\+pane\+\_\+get\+\_\+slavefd} (int pane)
+\item 
+int \hyperlink{pane_8c_a8b71e8d9a717ea27bb6259ee0e8a4e88}{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, unsigned top, unsigned bottom, int n)
+\item 
+int \hyperlink{pane_8c_aad9884b3ebe4ee6d0e17925703bed513}{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, int n)
+\item 
+int \hyperlink{pane_8c_a17684496690df263db892f70ca607581}{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, unsigned y, int n)
+\item 
+int \hyperlink{pane_8c_ad6f6a2cec0e3ae38672b9b666e7ef3b3}{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen} screen)
+\item 
+int \hyperlink{pane_8c_aa133cb1aadbd1fe0b30038de451ee44c}{tym\+\_\+pane\+\_\+reset} (int pane)
+\item 
+int \hyperlink{pane_8c_a0fc757b137228b81d19ef0f8e297ab4e}{tym\+\_\+pane\+\_\+send\+\_\+key} (int pane, int\+\_\+least16\+\_\+t key)
+\item 
+int \hyperlink{pane_8c_ad712d7c00a8e814b9ca82985bfacde6d}{tym\+\_\+pane\+\_\+send\+\_\+keys} (int pane, size\+\_\+t count, const int\+\_\+least16\+\_\+t keys\mbox{[}count\mbox{]})
+\item 
+int \hyperlink{pane_8c_ade90966292fc278bc68c8da84697b6e9}{tym\+\_\+pane\+\_\+type} (int pane, size\+\_\+t count, const char keys\mbox{[}count\mbox{]})
+\item 
+int \hyperlink{pane_8c_a30d947aa7d53f9b997000d74e8a95526}{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name} (int pane, const char $\ast$key\+\_\+name)
+\item 
+int \hyperlink{pane_8c_a6e99c2fe46f5540b18b6391eaffecbb7}{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event} (int pane, enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button} button, const struct \hyperlink{structtym__super__position}{tym\+\_\+super\+\_\+position} $\ast$restrict position)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8c_ad5d253b24939072248af42baa6d7d491}{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8c_a42a5fe9e3107c52ce2a39123df27982a}{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8c_a9e55bb069a4098b5f27957835fd12343}{tym\+\_\+i\+\_\+focus\+\_\+pane}
+\item 
+const struct \hyperlink{structtym__i__character__format}{tym\+\_\+i\+\_\+character\+\_\+format} \hyperlink{pane_8c_a40f7e2f9604f9a41eec52d705bc46bd4}{default\+\_\+character\+\_\+format}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{pane_8c_a702a394752738cea696cce9fee08a465}\label{pane_8c_a702a394752738cea696cce9fee08a465}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8@{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8}}
+\index{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8@{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8()}{tym\_i\_character\_is\_utf8()}}
+{\footnotesize\ttfamily bool tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8 (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character}}]{character }\end{DoxyParamCaption})}
+
+
+
+Definition at line 26 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a9a52edf8fe5dc0b0df72f8997d843ad9}\label{pane_8c_a9a52edf8fe5dc0b0df72f8997d843ad9}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+add}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+add}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+add()}{tym\_i\_pane\_add()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+add (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 64 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a8e89812e35d112523e090330da9b855c}\label{pane_8c_a8e89812e35d112523e090330da9b855c}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+focus@{tym\+\_\+i\+\_\+pane\+\_\+focus}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+focus@{tym\+\_\+i\+\_\+pane\+\_\+focus}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+focus()}{tym\_i\_pane\_focus()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+focus (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 87 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a5221d9602ef28414eafd39e504963824}\label{pane_8c_a5221d9602ef28414eafd39e504963824}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+get@{tym\+\_\+i\+\_\+pane\+\_\+get}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+get@{tym\+\_\+i\+\_\+pane\+\_\+get}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+get()}{tym\_i\_pane\_get()}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ tym\+\_\+i\+\_\+pane\+\_\+get (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 78 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a17684496690df263db892f70ca607581}\label{pane_8c_a17684496690df263db892f70ca607581}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines@{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines@{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines()}{tym\_i\_pane\_insert\_delete\_lines()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{unsigned}]{y,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line 447 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_aba2890508b27cf0889471661d1c6af9d}\label{pane_8c_aba2890508b27cf0889471661d1c6af9d}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+remove}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+remove}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+remove()}{tym\_i\_pane\_remove()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 124 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a42f9aa76052d765c1a8d17ce36081d38}\label{pane_8c_a42f9aa76052d765c1a8d17ce36081d38}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add()}{tym\_i\_pane\_resize\_handler\_add()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{const struct \hyperlink{structtym__i__handler__ptr__pair}{tym\+\_\+i\+\_\+handler\+\_\+ptr\+\_\+pair} $\ast$}]{cp }\end{DoxyParamCaption})}
+
+
+
+Definition at line 56 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_ad9cd28579052b67c07b511440aa02818}\label{pane_8c_ad9cd28579052b67c07b511440aa02818}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove()}{tym\_i\_pane\_resize\_handler\_remove()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{size\+\_\+t}]{entry }\end{DoxyParamCaption})}
+
+
+
+Definition at line 60 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a16ea902d270c2c491ef844f36094593a}\label{pane_8c_a16ea902d270c2c491ef844f36094593a}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position()}{tym\_i\_pane\_set\_cursor\_position()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}}]{pm\+\_\+x,  }\item[{long long}]{x,  }\item[{enum \hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode}}]{smm\+\_\+y,  }\item[{enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}}]{pm\+\_\+y,  }\item[{long long}]{y,  }\item[{enum \hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour}}]{srb,  }\item[{bool}]{allow\+\_\+cursor\+\_\+on\+\_\+right\+\_\+edge }\end{DoxyParamCaption})}
+
+This function sets the cursor position \& handles bound checks and scrolling if necessary. This functions is split into 4 steps\+: 1) Calculate absolute desired position in pane based on given coordinate (x,y) and what these relate to (pm\+\_\+x,pm\+\_\+y) 2) What are the boundaries for our cursor movement? 3) Do we need to scroll the scrolling region? 4) Clamp the cursor coordinates to the boundary it\textquotesingle{}s allowed in \& finally set the cursor position. 
+
+Definition at line 270 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_ad6f6a2cec0e3ae38672b9b666e7ef3b3}\label{pane_8c_ad6f6a2cec0e3ae38672b9b666e7ef3b3}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen()}{tym\_i\_pane\_set\_screen()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen}}]{screen }\end{DoxyParamCaption})}
+
+
+
+Definition at line 454 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a4e67642bf9320199e9068d95087f05a5}\label{pane_8c_a4e67642bf9320199e9068d95087f05a5}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor()}{tym\_i\_pane\_update\_cursor()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 104 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_ad9e25466cfc39e1d3ea7cf9ccec7269c}\label{pane_8c_ad9e25466cfc39e1d3ea7cf9ccec7269c}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size()}{tym\_i\_pane\_update\_size()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a6eadb6f57165b1abfe26fb75509849b3}\label{pane_8c_a6eadb6f57165b1abfe26fb75509849b3}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all()}{tym\_i\_pane\_update\_size\_all()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 111 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a8b71e8d9a717ea27bb6259ee0e8a4e88}\label{pane_8c_a8b71e8d9a717ea27bb6259ee0e8a4e88}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region}}
+\index{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region()}{tym\_i\_scroll\_def\_scrolling\_region()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{unsigned}]{top,  }\item[{unsigned}]{bottom,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line 431 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_aad9884b3ebe4ee6d0e17925703bed513}\label{pane_8c_aad9884b3ebe4ee6d0e17925703bed513}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region}}
+\index{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region()}{tym\_i\_scroll\_scrolling\_region()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line 442 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a957d3155520a3720827f9b76c1407cda}\label{pane_8c_a957d3155520a3720827f9b76c1407cda}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+create@{tym\+\_\+pane\+\_\+create}}
+\index{tym\+\_\+pane\+\_\+create@{tym\+\_\+pane\+\_\+create}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+create()}{tym\_pane\_create()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+create (\begin{DoxyParamCaption}\item[{const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict}]{super\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 137 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_ab734f1177040e7ad662a503fdd55b6b1}\label{pane_8c_ab734f1177040e7ad662a503fdd55b6b1}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+destroy@{tym\+\_\+pane\+\_\+destroy}}
+\index{tym\+\_\+pane\+\_\+destroy@{tym\+\_\+pane\+\_\+destroy}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+destroy()}{tym\_pane\_destroy()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+destroy (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 238 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a3e533d7a5376aaf6667b92540c7d3fce}\label{pane_8c_a3e533d7a5376aaf6667b92540c7d3fce}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+get\+\_\+slavefd@{tym\+\_\+pane\+\_\+get\+\_\+slavefd}}
+\index{tym\+\_\+pane\+\_\+get\+\_\+slavefd@{tym\+\_\+pane\+\_\+get\+\_\+slavefd}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+get\+\_\+slavefd()}{tym\_pane\_get\_slavefd()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+get\+\_\+slavefd (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 412 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_aa133cb1aadbd1fe0b30038de451ee44c}\label{pane_8c_aa133cb1aadbd1fe0b30038de451ee44c}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+reset@{tym\+\_\+pane\+\_\+reset}}
+\index{tym\+\_\+pane\+\_\+reset@{tym\+\_\+pane\+\_\+reset}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+reset()}{tym\_pane\_reset()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+reset (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 463 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a4d39024d897690ee926d4812f16451e8}\label{pane_8c_a4d39024d897690ee926d4812f16451e8}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+resize@{tym\+\_\+pane\+\_\+resize}}
+\index{tym\+\_\+pane\+\_\+resize@{tym\+\_\+pane\+\_\+resize}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+resize()}{tym\_pane\_resize()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+resize (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict}]{super\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 369 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a0fc757b137228b81d19ef0f8e297ab4e}\label{pane_8c_a0fc757b137228b81d19ef0f8e297ab4e}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+send\+\_\+key@{tym\+\_\+pane\+\_\+send\+\_\+key}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+key@{tym\+\_\+pane\+\_\+send\+\_\+key}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+key()}{tym\_pane\_send\_key()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+key (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{int\+\_\+least16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Definition at line 476 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_ad712d7c00a8e814b9ca82985bfacde6d}\label{pane_8c_ad712d7c00a8e814b9ca82985bfacde6d}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+send\+\_\+keys@{tym\+\_\+pane\+\_\+send\+\_\+keys}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+keys@{tym\+\_\+pane\+\_\+send\+\_\+keys}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+keys()}{tym\_pane\_send\_keys()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+keys (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{size\+\_\+t}]{count,  }\item[{const int\+\_\+least16\+\_\+t}]{keys\mbox{[}count\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 496 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a6e99c2fe46f5540b18b6391eaffecbb7}\label{pane_8c_a6e99c2fe46f5540b18b6391eaffecbb7}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event@{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event@{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event()}{tym\_pane\_send\_mouse\_event()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button}}]{button,  }\item[{const struct \hyperlink{structtym__super__position}{tym\+\_\+super\+\_\+position} $\ast$restrict}]{position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 551 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a30d947aa7d53f9b997000d74e8a95526}\label{pane_8c_a30d947aa7d53f9b997000d74e8a95526}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name@{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name@{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name()}{tym\_pane\_send\_special\_key\_by\_name()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{const char $\ast$}]{key\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 536 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a649e4ba707bc2cd4371fb3119e1bd2b4}\label{pane_8c_a649e4ba707bc2cd4371fb3119e1bd2b4}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+set\+\_\+env@{tym\+\_\+pane\+\_\+set\+\_\+env}}
+\index{tym\+\_\+pane\+\_\+set\+\_\+env@{tym\+\_\+pane\+\_\+set\+\_\+env}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+set\+\_\+env()}{tym\_pane\_set\_env()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+set\+\_\+env (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 389 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_ade90966292fc278bc68c8da84697b6e9}\label{pane_8c_ade90966292fc278bc68c8da84697b6e9}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+pane\+\_\+type@{tym\+\_\+pane\+\_\+type}}
+\index{tym\+\_\+pane\+\_\+type@{tym\+\_\+pane\+\_\+type}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+type()}{tym\_pane\_type()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+type (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{size\+\_\+t}]{count,  }\item[{const char}]{keys\mbox{[}count\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 516 of file pane.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{pane_8c_a40f7e2f9604f9a41eec52d705bc46bd4}\label{pane_8c_a40f7e2f9604f9a41eec52d705bc46bd4}} 
+\index{pane.\+c@{pane.\+c}!default\+\_\+character\+\_\+format@{default\+\_\+character\+\_\+format}}
+\index{default\+\_\+character\+\_\+format@{default\+\_\+character\+\_\+format}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{default\+\_\+character\+\_\+format}{default\_character\_format}}
+{\footnotesize\ttfamily const struct \hyperlink{structtym__i__character__format}{tym\+\_\+i\+\_\+character\+\_\+format} default\+\_\+character\+\_\+format}
+
+
+
+Definition at line 24 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a9e55bb069a4098b5f27957835fd12343}\label{pane_8c_a9e55bb069a4098b5f27957835fd12343}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+focus\+\_\+pane@{tym\+\_\+i\+\_\+focus\+\_\+pane}}
+\index{tym\+\_\+i\+\_\+focus\+\_\+pane@{tym\+\_\+i\+\_\+focus\+\_\+pane}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+focus\+\_\+pane}{tym\_i\_focus\_pane}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ tym\+\_\+i\+\_\+focus\+\_\+pane}
+
+
+
+Definition at line 23 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_a42a5fe9e3107c52ce2a39123df27982a}\label{pane_8c_a42a5fe9e3107c52ce2a39123df27982a}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}{tym\_i\_pane\_list\_end}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}
+
+
+
+Definition at line 22 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8c_ad5d253b24939072248af42baa6d7d491}\label{pane_8c_ad5d253b24939072248af42baa6d7d491}} 
+\index{pane.\+c@{pane.\+c}!tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}!pane.\+c@{pane.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}{tym\_i\_pane\_list\_start}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}
+
+
+
+Definition at line 22 of file pane.\+c.
+

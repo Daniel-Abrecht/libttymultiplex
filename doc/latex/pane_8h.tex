@@ -1,0 +1,740 @@
+\hypertarget{pane_8h}{}\section{include/internal/pane.h File Reference}
+\label{pane_8h}\index{include/internal/pane.\+h@{include/internal/pane.\+h}}
+{\ttfamily \#include $<$poll.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$termios.\+h$>$}\newline
+{\ttfamily \#include $<$internal/utf8.\+h$>$}\newline
+{\ttfamily \#include $<$internal/charset.\+h$>$}\newline
+{\ttfamily \#include $<$libttymultiplex.\+h$>$}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__i__handler__ptr__pair}{tym\+\_\+i\+\_\+handler\+\_\+ptr\+\_\+pair}
+\item 
+struct \hyperlink{structtym__i__sequence__state}{tym\+\_\+i\+\_\+sequence\+\_\+state}
+\item 
+struct \hyperlink{structtym__i__termcolor}{tym\+\_\+i\+\_\+termcolor}
+\item 
+struct \hyperlink{structtym__i__character__format}{tym\+\_\+i\+\_\+character\+\_\+format}
+\item 
+struct \hyperlink{structtym__i__cell__position}{tym\+\_\+i\+\_\+cell\+\_\+position}
+\item 
+union \hyperlink{uniontym__i__character__data}{tym\+\_\+i\+\_\+character\+\_\+data}
+\item 
+struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character}
+\item 
+struct \hyperlink{structtym__i__pane__screen__state}{tym\+\_\+i\+\_\+pane\+\_\+screen\+\_\+state}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen} \{ \newline
+\hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761a409756eb7382caa877c8181779c66cb1}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+D\+E\+F\+A\+U\+LT}, 
+\newline
+\hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761a4419cdc3114852a26dda73dc171b582c}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+A\+L\+T\+E\+R\+N\+A\+TE}, 
+\newline
+\hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761a4675b455ce9ebdc1c317e91e0c66e5e0}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT}
+ \}
+\item 
+enum \{ \newline
+\hyperlink{pane_8h_a726ca809ffd3d67ab4b8476646f26635ac35729e5f4e19e4337cbf8691369ae11}{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+S\+E\+Q\+\_\+\+L\+EN} = 256, 
+\newline
+\hyperlink{pane_8h_a726ca809ffd3d67ab4b8476646f26635a084f298d7fdbb074cc4551357c23d567}{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+I\+N\+T\+\_\+\+C\+O\+U\+NT} = 12
+ \}
+\item 
+enum \{ \hyperlink{pane_8h_a0411cd49bb5b71852cecd93bcbf0ca2da4d2fa1719aa429e38bbd477d3a38634b}{T\+Y\+M\+\_\+\+I\+\_\+\+G\+\_\+\+C\+H\+A\+R\+S\+E\+T\+\_\+\+C\+O\+U\+NT} =4
+ \}
+\item 
+enum \hyperlink{pane_8h_afec42adba111d829539aa660cfd36619}{tym\+\_\+i\+\_\+keypad\+\_\+mode} \{ \newline
+\hyperlink{pane_8h_afec42adba111d829539aa660cfd36619a78e3536bde56b3d8ff1f903b85a4e787}{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}, 
+\newline
+\hyperlink{pane_8h_afec42adba111d829539aa660cfd36619a0b1b402064eb11569f243ebe657b2f1a}{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON}
+ \}
+\item 
+enum \hyperlink{pane_8h_af72f527ead3cfb25d576d72dba239ba9}{tym\+\_\+i\+\_\+cursor\+\_\+key\+\_\+mode} \{ \newline
+\hyperlink{pane_8h_af72f527ead3cfb25d576d72dba239ba9a316dd6a01aacddb340e1d845eaf8c076}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}, 
+\newline
+\hyperlink{pane_8h_af72f527ead3cfb25d576d72dba239ba9a08e9f6fb21a307ab338d4936103f3beb}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON}
+ \}
+\item 
+enum \hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4}{mouse\+\_\+mode} \{ \newline
+\hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a5f2cebe7ae4f8e57e467a0d14a2f27d5}{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+O\+FF}, 
+\newline
+\hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a2132463f404b905d240b170b4bb0eb43}{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10}, 
+\newline
+\hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4ac3bbda346a37fadd3a0641203e86e62a}{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON}, 
+\newline
+\hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a7355be0af8d4f92174f251a28b52a683}{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}, 
+\newline
+\hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4ac44254cb19e7c4320bc2bec3a90f9881}{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY}
+ \}
+\item 
+enum \hyperlink{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8}{tym\+\_\+i\+\_\+setmode} \{ \newline
+\hyperlink{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a846284732910efbb761ddad139d28e53}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+K\+E\+Y\+B\+O\+A\+R\+D\+\_\+\+A\+C\+T\+I\+ON}, 
+\newline
+\hyperlink{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a6fd80007a7ce18912a8c84e8f0c13696}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+I\+N\+S\+E\+RT}, 
+\newline
+\hyperlink{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a7997c0991bd3691efbeb668351aee7fa}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+S\+E\+N\+D\+\_\+\+R\+E\+C\+E\+I\+VE}, 
+\newline
+\hyperlink{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a0592e54959049568edfe0e3ce141e751}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+N\+E\+W\+L\+I\+NE}
+ \}
+\item 
+enum \hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5}{tym\+\_\+i\+\_\+decset\+\_\+decres} \{ \newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a7038f7121653b635a08586469acd2770}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+YS} = 1, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a9b76c19668d995916593935d54a67f02}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE} = 6, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5ac3e88c9c9e9499b1f878eb2e3d5868f5}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+U\+T\+O\+\_\+\+W\+R\+A\+P\+\_\+\+M\+O\+DE} = 7, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a9e99f24c84e660bdff3282d53c2bc98b}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10} = 9, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a7cd69099ba03ad22c41e2a3d2b8b7a05}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+1} = 47, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a27cc648ceda31662dd5f8adc9ecfac5d}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+K\+E\+Y\+P\+AD} = 66, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a1c0edff671062be11cbb030dbc3cf75a}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL} = 1000, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a84adbc1bf32f1df59056161a5135adc0}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON} = 1002, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a035d0733a44ffc8e7ec79175349394ff}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY} = 1003, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a03c6b16c7a177d70784ba88e1b5efeaa}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+2} = 1047, 
+\newline
+\hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5afec13e43cf77a9fae40268c108edd45f}{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+3} = 1049
+ \}
+\item 
+enum \hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654}{tym\+\_\+i\+\_\+character\+\_\+attribute} \{ \newline
+\hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654a9bf446bc2b99faba1bb56880a90a740c}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+D\+E\+F\+A\+U\+LT} = 0, 
+\newline
+\hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654a6d66b1debb1e8258f1b6a211c680aca4}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+O\+LD} = 1$<$$<$0, 
+\newline
+\hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654a57fcad083c86fe51cc6bee3921a20162}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+U\+N\+D\+E\+R\+L\+I\+NE} = 1$<$$<$1, 
+\newline
+\hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654afe9bcc960ff32437cc758b23e66af876}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+L\+I\+NK} = 1$<$$<$2, 
+\newline
+\hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654a4b6a7d012e06b551d4ad401925ac472c}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+E\+R\+SE} = 1$<$$<$3, 
+\newline
+\hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654af72481b265f173a8f13a68901dbd8fcf}{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+I\+S\+I\+B\+LE} = 1$<$$<$4
+ \}
+\item 
+enum \hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour} \{ \newline
+\hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7a0a64e50c43bd2b056773417a678abbe3}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+L\+O\+C\+K\+I\+N\+\_\+\+I\+N\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE}, 
+\newline
+\hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7af8987fbbc54299e8378871cfdc1bca51}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+I\+R\+R\+E\+L\+E\+V\+A\+NT}, 
+\newline
+\hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7a87cfadf0b6d5ff55c30c45dfa1417ded}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+U\+N\+C\+R\+O\+S\+S\+A\+B\+LE}
+ \}
+\item 
+enum \hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode} \{ \newline
+\hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2acec5281566ecefed4ac91363df2a0173}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+N\+O\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG}, 
+\newline
+\hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2a4c625cfff5440ac500a010527e167113}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+F\+O\+R\+W\+A\+R\+D\+\_\+\+O\+N\+LY}, 
+\newline
+\hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2a92efb1d252f4a45dde0e4d0922ef96cb}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+B\+A\+C\+K\+W\+A\+R\+D\+\_\+\+O\+N\+LY}, 
+\newline
+\hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2aa564e69b48c6176ccbe17b0b93f91787}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+U\+N\+R\+E\+S\+T\+R\+I\+C\+T\+E\+D\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG}
+ \}
+\item 
+enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode} \{ \newline
+\hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5eda760534f30219fa773f4f118a4289250b}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+A\+B\+S\+O\+L\+U\+TE}, 
+\newline
+\hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5eda20d8bdc09bec874ad12d7499b756c363}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+R\+E\+L\+A\+T\+I\+VE}, 
+\newline
+\hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5eda0178ee596102cdfa383d7fe08019df92}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+R\+E\+L\+A\+T\+I\+VE}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{pane_8h_a702a394752738cea696cce9fee08a465}{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8} (struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character} character)
+\item 
+void \hyperlink{pane_8h_a6eadb6f57165b1abfe26fb75509849b3}{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all} (void)
+\item 
+void \hyperlink{pane_8h_ad9e25466cfc39e1d3ea7cf9ccec7269c}{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+int \hyperlink{pane_8h_a42f9aa76052d765c1a8d17ce36081d38}{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, const struct \hyperlink{structtym__i__handler__ptr__pair}{tym\+\_\+i\+\_\+handler\+\_\+ptr\+\_\+pair} $\ast$cp)
+\item 
+int \hyperlink{pane_8h_ad9cd28579052b67c07b511440aa02818}{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, size\+\_\+t entry)
+\item 
+void \hyperlink{pane_8h_a9a52edf8fe5dc0b0df72f8997d843ad9}{tym\+\_\+i\+\_\+pane\+\_\+add} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8h_a5221d9602ef28414eafd39e504963824}{tym\+\_\+i\+\_\+pane\+\_\+get} (int pane)
+\item 
+void \hyperlink{pane_8h_a0000fa2741bb0aa1ad0f67ddb05d424b}{tym\+\_\+i\+\_\+pane\+\_\+parse} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, unsigned char c)
+\item 
+void \hyperlink{pane_8h_aba2890508b27cf0889471661d1c6af9d}{tym\+\_\+i\+\_\+pane\+\_\+remove} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+int \hyperlink{pane_8h_a8e89812e35d112523e090330da9b855c}{tym\+\_\+i\+\_\+pane\+\_\+focus} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+void \hyperlink{pane_8h_a4e67642bf9320199e9068d95087f05a5}{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\item 
+int \hyperlink{pane_8h_ad6f6a2cec0e3ae38672b9b666e7ef3b3}{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen} screen)
+\item 
+int \hyperlink{pane_8h_a8b71e8d9a717ea27bb6259ee0e8a4e88}{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, unsigned top, unsigned bottom, int n)
+\item 
+int \hyperlink{pane_8h_aad9884b3ebe4ee6d0e17925703bed513}{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, int n)
+\item 
+int \hyperlink{pane_8h_a17684496690df263db892f70ca607581}{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, unsigned y, int n)
+\item 
+void \hyperlink{pane_8h_a476af5a041feb9f060df77976e171746}{tym\+\_\+i\+\_\+perror} (const char $\ast$)
+\item 
+int \hyperlink{pane_8h_a16ea902d270c2c491ef844f36094593a}{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode} pm\+\_\+x, long long x, enum \hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode} smm\+\_\+y, enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode} pm\+\_\+y, long long y, enum \hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour} srb, bool allow\+\_\+cursor\+\_\+on\+\_\+right\+\_\+edge)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8h_ad5d253b24939072248af42baa6d7d491}{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8h_a42a5fe9e3107c52ce2a39123df27982a}{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{pane_8h_a9e55bb069a4098b5f27957835fd12343}{tym\+\_\+i\+\_\+focus\+\_\+pane}
+\item 
+const struct \hyperlink{structtym__i__character__format}{tym\+\_\+i\+\_\+character\+\_\+format} \hyperlink{pane_8h_a40f7e2f9604f9a41eec52d705bc46bd4}{default\+\_\+character\+\_\+format}
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{pane_8h_a726ca809ffd3d67ab4b8476646f26635}\label{pane_8h_a726ca809ffd3d67ab4b8476646f26635}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+S\+E\+Q\+\_\+\+L\+EN@{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+S\+E\+Q\+\_\+\+L\+EN}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+S\+E\+Q\+\_\+\+L\+EN@{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+S\+E\+Q\+\_\+\+L\+EN}}}\mbox{\Hypertarget{pane_8h_a726ca809ffd3d67ab4b8476646f26635ac35729e5f4e19e4337cbf8691369ae11}\label{pane_8h_a726ca809ffd3d67ab4b8476646f26635ac35729e5f4e19e4337cbf8691369ae11}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+S\+E\+Q\+\_\+\+L\+EN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+I\+N\+T\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+I\+N\+T\+\_\+\+C\+O\+U\+NT}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+I\+N\+T\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+I\+N\+T\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{pane_8h_a726ca809ffd3d67ab4b8476646f26635a084f298d7fdbb074cc4551357c23d567}\label{pane_8h_a726ca809ffd3d67ab4b8476646f26635a084f298d7fdbb074cc4551357c23d567}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+M\+A\+X\+\_\+\+I\+N\+T\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 27 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_a0411cd49bb5b71852cecd93bcbf0ca2d}\label{pane_8h_a0411cd49bb5b71852cecd93bcbf0ca2d}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+G\+\_\+\+C\+H\+A\+R\+S\+E\+T\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+G\+\_\+\+C\+H\+A\+R\+S\+E\+T\+\_\+\+C\+O\+U\+NT}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+G\+\_\+\+C\+H\+A\+R\+S\+E\+T\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+G\+\_\+\+C\+H\+A\+R\+S\+E\+T\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{pane_8h_a0411cd49bb5b71852cecd93bcbf0ca2da4d2fa1719aa429e38bbd477d3a38634b}\label{pane_8h_a0411cd49bb5b71852cecd93bcbf0ca2da4d2fa1719aa429e38bbd477d3a38634b}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+G\+\_\+\+C\+H\+A\+R\+S\+E\+T\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 42 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4}\label{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4}} 
+\index{pane.\+h@{pane.\+h}!mouse\+\_\+mode@{mouse\+\_\+mode}}
+\index{mouse\+\_\+mode@{mouse\+\_\+mode}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{mouse\+\_\+mode}{mouse\_mode}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4}{mouse\+\_\+mode}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+O\+FF@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+O\+FF}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+O\+FF@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+O\+FF}}}\mbox{\Hypertarget{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a5f2cebe7ae4f8e57e467a0d14a2f27d5}\label{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a5f2cebe7ae4f8e57e467a0d14a2f27d5}} 
+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+O\+FF&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10}}}\mbox{\Hypertarget{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a2132463f404b905d240b170b4bb0eb43}\label{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a2132463f404b905d240b170b4bb0eb43}} 
+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON}}}\mbox{\Hypertarget{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4ac3bbda346a37fadd3a0641203e86e62a}\label{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4ac3bbda346a37fadd3a0641203e86e62a}} 
+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}}}\mbox{\Hypertarget{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a7355be0af8d4f92174f251a28b52a683}\label{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4a7355be0af8d4f92174f251a28b52a683}} 
+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY@{M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY}}}\mbox{\Hypertarget{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4ac44254cb19e7c4320bc2bec3a90f9881}\label{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4ac44254cb19e7c4320bc2bec3a90f9881}} 
+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 54 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_ac6609b89967e8b2b9e46a1630a260654}\label{pane_8h_ac6609b89967e8b2b9e46a1630a260654}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+character\+\_\+attribute@{tym\+\_\+i\+\_\+character\+\_\+attribute}}
+\index{tym\+\_\+i\+\_\+character\+\_\+attribute@{tym\+\_\+i\+\_\+character\+\_\+attribute}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+character\+\_\+attribute}{tym\_i\_character\_attribute}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_ac6609b89967e8b2b9e46a1630a260654}{tym\+\_\+i\+\_\+character\+\_\+attribute}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+D\+E\+F\+A\+U\+LT@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+D\+E\+F\+A\+U\+LT}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+D\+E\+F\+A\+U\+LT@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+D\+E\+F\+A\+U\+LT}}}\mbox{\Hypertarget{pane_8h_ac6609b89967e8b2b9e46a1630a260654a9bf446bc2b99faba1bb56880a90a740c}\label{pane_8h_ac6609b89967e8b2b9e46a1630a260654a9bf446bc2b99faba1bb56880a90a740c}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+D\+E\+F\+A\+U\+LT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+O\+LD@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+O\+LD}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+O\+LD@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+O\+LD}}}\mbox{\Hypertarget{pane_8h_ac6609b89967e8b2b9e46a1630a260654a6d66b1debb1e8258f1b6a211c680aca4}\label{pane_8h_ac6609b89967e8b2b9e46a1630a260654a6d66b1debb1e8258f1b6a211c680aca4}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+O\+LD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+U\+N\+D\+E\+R\+L\+I\+NE@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+U\+N\+D\+E\+R\+L\+I\+NE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+U\+N\+D\+E\+R\+L\+I\+NE@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+U\+N\+D\+E\+R\+L\+I\+NE}}}\mbox{\Hypertarget{pane_8h_ac6609b89967e8b2b9e46a1630a260654a57fcad083c86fe51cc6bee3921a20162}\label{pane_8h_ac6609b89967e8b2b9e46a1630a260654a57fcad083c86fe51cc6bee3921a20162}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+U\+N\+D\+E\+R\+L\+I\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+L\+I\+NK@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+L\+I\+NK}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+L\+I\+NK@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+L\+I\+NK}}}\mbox{\Hypertarget{pane_8h_ac6609b89967e8b2b9e46a1630a260654afe9bcc960ff32437cc758b23e66af876}\label{pane_8h_ac6609b89967e8b2b9e46a1630a260654afe9bcc960ff32437cc758b23e66af876}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+B\+L\+I\+NK&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+E\+R\+SE@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+E\+R\+SE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+E\+R\+SE@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+E\+R\+SE}}}\mbox{\Hypertarget{pane_8h_ac6609b89967e8b2b9e46a1630a260654a4b6a7d012e06b551d4ad401925ac472c}\label{pane_8h_ac6609b89967e8b2b9e46a1630a260654a4b6a7d012e06b551d4ad401925ac472c}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+E\+R\+SE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+I\+S\+I\+B\+LE@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+I\+S\+I\+B\+LE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+I\+S\+I\+B\+LE@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+I\+S\+I\+B\+LE}}}\mbox{\Hypertarget{pane_8h_ac6609b89967e8b2b9e46a1630a260654af72481b265f173a8f13a68901dbd8fcf}\label{pane_8h_ac6609b89967e8b2b9e46a1630a260654af72481b265f173a8f13a68901dbd8fcf}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+A\+\_\+\+I\+N\+V\+I\+S\+I\+B\+LE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 94 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_af72f527ead3cfb25d576d72dba239ba9}\label{pane_8h_af72f527ead3cfb25d576d72dba239ba9}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+cursor\+\_\+key\+\_\+mode@{tym\+\_\+i\+\_\+cursor\+\_\+key\+\_\+mode}}
+\index{tym\+\_\+i\+\_\+cursor\+\_\+key\+\_\+mode@{tym\+\_\+i\+\_\+cursor\+\_\+key\+\_\+mode}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+cursor\+\_\+key\+\_\+mode}{tym\_i\_cursor\_key\_mode}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_af72f527ead3cfb25d576d72dba239ba9}{tym\+\_\+i\+\_\+cursor\+\_\+key\+\_\+mode}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}}}\mbox{\Hypertarget{pane_8h_af72f527ead3cfb25d576d72dba239ba9a316dd6a01aacddb340e1d845eaf8c076}\label{pane_8h_af72f527ead3cfb25d576d72dba239ba9a316dd6a01aacddb340e1d845eaf8c076}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON}}}\mbox{\Hypertarget{pane_8h_af72f527ead3cfb25d576d72dba239ba9a08e9f6fb21a307ab338d4936103f3beb}\label{pane_8h_af72f527ead3cfb25d576d72dba239ba9a08e9f6fb21a307ab338d4936103f3beb}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 49 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+decset\+\_\+decres@{tym\+\_\+i\+\_\+decset\+\_\+decres}}
+\index{tym\+\_\+i\+\_\+decset\+\_\+decres@{tym\+\_\+i\+\_\+decset\+\_\+decres}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+decset\+\_\+decres}{tym\_i\_decset\_decres}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_ab841f5a0cd7d9130a232a6461a376de5}{tym\+\_\+i\+\_\+decset\+\_\+decres}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+YS@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+YS}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+YS@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+YS}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a7038f7121653b635a08586469acd2770}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a7038f7121653b635a08586469acd2770}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+C\+U\+R\+S\+O\+R\+\_\+\+K\+E\+YS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a9b76c19668d995916593935d54a67f02}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a9b76c19668d995916593935d54a67f02}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+U\+T\+O\+\_\+\+W\+R\+A\+P\+\_\+\+M\+O\+DE@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+U\+T\+O\+\_\+\+W\+R\+A\+P\+\_\+\+M\+O\+DE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+U\+T\+O\+\_\+\+W\+R\+A\+P\+\_\+\+M\+O\+DE@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+U\+T\+O\+\_\+\+W\+R\+A\+P\+\_\+\+M\+O\+DE}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5ac3e88c9c9e9499b1f878eb2e3d5868f5}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5ac3e88c9c9e9499b1f878eb2e3d5868f5}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+U\+T\+O\+\_\+\+W\+R\+A\+P\+\_\+\+M\+O\+DE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a9e99f24c84e660bdff3282d53c2bc98b}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a9e99f24c84e660bdff3282d53c2bc98b}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+X10&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+1@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+1}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+1@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+1}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a7cd69099ba03ad22c41e2a3d2b8b7a05}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a7cd69099ba03ad22c41e2a3d2b8b7a05}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+1&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+K\+E\+Y\+P\+AD@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+K\+E\+Y\+P\+AD}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+K\+E\+Y\+P\+AD@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+K\+E\+Y\+P\+AD}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a27cc648ceda31662dd5f8adc9ecfac5d}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a27cc648ceda31662dd5f8adc9ecfac5d}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+O\+N\+\_\+\+K\+E\+Y\+P\+AD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a1c0edff671062be11cbb030dbc3cf75a}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a1c0edff671062be11cbb030dbc3cf75a}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a84adbc1bf32f1df59056161a5135adc0}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a84adbc1bf32f1df59056161a5135adc0}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+B\+U\+T\+T\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a035d0733a44ffc8e7ec79175349394ff}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a035d0733a44ffc8e7ec79175349394ff}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+M\+O\+U\+S\+E\+\_\+\+M\+O\+D\+E\+\_\+\+A\+NY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+2@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+2}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+2@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+2}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a03c6b16c7a177d70784ba88e1b5efeaa}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5a03c6b16c7a177d70784ba88e1b5efeaa}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+2&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+3@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+3}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+3@{T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+3}}}\mbox{\Hypertarget{pane_8h_ab841f5a0cd7d9130a232a6461a376de5afec13e43cf77a9fae40268c108edd45f}\label{pane_8h_ab841f5a0cd7d9130a232a6461a376de5afec13e43cf77a9fae40268c108edd45f}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+D\+S\+D\+R\+\_\+\+A\+L\+T\+E\+R\+N\+A\+T\+E\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+3&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 69 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_afec42adba111d829539aa660cfd36619}\label{pane_8h_afec42adba111d829539aa660cfd36619}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+keypad\+\_\+mode@{tym\+\_\+i\+\_\+keypad\+\_\+mode}}
+\index{tym\+\_\+i\+\_\+keypad\+\_\+mode@{tym\+\_\+i\+\_\+keypad\+\_\+mode}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+keypad\+\_\+mode}{tym\_i\_keypad\_mode}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_afec42adba111d829539aa660cfd36619}{tym\+\_\+i\+\_\+keypad\+\_\+mode}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL@{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL}}}\mbox{\Hypertarget{pane_8h_afec42adba111d829539aa660cfd36619a78e3536bde56b3d8ff1f903b85a4e787}\label{pane_8h_afec42adba111d829539aa660cfd36619a78e3536bde56b3d8ff1f903b85a4e787}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+N\+O\+R\+M\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON}}}\mbox{\Hypertarget{pane_8h_afec42adba111d829539aa660cfd36619a0b1b402064eb11569f243ebe657b2f1a}\label{pane_8h_afec42adba111d829539aa660cfd36619a0b1b402064eb11569f243ebe657b2f1a}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+K\+E\+Y\+P\+A\+D\+\_\+\+M\+O\+D\+E\+\_\+\+A\+P\+P\+L\+I\+C\+A\+T\+I\+ON&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 44 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_a49f1d9b192f4f01ff444123abde24761}\label{pane_8h_a49f1d9b192f4f01ff444123abde24761}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+screen@{tym\+\_\+i\+\_\+pane\+\_\+screen}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+screen@{tym\+\_\+i\+\_\+pane\+\_\+screen}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+screen}{tym\_i\_pane\_screen}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+D\+E\+F\+A\+U\+LT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+D\+E\+F\+A\+U\+LT}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+D\+E\+F\+A\+U\+LT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+D\+E\+F\+A\+U\+LT}}}\mbox{\Hypertarget{pane_8h_a49f1d9b192f4f01ff444123abde24761a409756eb7382caa877c8181779c66cb1}\label{pane_8h_a49f1d9b192f4f01ff444123abde24761a409756eb7382caa877c8181779c66cb1}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+D\+E\+F\+A\+U\+LT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+A\+L\+T\+E\+R\+N\+A\+TE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+A\+L\+T\+E\+R\+N\+A\+TE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+A\+L\+T\+E\+R\+N\+A\+TE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+A\+L\+T\+E\+R\+N\+A\+TE}}}\mbox{\Hypertarget{pane_8h_a49f1d9b192f4f01ff444123abde24761a4419cdc3114852a26dda73dc171b582c}\label{pane_8h_a49f1d9b192f4f01ff444123abde24761a4419cdc3114852a26dda73dc171b582c}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+A\+L\+T\+E\+R\+N\+A\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{pane_8h_a49f1d9b192f4f01ff444123abde24761a4675b455ce9ebdc1c317e91e0c66e5e0}\label{pane_8h_a49f1d9b192f4f01ff444123abde24761a4675b455ce9ebdc1c317e91e0c66e5e0}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 21 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}\label{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode@{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}}
+\index{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode@{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}{tym\_i\_scp\_position\_mode}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+A\+B\+S\+O\+L\+U\+TE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+A\+B\+S\+O\+L\+U\+TE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+A\+B\+S\+O\+L\+U\+TE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+A\+B\+S\+O\+L\+U\+TE}}}\mbox{\Hypertarget{pane_8h_a45cffeaed5e67829ac783241e67cf5eda760534f30219fa773f4f118a4289250b}\label{pane_8h_a45cffeaed5e67829ac783241e67cf5eda760534f30219fa773f4f118a4289250b}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+A\+B\+S\+O\+L\+U\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+R\+E\+L\+A\+T\+I\+VE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+R\+E\+L\+A\+T\+I\+VE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+R\+E\+L\+A\+T\+I\+VE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+R\+E\+L\+A\+T\+I\+VE}}}\mbox{\Hypertarget{pane_8h_a45cffeaed5e67829ac783241e67cf5eda20d8bdc09bec874ad12d7499b756c363}\label{pane_8h_a45cffeaed5e67829ac783241e67cf5eda20d8bdc09bec874ad12d7499b756c363}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+R\+E\+L\+A\+T\+I\+VE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+R\+E\+L\+A\+T\+I\+VE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+R\+E\+L\+A\+T\+I\+VE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+R\+E\+L\+A\+T\+I\+VE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+R\+E\+L\+A\+T\+I\+VE}}}\mbox{\Hypertarget{pane_8h_a45cffeaed5e67829ac783241e67cf5eda0178ee596102cdfa383d7fe08019df92}\label{pane_8h_a45cffeaed5e67829ac783241e67cf5eda0178ee596102cdfa383d7fe08019df92}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+P\+M\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+R\+E\+L\+A\+T\+I\+VE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 190 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}\label{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour@{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour}}
+\index{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour@{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour}{tym\_i\_scp\_scroll\_region\_behaviour}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+L\+O\+C\+K\+I\+N\+\_\+\+I\+N\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+L\+O\+C\+K\+I\+N\+\_\+\+I\+N\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+L\+O\+C\+K\+I\+N\+\_\+\+I\+N\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+L\+O\+C\+K\+I\+N\+\_\+\+I\+N\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE}}}\mbox{\Hypertarget{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7a0a64e50c43bd2b056773417a678abbe3}\label{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7a0a64e50c43bd2b056773417a678abbe3}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+L\+O\+C\+K\+I\+N\+\_\+\+I\+N\+\_\+\+O\+R\+I\+G\+I\+N\+\_\+\+M\+O\+DE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+I\+R\+R\+E\+L\+E\+V\+A\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+I\+R\+R\+E\+L\+E\+V\+A\+NT}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+I\+R\+R\+E\+L\+E\+V\+A\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+I\+R\+R\+E\+L\+E\+V\+A\+NT}}}\mbox{\Hypertarget{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7af8987fbbc54299e8378871cfdc1bca51}\label{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7af8987fbbc54299e8378871cfdc1bca51}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+I\+R\+R\+E\+L\+E\+V\+A\+NT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+U\+N\+C\+R\+O\+S\+S\+A\+B\+LE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+U\+N\+C\+R\+O\+S\+S\+A\+B\+LE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+U\+N\+C\+R\+O\+S\+S\+A\+B\+LE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+U\+N\+C\+R\+O\+S\+S\+A\+B\+LE}}}\mbox{\Hypertarget{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7a87cfadf0b6d5ff55c30c45dfa1417ded}\label{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7a87cfadf0b6d5ff55c30c45dfa1417ded}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+C\+R\+O\+L\+L\+I\+N\+G\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+U\+N\+C\+R\+O\+S\+S\+A\+B\+LE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 179 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}\label{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode@{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode}}
+\index{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode@{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode}{tym\_i\_scp\_scrolling\_mode}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+N\+O\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+N\+O\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+N\+O\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+N\+O\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG}}}\mbox{\Hypertarget{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2acec5281566ecefed4ac91363df2a0173}\label{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2acec5281566ecefed4ac91363df2a0173}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+N\+O\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+F\+O\+R\+W\+A\+R\+D\+\_\+\+O\+N\+LY@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+F\+O\+R\+W\+A\+R\+D\+\_\+\+O\+N\+LY}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+F\+O\+R\+W\+A\+R\+D\+\_\+\+O\+N\+LY@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+F\+O\+R\+W\+A\+R\+D\+\_\+\+O\+N\+LY}}}\mbox{\Hypertarget{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2a4c625cfff5440ac500a010527e167113}\label{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2a4c625cfff5440ac500a010527e167113}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+F\+O\+R\+W\+A\+R\+D\+\_\+\+O\+N\+LY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+B\+A\+C\+K\+W\+A\+R\+D\+\_\+\+O\+N\+LY@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+B\+A\+C\+K\+W\+A\+R\+D\+\_\+\+O\+N\+LY}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+B\+A\+C\+K\+W\+A\+R\+D\+\_\+\+O\+N\+LY@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+B\+A\+C\+K\+W\+A\+R\+D\+\_\+\+O\+N\+LY}}}\mbox{\Hypertarget{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2a92efb1d252f4a45dde0e4d0922ef96cb}\label{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2a92efb1d252f4a45dde0e4d0922ef96cb}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+B\+A\+C\+K\+W\+A\+R\+D\+\_\+\+O\+N\+LY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+U\+N\+R\+E\+S\+T\+R\+I\+C\+T\+E\+D\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+U\+N\+R\+E\+S\+T\+R\+I\+C\+T\+E\+D\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+U\+N\+R\+E\+S\+T\+R\+I\+C\+T\+E\+D\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+U\+N\+R\+E\+S\+T\+R\+I\+C\+T\+E\+D\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG}}}\mbox{\Hypertarget{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2aa564e69b48c6176ccbe17b0b93f91787}\label{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2aa564e69b48c6176ccbe17b0b93f91787}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+P\+\_\+\+S\+M\+M\+\_\+\+U\+N\+R\+E\+S\+T\+R\+I\+C\+T\+E\+D\+\_\+\+S\+C\+R\+O\+L\+L\+I\+NG&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 184 of file pane.\+h.
+
+\mbox{\Hypertarget{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8}\label{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+setmode@{tym\+\_\+i\+\_\+setmode}}
+\index{tym\+\_\+i\+\_\+setmode@{tym\+\_\+i\+\_\+setmode}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+setmode}{tym\_i\_setmode}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8}{tym\+\_\+i\+\_\+setmode}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+K\+E\+Y\+B\+O\+A\+R\+D\+\_\+\+A\+C\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+K\+E\+Y\+B\+O\+A\+R\+D\+\_\+\+A\+C\+T\+I\+ON}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+K\+E\+Y\+B\+O\+A\+R\+D\+\_\+\+A\+C\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+K\+E\+Y\+B\+O\+A\+R\+D\+\_\+\+A\+C\+T\+I\+ON}}}\mbox{\Hypertarget{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a846284732910efbb761ddad139d28e53}\label{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a846284732910efbb761ddad139d28e53}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+K\+E\+Y\+B\+O\+A\+R\+D\+\_\+\+A\+C\+T\+I\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+I\+N\+S\+E\+RT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+I\+N\+S\+E\+RT}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+I\+N\+S\+E\+RT@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+I\+N\+S\+E\+RT}}}\mbox{\Hypertarget{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a6fd80007a7ce18912a8c84e8f0c13696}\label{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a6fd80007a7ce18912a8c84e8f0c13696}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+I\+N\+S\+E\+RT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+S\+E\+N\+D\+\_\+\+R\+E\+C\+E\+I\+VE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+S\+E\+N\+D\+\_\+\+R\+E\+C\+E\+I\+VE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+S\+E\+N\+D\+\_\+\+R\+E\+C\+E\+I\+VE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+S\+E\+N\+D\+\_\+\+R\+E\+C\+E\+I\+VE}}}\mbox{\Hypertarget{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a7997c0991bd3691efbeb668351aee7fa}\label{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a7997c0991bd3691efbeb668351aee7fa}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+S\+E\+N\+D\+\_\+\+R\+E\+C\+E\+I\+VE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+N\+E\+W\+L\+I\+NE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+N\+E\+W\+L\+I\+NE}!pane.\+h@{pane.\+h}}\index{pane.\+h@{pane.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+N\+E\+W\+L\+I\+NE@{T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+N\+E\+W\+L\+I\+NE}}}\mbox{\Hypertarget{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a0592e54959049568edfe0e3ce141e751}\label{pane_8h_afcbfb3852cbdd403c50de3ca6bf323d8a0592e54959049568edfe0e3ce141e751}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+S\+M\+\_\+\+A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+N\+E\+W\+L\+I\+NE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 62 of file pane.\+h.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{pane_8h_a702a394752738cea696cce9fee08a465}\label{pane_8h_a702a394752738cea696cce9fee08a465}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8@{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8}}
+\index{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8@{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8()}{tym\_i\_character\_is\_utf8()}}
+{\footnotesize\ttfamily bool tym\+\_\+i\+\_\+character\+\_\+is\+\_\+utf8 (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character}}]{character }\end{DoxyParamCaption})}
+
+
+
+Definition at line 26 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a9a52edf8fe5dc0b0df72f8997d843ad9}\label{pane_8h_a9a52edf8fe5dc0b0df72f8997d843ad9}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+add}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+add}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+add()}{tym\_i\_pane\_add()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+add (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 64 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a8e89812e35d112523e090330da9b855c}\label{pane_8h_a8e89812e35d112523e090330da9b855c}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+focus@{tym\+\_\+i\+\_\+pane\+\_\+focus}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+focus@{tym\+\_\+i\+\_\+pane\+\_\+focus}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+focus()}{tym\_i\_pane\_focus()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+focus (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 87 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a5221d9602ef28414eafd39e504963824}\label{pane_8h_a5221d9602ef28414eafd39e504963824}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+get@{tym\+\_\+i\+\_\+pane\+\_\+get}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+get@{tym\+\_\+i\+\_\+pane\+\_\+get}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+get()}{tym\_i\_pane\_get()}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ tym\+\_\+i\+\_\+pane\+\_\+get (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 78 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a17684496690df263db892f70ca607581}\label{pane_8h_a17684496690df263db892f70ca607581}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines@{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines@{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines()}{tym\_i\_pane\_insert\_delete\_lines()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+insert\+\_\+delete\+\_\+lines (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{unsigned}]{y,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line 447 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a0000fa2741bb0aa1ad0f67ddb05d424b}\label{pane_8h_a0000fa2741bb0aa1ad0f67ddb05d424b}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+parse@{tym\+\_\+i\+\_\+pane\+\_\+parse}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+parse@{tym\+\_\+i\+\_\+pane\+\_\+parse}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+parse()}{tym\_i\_pane\_parse()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+parse (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{unsigned char}]{c }\end{DoxyParamCaption})}
+
+
+
+Definition at line 334 of file parser.\+c.
+
+\mbox{\Hypertarget{pane_8h_aba2890508b27cf0889471661d1c6af9d}\label{pane_8h_aba2890508b27cf0889471661d1c6af9d}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+remove}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+remove}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+remove()}{tym\_i\_pane\_remove()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 124 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a42f9aa76052d765c1a8d17ce36081d38}\label{pane_8h_a42f9aa76052d765c1a8d17ce36081d38}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add()}{tym\_i\_pane\_resize\_handler\_add()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+add (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{const struct \hyperlink{structtym__i__handler__ptr__pair}{tym\+\_\+i\+\_\+handler\+\_\+ptr\+\_\+pair} $\ast$}]{cp }\end{DoxyParamCaption})}
+
+
+
+Definition at line 56 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_ad9cd28579052b67c07b511440aa02818}\label{pane_8h_ad9cd28579052b67c07b511440aa02818}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove@{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove()}{tym\_i\_pane\_resize\_handler\_remove()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+resize\+\_\+handler\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{size\+\_\+t}]{entry }\end{DoxyParamCaption})}
+
+
+
+Definition at line 60 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a16ea902d270c2c491ef844f36094593a}\label{pane_8h_a16ea902d270c2c491ef844f36094593a}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position()}{tym\_i\_pane\_set\_cursor\_position()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+cursor\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}}]{pm\+\_\+x,  }\item[{long long}]{x,  }\item[{enum \hyperlink{pane_8h_a9ae484c5b95405d99d80a0f52690b0d2}{tym\+\_\+i\+\_\+scp\+\_\+scrolling\+\_\+mode}}]{smm\+\_\+y,  }\item[{enum \hyperlink{pane_8h_a45cffeaed5e67829ac783241e67cf5ed}{tym\+\_\+i\+\_\+scp\+\_\+position\+\_\+mode}}]{pm\+\_\+y,  }\item[{long long}]{y,  }\item[{enum \hyperlink{pane_8h_abc19d49bf836a39e8b5b4bd03ef799f7}{tym\+\_\+i\+\_\+scp\+\_\+scroll\+\_\+region\+\_\+behaviour}}]{srb,  }\item[{bool}]{allow\+\_\+cursor\+\_\+on\+\_\+right\+\_\+edge }\end{DoxyParamCaption})}
+
+This function sets the cursor position \& handles bound checks and scrolling if necessary. This functions is split into 4 steps\+: 1) Calculate absolute desired position in pane based on given coordinate (x,y) and what these relate to (pm\+\_\+x,pm\+\_\+y) 2) What are the boundaries for our cursor movement? 3) Do we need to scroll the scrolling region? 4) Clamp the cursor coordinates to the boundary it\textquotesingle{}s allowed in \& finally set the cursor position. 
+
+Definition at line 270 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_ad6f6a2cec0e3ae38672b9b666e7ef3b3}\label{pane_8h_ad6f6a2cec0e3ae38672b9b666e7ef3b3}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen@{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen()}{tym\_i\_pane\_set\_screen()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+set\+\_\+screen (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen}}]{screen }\end{DoxyParamCaption})}
+
+
+
+Definition at line 454 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a4e67642bf9320199e9068d95087f05a5}\label{pane_8h_a4e67642bf9320199e9068d95087f05a5}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor()}{tym\_i\_pane\_update\_cursor()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+cursor (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 104 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_ad9e25466cfc39e1d3ea7cf9ccec7269c}\label{pane_8h_ad9e25466cfc39e1d3ea7cf9ccec7269c}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size()}{tym\_i\_pane\_update\_size()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a6eadb6f57165b1abfe26fb75509849b3}\label{pane_8h_a6eadb6f57165b1abfe26fb75509849b3}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all@{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all()}{tym\_i\_pane\_update\_size\_all()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+update\+\_\+size\+\_\+all (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 111 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a476af5a041feb9f060df77976e171746}\label{pane_8h_a476af5a041feb9f060df77976e171746}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+perror@{tym\+\_\+i\+\_\+perror}}
+\index{tym\+\_\+i\+\_\+perror@{tym\+\_\+i\+\_\+perror}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+perror()}{tym\_i\_perror()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+perror (\begin{DoxyParamCaption}\item[{const char $\ast$}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 266 of file main.\+c.
+
+\mbox{\Hypertarget{pane_8h_a8b71e8d9a717ea27bb6259ee0e8a4e88}\label{pane_8h_a8b71e8d9a717ea27bb6259ee0e8a4e88}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region}}
+\index{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region()}{tym\_i\_scroll\_def\_scrolling\_region()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+scroll\+\_\+def\+\_\+scrolling\+\_\+region (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{unsigned}]{top,  }\item[{unsigned}]{bottom,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line 431 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_aad9884b3ebe4ee6d0e17925703bed513}\label{pane_8h_aad9884b3ebe4ee6d0e17925703bed513}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region}}
+\index{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region()}{tym\_i\_scroll\_scrolling\_region()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+scroll\+\_\+scrolling\+\_\+region (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line 442 of file pane.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{pane_8h_a40f7e2f9604f9a41eec52d705bc46bd4}\label{pane_8h_a40f7e2f9604f9a41eec52d705bc46bd4}} 
+\index{pane.\+h@{pane.\+h}!default\+\_\+character\+\_\+format@{default\+\_\+character\+\_\+format}}
+\index{default\+\_\+character\+\_\+format@{default\+\_\+character\+\_\+format}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{default\+\_\+character\+\_\+format}{default\_character\_format}}
+{\footnotesize\ttfamily const struct \hyperlink{structtym__i__character__format}{tym\+\_\+i\+\_\+character\+\_\+format} default\+\_\+character\+\_\+format}
+
+
+
+Definition at line 24 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a9e55bb069a4098b5f27957835fd12343}\label{pane_8h_a9e55bb069a4098b5f27957835fd12343}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+focus\+\_\+pane@{tym\+\_\+i\+\_\+focus\+\_\+pane}}
+\index{tym\+\_\+i\+\_\+focus\+\_\+pane@{tym\+\_\+i\+\_\+focus\+\_\+pane}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+focus\+\_\+pane}{tym\_i\_focus\_pane}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ tym\+\_\+i\+\_\+focus\+\_\+pane}
+
+
+
+Definition at line 23 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_a42a5fe9e3107c52ce2a39123df27982a}\label{pane_8h_a42a5fe9e3107c52ce2a39123df27982a}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}{tym\_i\_pane\_list\_end}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+end}
+
+
+
+Definition at line 22 of file pane.\+c.
+
+\mbox{\Hypertarget{pane_8h_ad5d253b24939072248af42baa6d7d491}\label{pane_8h_ad5d253b24939072248af42baa6d7d491}} 
+\index{pane.\+h@{pane.\+h}!tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start@{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}!pane.\+h@{pane.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}{tym\_i\_pane\_list\_start}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ tym\+\_\+i\+\_\+pane\+\_\+list\+\_\+start}
+
+
+
+Definition at line 22 of file pane.\+c.
+

@@ -1,0 +1,101 @@
+\hypertarget{pseudoterminal_8c}{}\section{src/pseudoterminal.c File Reference}
+\label{pseudoterminal_8c}\index{src/pseudoterminal.\+c@{src/pseudoterminal.\+c}}
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$internal/main.\+h$>$}\newline
+{\ttfamily \#include $<$internal/parser.\+h$>$}\newline
+{\ttfamily \#include $<$internal/pseudoterminal.\+h$>$}\newline
+{\ttfamily \#include $<$libttymultiplex.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{pseudoterminal_8c_ade7ee21a9e3e3c0c5b77d9e9cf29d39b}{S}(X)~sizeof(X)-\/1, X
+\item 
+\#define \hyperlink{pseudoterminal_8c_afca155cf50aa8f8447c08ff3606b9d8c}{CS}(X)~case T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+ \#\# X\+:
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{pseudoterminal_8c_a978d5995084dc9107a5fdf804981b195}{tym\+\_\+i\+\_\+pts\+\_\+send} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, size\+\_\+t size, const void $\ast$restrict data)
+\item 
+int \hyperlink{pseudoterminal_8c_a8e33a6565c263cdbe3b0ff4482c7dcf2}{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+key} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, int\+\_\+least16\+\_\+t key)
+\item 
+int \hyperlink{pseudoterminal_8c_acd4ef1e1ad03c0e5a9c885b86207ddf0}{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+keys} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, size\+\_\+t count, const int\+\_\+least16\+\_\+t keys\mbox{[}count\mbox{]})
+\item 
+int \hyperlink{pseudoterminal_8c_a6782c4ce1e6512e8a2ac7bb7277a6ad2}{tym\+\_\+i\+\_\+pts\+\_\+type} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, size\+\_\+t count, const char keys\mbox{[}count\mbox{]})
+\item 
+int \hyperlink{pseudoterminal_8c_ad216119987dabe4b024b08275f219973}{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+mouse\+\_\+event} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button} button, struct \hyperlink{structtym__i__cell__position}{tym\+\_\+i\+\_\+cell\+\_\+position} pos)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{pseudoterminal_8c_afca155cf50aa8f8447c08ff3606b9d8c}\label{pseudoterminal_8c_afca155cf50aa8f8447c08ff3606b9d8c}} 
+\index{pseudoterminal.\+c@{pseudoterminal.\+c}!CS@{CS}}
+\index{CS@{CS}!pseudoterminal.\+c@{pseudoterminal.\+c}}
+\subsubsection{\texorpdfstring{CS}{CS}}
+{\footnotesize\ttfamily \#define CS(\begin{DoxyParamCaption}\item[{}]{X }\end{DoxyParamCaption})~case T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+ \#\# X\+:}
+
+\mbox{\Hypertarget{pseudoterminal_8c_ade7ee21a9e3e3c0c5b77d9e9cf29d39b}\label{pseudoterminal_8c_ade7ee21a9e3e3c0c5b77d9e9cf29d39b}} 
+\index{pseudoterminal.\+c@{pseudoterminal.\+c}!S@{S}}
+\index{S@{S}!pseudoterminal.\+c@{pseudoterminal.\+c}}
+\subsubsection{\texorpdfstring{S}{S}}
+{\footnotesize\ttfamily \#define S(\begin{DoxyParamCaption}\item[{}]{X }\end{DoxyParamCaption})~sizeof(X)-\/1, X}
+
+
+
+Definition at line 12 of file pseudoterminal.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{pseudoterminal_8c_a978d5995084dc9107a5fdf804981b195}\label{pseudoterminal_8c_a978d5995084dc9107a5fdf804981b195}} 
+\index{pseudoterminal.\+c@{pseudoterminal.\+c}!tym\+\_\+i\+\_\+pts\+\_\+send@{tym\+\_\+i\+\_\+pts\+\_\+send}}
+\index{tym\+\_\+i\+\_\+pts\+\_\+send@{tym\+\_\+i\+\_\+pts\+\_\+send}!pseudoterminal.\+c@{pseudoterminal.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pts\+\_\+send()}{tym\_i\_pts\_send()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pts\+\_\+send (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{size\+\_\+t}]{size,  }\item[{const void $\ast$restrict}]{data }\end{DoxyParamCaption})}
+
+
+
+Definition at line 14 of file pseudoterminal.\+c.
+
+\mbox{\Hypertarget{pseudoterminal_8c_a8e33a6565c263cdbe3b0ff4482c7dcf2}\label{pseudoterminal_8c_a8e33a6565c263cdbe3b0ff4482c7dcf2}} 
+\index{pseudoterminal.\+c@{pseudoterminal.\+c}!tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+key@{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+key}}
+\index{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+key@{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+key}!pseudoterminal.\+c@{pseudoterminal.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+key()}{tym\_i\_pts\_send\_key()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+key (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{int\+\_\+least16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Definition at line 24 of file pseudoterminal.\+c.
+
+\mbox{\Hypertarget{pseudoterminal_8c_acd4ef1e1ad03c0e5a9c885b86207ddf0}\label{pseudoterminal_8c_acd4ef1e1ad03c0e5a9c885b86207ddf0}} 
+\index{pseudoterminal.\+c@{pseudoterminal.\+c}!tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+keys@{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+keys}}
+\index{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+keys@{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+keys}!pseudoterminal.\+c@{pseudoterminal.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+keys()}{tym\_i\_pts\_send\_keys()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+keys (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{size\+\_\+t}]{count,  }\item[{const int\+\_\+least16\+\_\+t}]{keys\mbox{[}count\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 68 of file pseudoterminal.\+c.
+
+\mbox{\Hypertarget{pseudoterminal_8c_ad216119987dabe4b024b08275f219973}\label{pseudoterminal_8c_ad216119987dabe4b024b08275f219973}} 
+\index{pseudoterminal.\+c@{pseudoterminal.\+c}!tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+mouse\+\_\+event@{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+mouse\+\_\+event}}
+\index{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+mouse\+\_\+event@{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+mouse\+\_\+event}!pseudoterminal.\+c@{pseudoterminal.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+mouse\+\_\+event()}{tym\_i\_pts\_send\_mouse\_event()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pts\+\_\+send\+\_\+mouse\+\_\+event (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button}}]{button,  }\item[{struct \hyperlink{structtym__i__cell__position}{tym\+\_\+i\+\_\+cell\+\_\+position}}]{pos }\end{DoxyParamCaption})}
+
+
+
+Definition at line 80 of file pseudoterminal.\+c.
+
+\mbox{\Hypertarget{pseudoterminal_8c_a6782c4ce1e6512e8a2ac7bb7277a6ad2}\label{pseudoterminal_8c_a6782c4ce1e6512e8a2ac7bb7277a6ad2}} 
+\index{pseudoterminal.\+c@{pseudoterminal.\+c}!tym\+\_\+i\+\_\+pts\+\_\+type@{tym\+\_\+i\+\_\+pts\+\_\+type}}
+\index{tym\+\_\+i\+\_\+pts\+\_\+type@{tym\+\_\+i\+\_\+pts\+\_\+type}!pseudoterminal.\+c@{pseudoterminal.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pts\+\_\+type()}{tym\_i\_pts\_type()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pts\+\_\+type (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{size\+\_\+t}]{count,  }\item[{const char}]{keys\mbox{[}count\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 74 of file pseudoterminal.\+c.
+

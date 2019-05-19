@@ -1,0 +1,75 @@
+\hypertarget{calc_8c}{}\section{src/calc.c File Reference}
+\label{calc_8c}\index{src/calc.\+c@{src/calc.\+c}}
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$internal/main.\+h$>$}\newline
+{\ttfamily \#include $<$internal/calc.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{calc_8c_a187764a61933028712b982e00855f076}{tym\+\_\+i\+\_\+calc\+\_\+init\+\_\+absolute\+\_\+position} (struct \hyperlink{structtym__absolute__position}{tym\+\_\+absolute\+\_\+position} $\ast$position)
+\item 
+void \hyperlink{calc_8c_a04cc7528e793ab5a645e22730a469537}{tym\+\_\+i\+\_\+calc\+\_\+absolut\+\_\+position} (struct \hyperlink{structtym__absolute__position}{tym\+\_\+absolute\+\_\+position} $\ast$restrict result, const struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} $\ast$bounds, const struct \hyperlink{structtym__super__position}{tym\+\_\+super\+\_\+position} $\ast$restrict input, bool bounds\+\_\+relative)
+\item 
+void \hyperlink{calc_8c_acd9682890a4966de6c5a8e83013f7e7f}{tym\+\_\+i\+\_\+calc\+\_\+rectangle\+\_\+absolut\+\_\+position} (struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} $\ast$restrict result, const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict super\+\_\+position)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}{tym\+\_\+unit\+\_\+type} \hyperlink{calc_8c_a08338bec80b1aa511058ad78970bed40}{tym\+\_\+positon\+\_\+unit\+\_\+map} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{calc_8c_a04cc7528e793ab5a645e22730a469537}\label{calc_8c_a04cc7528e793ab5a645e22730a469537}} 
+\index{calc.\+c@{calc.\+c}!tym\+\_\+i\+\_\+calc\+\_\+absolut\+\_\+position@{tym\+\_\+i\+\_\+calc\+\_\+absolut\+\_\+position}}
+\index{tym\+\_\+i\+\_\+calc\+\_\+absolut\+\_\+position@{tym\+\_\+i\+\_\+calc\+\_\+absolut\+\_\+position}!calc.\+c@{calc.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+calc\+\_\+absolut\+\_\+position()}{tym\_i\_calc\_absolut\_position()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+calc\+\_\+absolut\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__absolute__position}{tym\+\_\+absolute\+\_\+position} $\ast$restrict}]{result,  }\item[{const struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} $\ast$}]{bounds,  }\item[{const struct \hyperlink{structtym__super__position}{tym\+\_\+super\+\_\+position} $\ast$restrict}]{input,  }\item[{bool}]{bounds\+\_\+relative }\end{DoxyParamCaption})}
+
+
+
+Definition at line 24 of file calc.\+c.
+
+\mbox{\Hypertarget{calc_8c_a187764a61933028712b982e00855f076}\label{calc_8c_a187764a61933028712b982e00855f076}} 
+\index{calc.\+c@{calc.\+c}!tym\+\_\+i\+\_\+calc\+\_\+init\+\_\+absolute\+\_\+position@{tym\+\_\+i\+\_\+calc\+\_\+init\+\_\+absolute\+\_\+position}}
+\index{tym\+\_\+i\+\_\+calc\+\_\+init\+\_\+absolute\+\_\+position@{tym\+\_\+i\+\_\+calc\+\_\+init\+\_\+absolute\+\_\+position}!calc.\+c@{calc.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+calc\+\_\+init\+\_\+absolute\+\_\+position()}{tym\_i\_calc\_init\_absolute\_position()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+calc\+\_\+init\+\_\+absolute\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__absolute__position}{tym\+\_\+absolute\+\_\+position} $\ast$}]{position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 16 of file calc.\+c.
+
+\mbox{\Hypertarget{calc_8c_acd9682890a4966de6c5a8e83013f7e7f}\label{calc_8c_acd9682890a4966de6c5a8e83013f7e7f}} 
+\index{calc.\+c@{calc.\+c}!tym\+\_\+i\+\_\+calc\+\_\+rectangle\+\_\+absolut\+\_\+position@{tym\+\_\+i\+\_\+calc\+\_\+rectangle\+\_\+absolut\+\_\+position}}
+\index{tym\+\_\+i\+\_\+calc\+\_\+rectangle\+\_\+absolut\+\_\+position@{tym\+\_\+i\+\_\+calc\+\_\+rectangle\+\_\+absolut\+\_\+position}!calc.\+c@{calc.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+calc\+\_\+rectangle\+\_\+absolut\+\_\+position()}{tym\_i\_calc\_rectangle\_absolut\_position()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+calc\+\_\+rectangle\+\_\+absolut\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} $\ast$restrict}]{result,  }\item[{const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict}]{super\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 47 of file calc.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{calc_8c_a08338bec80b1aa511058ad78970bed40}\label{calc_8c_a08338bec80b1aa511058ad78970bed40}} 
+\index{calc.\+c@{calc.\+c}!tym\+\_\+positon\+\_\+unit\+\_\+map@{tym\+\_\+positon\+\_\+unit\+\_\+map}}
+\index{tym\+\_\+positon\+\_\+unit\+\_\+map@{tym\+\_\+positon\+\_\+unit\+\_\+map}!calc.\+c@{calc.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+positon\+\_\+unit\+\_\+map}{tym\_positon\_unit\_map}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}{tym\+\_\+unit\+\_\+type} tym\+\_\+positon\+\_\+unit\+\_\+map\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+\textcolor{preprocessor}{#define E(PT, U, T, N) }
+\textcolor{preprocessor}{#define X(ID) }
+  \hyperlink{libttymultiplex_8h_a843168cb794e358ffd86e1c78de1da6a}{TYM\_POSITION\_TYPE\_LIST}
+
+
+\}
+\end{DoxyCode}
+
+
+Definition at line 8 of file calc.\+c.
+

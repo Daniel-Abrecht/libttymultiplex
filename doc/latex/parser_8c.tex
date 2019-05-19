@@ -1,0 +1,1132 @@
+\hypertarget{parser_8c}{}\section{src/parser.c File Reference}
+\label{parser_8c}\index{src/parser.\+c@{src/parser.\+c}}
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$internal/main.\+h$>$}\newline
+{\ttfamily \#include $<$internal/pane.\+h$>$}\newline
+{\ttfamily \#include $<$internal/backend.\+h$>$}\newline
+{\ttfamily \#include $<$internal/parser.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{parser_8c_a68e0243a91f1aa27f90c0736e182b968}{C\+S\+QS}
+\item 
+\#define \hyperlink{parser_8c_a5ea7d09affc367ca2775f5ef97e149aa}{C\+SQ}(A,  B)~int tym\+\_\+i\+\_\+csq\+\_\+ \#\# B(struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak));
+\item 
+\#define \hyperlink{parser_8c_a5ea7d09affc367ca2775f5ef97e149aa}{C\+SQ}(A,  B)
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{parser_8c_aa0800342b958781626057c8782f7bebf}{specialmatch\+\_\+result} \{ \newline
+\hyperlink{parser_8c_aa0800342b958781626057c8782f7bebfaafd23926322f131fb02e2af93de92b4e}{S\+M\+\_\+\+N\+O\+\_\+\+M\+A\+T\+CH}, 
+\newline
+\hyperlink{parser_8c_aa0800342b958781626057c8782f7bebfa290c8e9124ff474d23ddde0eea81355b}{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+S\+I\+N\+G\+LE}, 
+\newline
+\hyperlink{parser_8c_aa0800342b958781626057c8782f7bebfac009560f3e3eb3d7c91fe40ea4eebc6e}{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+C\+O\+N\+T\+I\+N\+UE}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{parser_8c_afa7524049b9d3b6f21d52b75b1325df4}{tym\+\_\+i\+\_\+csq\+\_\+reset} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a809c7ab01c87c7630132c031d5b10fb6}{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+top\+\_\+half} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a407ced2ea4f3d28d365c55e4e417ec0f}{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+bottom\+\_\+half} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a7f6e5ad2989d7cf6d48818c5d0c5d5a0}{tym\+\_\+i\+\_\+csq\+\_\+single\+\_\+width\+\_\+line} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a7518934536b65c05180b6729bf99e534}{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+width\+\_\+line} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a6285aae57a1ec1b17810823a7432e737}{tym\+\_\+i\+\_\+csq\+\_\+screen\+\_\+alignment\+\_\+test} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a57af3394a27da50051d8864db48f69af}{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g0\+\_\+character\+\_\+set} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a657bde519ca555bae13c7cc272ff6a7d}{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g1\+\_\+character\+\_\+set} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_aefb0d7ffdc16770629f492dbe84e7c58}{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g2\+\_\+character\+\_\+set} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a18c44bdb3c0930c74295bd59ad64ed83}{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g3\+\_\+character\+\_\+set} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a187d7b79dbb49d76b873e0711cb0ca91}{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+default\+\_\+character\+\_\+set} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a0ac4b7f9962eef4a6ea4902cab131ab2}{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+utf8\+\_\+character\+\_\+set} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a92ff1c797a84d038564374de1e381d1b}{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G1\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L2} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_afce25a55cc197b7fc619ec14e8e00adb}{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L3} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_aa3451d59ccffe61eae03f3beee20fd42}{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S3R} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a4718b2785debcc474399819ebfd2d85c}{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G3\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S2R} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a30799f0e1cf5193ae0e51a378dd9c4b0}{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G0\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S1R} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a0ed7105db8397d1306b53018cda4de5c}{tym\+\_\+i\+\_\+csq\+\_\+save\+\_\+cursor\+\_\+position} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a013d3dbbaa635a46697de98ccdb35fb6}{tym\+\_\+i\+\_\+csq\+\_\+restore\+\_\+cursor\+\_\+position} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a83cefb2537e9eb6e8261f6cf2eb1dc6a}{tym\+\_\+i\+\_\+csq\+\_\+application\+\_\+keypad} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a4010025714d98265b3e9a62520cb7019}{tym\+\_\+i\+\_\+csq\+\_\+normal\+\_\+keypad} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a242388e78d6c9d36a2b8564d59d0bf47}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+to\+\_\+bottom\+\_\+left} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ae05757e448fce5a446b7d62b164f62e4}{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+lock} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a68fa019eb84ef7ef073e0389f745837d}{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+unlock} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a3f806b414a3000a1908b0116700d5e44}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+down} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a2d5bde8599fbe4b4a70219eafc6ab27a}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+next\+\_\+line} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a39a5d7a832600c3582319edd355f09cc}{tym\+\_\+i\+\_\+csq\+\_\+tab\+\_\+set} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ac6d294943f06a5f43991b00221cfcf4f}{tym\+\_\+i\+\_\+csq\+\_\+reverse\+\_\+index} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_adeace6227fd20316cc5ca03cc73d8ee1}{tym\+\_\+i\+\_\+csq\+\_\+g2\+\_\+character\+\_\+set\+\_\+for\+\_\+character} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_aebf21391b2021c7b72c6ac18f3c6711b}{tym\+\_\+i\+\_\+csq\+\_\+g3\+\_\+character\+\_\+set\+\_\+for\+\_\+character} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_adadbbbf0427585cb7601c9d7c1e11074}{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a344df1971de0c9fe588b2d0118ccf920}{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+scrolling\+\_\+region} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ac729ee29c3971fdccfc19a7091b1c95f}{tym\+\_\+i\+\_\+csq\+\_\+soft\+\_\+reset} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_aacf6fd644e4d912cf28466eefdc30391}{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+mode} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ad9c58e44a984a004229dac57cbba771e}{tym\+\_\+i\+\_\+csq\+\_\+reset\+\_\+mode} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a0ce6fdd44e16faacaaba27e610ef8cc7}{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+relative} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a41e68d8f73c5c42abd472bbacb06a8f6}{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+position\+\_\+relative} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ac0d205b99cee58a8b46436c8314ef08e}{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+backwards} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a95796d4b226e4c8315f106d2460e73a9}{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+character} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a7fdd64b941af1b0ab7e3ee19cfccee7e}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+up} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_abce9da67b45553b9592596794529ee5b}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+right} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ae9ded1814a8fc0dfdc1989ef6f8334d3}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+left} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_abdd8d514cdef6718eceb8900036744d7}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+previous\+\_\+line} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_adda7fb3005ce3e14592daf75ca701577}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+horizontal\+\_\+absolute} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a379af766aaf22fa706fa12c998f4732f}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+position} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a7468a29e6d04cdf6aebd090f8da4f16e}{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+forward\+\_\+tabulation} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a1adc243629388bae5470f5653d8ccef1}{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+display} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a882bcc41452fc34b9a79f30c05173469}{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+line} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ae23adcd09f3b1412c679fb1a3717abee}{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+lines} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ab25b071c2de9cfd796b02a19858643a0}{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+lines} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a85cba34282f6ec76127e59ba9bd1fe82}{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+characters} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a42182fd43748561f796b9f08c4c45cf6}{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+up} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_adf43094df653cac57075b9ac7afadf8d}{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+down} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a85b7b97f48b3d1e9d2c2ba362251eb4f}{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+characters} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ad21c6bee3ed06f7010199ccf4759a0ea}{tym\+\_\+i\+\_\+csq\+\_\+line\+\_\+position\+\_\+absolute} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ae5324a5fa09cb2c534e6e510264d3d96}{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+attribute\+\_\+change} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a93447de2f58e2fa987bd5f0c6f0a78ea}{tym\+\_\+i\+\_\+csq\+\_\+device\+\_\+status\+\_\+report} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_aead754e392fd03159d99e5e2d30c226d}{tym\+\_\+i\+\_\+csq\+\_\+enable} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ac3eb314c3b4a05806e2eabd36140e2af}{tym\+\_\+i\+\_\+csq\+\_\+disable} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_a6e8a77774dd40175a26c219d8eb5bc4f}{tym\+\_\+i\+\_\+csq\+\_\+osc\+\_\+cmd} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak))
+\item 
+int \hyperlink{parser_8c_ad00f240f4a61ef64185889cd62948b7d}{command\+\_\+sequence\+\_\+comparator\+\_\+ch} (char ca, char cb)
+\item 
+int \hyperlink{parser_8c_a839068eef2c63e2e15006ef19cd3f4dd}{command\+\_\+sequence\+\_\+comparator\+\_\+str} (const char $\ast$restrict ia, const char $\ast$restrict ib)
+\item 
+int \hyperlink{parser_8c_af40d0d7f3db53e93aef8bb87a47fa83d}{command\+\_\+sequence\+\_\+comparator} (const void $\ast$restrict pa, const void $\ast$restrict pb)
+\item 
+void \hyperlink{parser_8c_a22be490c8caa06e65fff533869b5f03f}{reset\+\_\+sequence} (struct \hyperlink{structtym__i__sequence__state}{tym\+\_\+i\+\_\+sequence\+\_\+state} $\ast$sequence)
+\item 
+bool \hyperlink{parser_8c_acb448dba8ddc3e25fe02e9b9bee0039c}{control\+\_\+character} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, unsigned char c)
+\item 
+void \hyperlink{parser_8c_a595048fe9149c974442da16236e5bd6c}{print\+\_\+character} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, const struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character} character)
+\item 
+bool \hyperlink{parser_8c_a764979a32d2b29aebda918feb05986bc}{print\+\_\+character\+\_\+update} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, char c)
+\item 
+void \hyperlink{parser_8c_ad9afd6b8b0fc45f4eadf4d390032ab21}{tym\+\_\+i\+\_\+debug\+\_\+sequence\+\_\+params} (const struct \hyperlink{structtym__i__command__sequence}{tym\+\_\+i\+\_\+command\+\_\+sequence} $\ast$command, const struct \hyperlink{structtym__i__sequence__state}{tym\+\_\+i\+\_\+sequence\+\_\+state} $\ast$state)
+\item 
+void \hyperlink{parser_8c_a0000fa2741bb0aa1ad0f67ddb05d424b}{tym\+\_\+i\+\_\+pane\+\_\+parse} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, unsigned char c)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__i__command__sequence}{tym\+\_\+i\+\_\+command\+\_\+sequence} \hyperlink{parser_8c_a377f77fdbf5c71db368b11d24f8bce04}{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map} \mbox{[}$\,$\mbox{]}
+\item 
+const size\+\_\+t \hyperlink{parser_8c_ac1add13dbe5f680e9e4597585d119263}{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\+\_\+count} = sizeof(\hyperlink{parser_8c_a377f77fdbf5c71db368b11d24f8bce04}{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map})/sizeof($\ast$\hyperlink{parser_8c_a377f77fdbf5c71db368b11d24f8bce04}{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map})
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{parser_8c_a5ea7d09affc367ca2775f5ef97e149aa}\label{parser_8c_a5ea7d09affc367ca2775f5ef97e149aa}} 
+\index{parser.\+c@{parser.\+c}!C\+SQ@{C\+SQ}}
+\index{C\+SQ@{C\+SQ}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{C\+SQ}{CSQ}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \#define C\+SQ(\begin{DoxyParamCaption}\item[{}]{A,  }\item[{}]{B }\end{DoxyParamCaption})~int tym\+\_\+i\+\_\+csq\+\_\+ \#\# B(struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ pane) \+\_\+\+\_\+attribute\+\_\+\+\_\+((weak));}
+
+
+
+Definition at line 136 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a5ea7d09affc367ca2775f5ef97e149aa}\label{parser_8c_a5ea7d09affc367ca2775f5ef97e149aa}} 
+\index{parser.\+c@{parser.\+c}!C\+SQ@{C\+SQ}}
+\index{C\+SQ@{C\+SQ}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{C\+SQ}{CSQ}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \#define C\+SQ(\begin{DoxyParamCaption}\item[{}]{A,  }\item[{}]{B }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\{ \(\backslash\)
+    .sequence=(A), \(\backslash\)
+    .length=\textcolor{keyword}{sizeof}(A)-1, \(\backslash\)
+    .callback\_name=(#B), \(\backslash\)
+    .callback=tym\_i\_csq\_ ## B \(\backslash\)
+  \},
+\end{DoxyCode}
+
+
+Definition at line 136 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a68e0243a91f1aa27f90c0736e182b968}\label{parser_8c_a68e0243a91f1aa27f90c0736e182b968}} 
+\index{parser.\+c@{parser.\+c}!C\+S\+QS@{C\+S\+QS}}
+\index{C\+S\+QS@{C\+S\+QS}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{C\+S\+QS}{CSQS}}
+{\footnotesize\ttfamily \#define C\+S\+QS}
+
+
+
+Definition at line 34 of file parser.\+c.
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{parser_8c_aa0800342b958781626057c8782f7bebf}\label{parser_8c_aa0800342b958781626057c8782f7bebf}} 
+\index{parser.\+c@{parser.\+c}!specialmatch\+\_\+result@{specialmatch\+\_\+result}}
+\index{specialmatch\+\_\+result@{specialmatch\+\_\+result}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{specialmatch\+\_\+result}{specialmatch\_result}}
+{\footnotesize\ttfamily enum \hyperlink{parser_8c_aa0800342b958781626057c8782f7bebf}{specialmatch\+\_\+result}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+M\+\_\+\+N\+O\+\_\+\+M\+A\+T\+CH@{S\+M\+\_\+\+N\+O\+\_\+\+M\+A\+T\+CH}!parser.\+c@{parser.\+c}}\index{parser.\+c@{parser.\+c}!S\+M\+\_\+\+N\+O\+\_\+\+M\+A\+T\+CH@{S\+M\+\_\+\+N\+O\+\_\+\+M\+A\+T\+CH}}}\mbox{\Hypertarget{parser_8c_aa0800342b958781626057c8782f7bebfaafd23926322f131fb02e2af93de92b4e}\label{parser_8c_aa0800342b958781626057c8782f7bebfaafd23926322f131fb02e2af93de92b4e}} 
+S\+M\+\_\+\+N\+O\+\_\+\+M\+A\+T\+CH&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+S\+I\+N\+G\+LE@{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+S\+I\+N\+G\+LE}!parser.\+c@{parser.\+c}}\index{parser.\+c@{parser.\+c}!S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+S\+I\+N\+G\+LE@{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+S\+I\+N\+G\+LE}}}\mbox{\Hypertarget{parser_8c_aa0800342b958781626057c8782f7bebfa290c8e9124ff474d23ddde0eea81355b}\label{parser_8c_aa0800342b958781626057c8782f7bebfa290c8e9124ff474d23ddde0eea81355b}} 
+S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+S\+I\+N\+G\+LE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+C\+O\+N\+T\+I\+N\+UE@{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+C\+O\+N\+T\+I\+N\+UE}!parser.\+c@{parser.\+c}}\index{parser.\+c@{parser.\+c}!S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+C\+O\+N\+T\+I\+N\+UE@{S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+C\+O\+N\+T\+I\+N\+UE}}}\mbox{\Hypertarget{parser_8c_aa0800342b958781626057c8782f7bebfac009560f3e3eb3d7c91fe40ea4eebc6e}\label{parser_8c_aa0800342b958781626057c8782f7bebfac009560f3e3eb3d7c91fe40ea4eebc6e}} 
+S\+M\+\_\+\+M\+A\+T\+C\+H\+\_\+\+C\+O\+N\+T\+I\+N\+UE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 192 of file parser.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{parser_8c_af40d0d7f3db53e93aef8bb87a47fa83d}\label{parser_8c_af40d0d7f3db53e93aef8bb87a47fa83d}} 
+\index{parser.\+c@{parser.\+c}!command\+\_\+sequence\+\_\+comparator@{command\+\_\+sequence\+\_\+comparator}}
+\index{command\+\_\+sequence\+\_\+comparator@{command\+\_\+sequence\+\_\+comparator}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{command\+\_\+sequence\+\_\+comparator()}{command\_sequence\_comparator()}}
+{\footnotesize\ttfamily int command\+\_\+sequence\+\_\+comparator (\begin{DoxyParamCaption}\item[{const void $\ast$restrict}]{pa,  }\item[{const void $\ast$restrict}]{pb }\end{DoxyParamCaption})}
+
+
+
+Definition at line 171 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_ad00f240f4a61ef64185889cd62948b7d}\label{parser_8c_ad00f240f4a61ef64185889cd62948b7d}} 
+\index{parser.\+c@{parser.\+c}!command\+\_\+sequence\+\_\+comparator\+\_\+ch@{command\+\_\+sequence\+\_\+comparator\+\_\+ch}}
+\index{command\+\_\+sequence\+\_\+comparator\+\_\+ch@{command\+\_\+sequence\+\_\+comparator\+\_\+ch}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{command\+\_\+sequence\+\_\+comparator\+\_\+ch()}{command\_sequence\_comparator\_ch()}}
+{\footnotesize\ttfamily int command\+\_\+sequence\+\_\+comparator\+\_\+ch (\begin{DoxyParamCaption}\item[{char}]{ca,  }\item[{char}]{cb }\end{DoxyParamCaption})}
+
+
+
+Definition at line 152 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a839068eef2c63e2e15006ef19cd3f4dd}\label{parser_8c_a839068eef2c63e2e15006ef19cd3f4dd}} 
+\index{parser.\+c@{parser.\+c}!command\+\_\+sequence\+\_\+comparator\+\_\+str@{command\+\_\+sequence\+\_\+comparator\+\_\+str}}
+\index{command\+\_\+sequence\+\_\+comparator\+\_\+str@{command\+\_\+sequence\+\_\+comparator\+\_\+str}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{command\+\_\+sequence\+\_\+comparator\+\_\+str()}{command\_sequence\_comparator\_str()}}
+{\footnotesize\ttfamily int command\+\_\+sequence\+\_\+comparator\+\_\+str (\begin{DoxyParamCaption}\item[{const char $\ast$restrict}]{ia,  }\item[{const char $\ast$restrict}]{ib }\end{DoxyParamCaption})}
+
+
+
+Definition at line 160 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_acb448dba8ddc3e25fe02e9b9bee0039c}\label{parser_8c_acb448dba8ddc3e25fe02e9b9bee0039c}} 
+\index{parser.\+c@{parser.\+c}!control\+\_\+character@{control\+\_\+character}}
+\index{control\+\_\+character@{control\+\_\+character}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{control\+\_\+character()}{control\_character()}}
+{\footnotesize\ttfamily bool control\+\_\+character (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{unsigned char}]{c }\end{DoxyParamCaption})}
+
+
+
+Definition at line 218 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a595048fe9149c974442da16236e5bd6c}\label{parser_8c_a595048fe9149c974442da16236e5bd6c}} 
+\index{parser.\+c@{parser.\+c}!print\+\_\+character@{print\+\_\+character}}
+\index{print\+\_\+character@{print\+\_\+character}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+character()}{print\_character()}}
+{\footnotesize\ttfamily void print\+\_\+character (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{const struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character}}]{character }\end{DoxyParamCaption})}
+
+
+
+Definition at line 257 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a764979a32d2b29aebda918feb05986bc}\label{parser_8c_a764979a32d2b29aebda918feb05986bc}} 
+\index{parser.\+c@{parser.\+c}!print\+\_\+character\+\_\+update@{print\+\_\+character\+\_\+update}}
+\index{print\+\_\+character\+\_\+update@{print\+\_\+character\+\_\+update}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+character\+\_\+update()}{print\_character\_update()}}
+{\footnotesize\ttfamily bool print\+\_\+character\+\_\+update (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{char}]{c }\end{DoxyParamCaption})}
+
+
+
+Definition at line 304 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a22be490c8caa06e65fff533869b5f03f}\label{parser_8c_a22be490c8caa06e65fff533869b5f03f}} 
+\index{parser.\+c@{parser.\+c}!reset\+\_\+sequence@{reset\+\_\+sequence}}
+\index{reset\+\_\+sequence@{reset\+\_\+sequence}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{reset\+\_\+sequence()}{reset\_sequence()}}
+{\footnotesize\ttfamily void reset\+\_\+sequence (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__sequence__state}{tym\+\_\+i\+\_\+sequence\+\_\+state} $\ast$}]{sequence }\end{DoxyParamCaption})}
+
+
+
+Definition at line 208 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a83cefb2537e9eb6e8261f6cf2eb1dc6a}\label{parser_8c_a83cefb2537e9eb6e8261f6cf2eb1dc6a}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+application\+\_\+keypad@{tym\+\_\+i\+\_\+csq\+\_\+application\+\_\+keypad}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+application\+\_\+keypad@{tym\+\_\+i\+\_\+csq\+\_\+application\+\_\+keypad}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+application\+\_\+keypad()}{tym\_i\_csq\_application\_keypad()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+application\+\_\+keypad (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 9 of file application\+\_\+keypad.\+c.
+
+\mbox{\Hypertarget{parser_8c_ae5324a5fa09cb2c534e6e510264d3d96}\label{parser_8c_ae5324a5fa09cb2c534e6e510264d3d96}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+attribute\+\_\+change@{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+attribute\+\_\+change}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+attribute\+\_\+change@{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+attribute\+\_\+change}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+attribute\+\_\+change()}{tym\_i\_csq\_character\_attribute\_change()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+attribute\+\_\+change (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file character\+\_\+attribute\+\_\+change.\+c.
+
+\mbox{\Hypertarget{parser_8c_a41e68d8f73c5c42abd472bbacb06a8f6}\label{parser_8c_a41e68d8f73c5c42abd472bbacb06a8f6}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+position\+\_\+relative@{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+position\+\_\+relative}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+position\+\_\+relative@{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+position\+\_\+relative}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+position\+\_\+relative()}{tym\_i\_csq\_character\_position\_relative()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+character\+\_\+position\+\_\+relative (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file character\+\_\+position\+\_\+relative.\+c.
+
+\mbox{\Hypertarget{parser_8c_a3f806b414a3000a1908b0116700d5e44}\label{parser_8c_a3f806b414a3000a1908b0116700d5e44}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+down@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+down}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+down@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+down}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+down()}{tym\_i\_csq\_cursor\_down()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+down (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+down.\+c.
+
+\mbox{\Hypertarget{parser_8c_a7468a29e6d04cdf6aebd090f8da4f16e}\label{parser_8c_a7468a29e6d04cdf6aebd090f8da4f16e}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+forward\+\_\+tabulation@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+forward\+\_\+tabulation}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+forward\+\_\+tabulation@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+forward\+\_\+tabulation}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+forward\+\_\+tabulation()}{tym\_i\_csq\_cursor\_forward\_tabulation()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+forward\+\_\+tabulation (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_adda7fb3005ce3e14592daf75ca701577}\label{parser_8c_adda7fb3005ce3e14592daf75ca701577}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+horizontal\+\_\+absolute@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+horizontal\+\_\+absolute}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+horizontal\+\_\+absolute@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+horizontal\+\_\+absolute}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+horizontal\+\_\+absolute()}{tym\_i\_csq\_cursor\_horizontal\_absolute()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+horizontal\+\_\+absolute (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+horizontal\+\_\+absolute.\+c.
+
+\mbox{\Hypertarget{parser_8c_ae9ded1814a8fc0dfdc1989ef6f8334d3}\label{parser_8c_ae9ded1814a8fc0dfdc1989ef6f8334d3}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+left@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+left}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+left@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+left}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+left()}{tym\_i\_csq\_cursor\_left()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+left (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+left.\+c.
+
+\mbox{\Hypertarget{parser_8c_a2d5bde8599fbe4b4a70219eafc6ab27a}\label{parser_8c_a2d5bde8599fbe4b4a70219eafc6ab27a}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+next\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+next\+\_\+line}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+next\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+next\+\_\+line}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+next\+\_\+line()}{tym\_i\_csq\_cursor\_next\_line()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+next\+\_\+line (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+next\+\_\+line.\+c.
+
+\mbox{\Hypertarget{parser_8c_a379af766aaf22fa706fa12c998f4732f}\label{parser_8c_a379af766aaf22fa706fa12c998f4732f}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+position}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+position}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+position()}{tym\_i\_csq\_cursor\_position()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+position.\+c.
+
+\mbox{\Hypertarget{parser_8c_abdd8d514cdef6718eceb8900036744d7}\label{parser_8c_abdd8d514cdef6718eceb8900036744d7}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+previous\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+previous\+\_\+line}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+previous\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+previous\+\_\+line}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+previous\+\_\+line()}{tym\_i\_csq\_cursor\_previous\_line()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+previous\+\_\+line (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+previous\+\_\+line.\+c.
+
+\mbox{\Hypertarget{parser_8c_abce9da67b45553b9592596794529ee5b}\label{parser_8c_abce9da67b45553b9592596794529ee5b}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+right@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+right}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+right@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+right}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+right()}{tym\_i\_csq\_cursor\_right()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+right (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+right.\+c.
+
+\mbox{\Hypertarget{parser_8c_a242388e78d6c9d36a2b8564d59d0bf47}\label{parser_8c_a242388e78d6c9d36a2b8564d59d0bf47}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+to\+\_\+bottom\+\_\+left@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+to\+\_\+bottom\+\_\+left}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+to\+\_\+bottom\+\_\+left@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+to\+\_\+bottom\+\_\+left}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+to\+\_\+bottom\+\_\+left()}{tym\_i\_csq\_cursor\_to\_bottom\_left()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+to\+\_\+bottom\+\_\+left (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_a7fdd64b941af1b0ab7e3ee19cfccee7e}\label{parser_8c_a7fdd64b941af1b0ab7e3ee19cfccee7e}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+up@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+up}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+up@{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+up}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+up()}{tym\_i\_csq\_cursor\_up()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+cursor\+\_\+up (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file cursor\+\_\+up.\+c.
+
+\mbox{\Hypertarget{parser_8c_a85cba34282f6ec76127e59ba9bd1fe82}\label{parser_8c_a85cba34282f6ec76127e59ba9bd1fe82}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+characters@{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+characters}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+characters@{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+characters}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+characters()}{tym\_i\_csq\_delete\_characters()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+characters (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file delete\+\_\+characters.\+c.
+
+\mbox{\Hypertarget{parser_8c_ab25b071c2de9cfd796b02a19858643a0}\label{parser_8c_ab25b071c2de9cfd796b02a19858643a0}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+lines@{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+lines}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+lines@{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+lines}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+lines()}{tym\_i\_csq\_delete\_lines()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+delete\+\_\+lines (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file delete\+\_\+lines.\+c.
+
+\mbox{\Hypertarget{parser_8c_a57af3394a27da50051d8864db48f69af}\label{parser_8c_a57af3394a27da50051d8864db48f69af}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g0\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g0\+\_\+character\+\_\+set}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g0\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g0\+\_\+character\+\_\+set}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g0\+\_\+character\+\_\+set()}{tym\_i\_csq\_designate\_g0\_character\_set()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g0\+\_\+character\+\_\+set (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 42 of file designate\+\_\+character\+\_\+set.\+c.
+
+\mbox{\Hypertarget{parser_8c_a657bde519ca555bae13c7cc272ff6a7d}\label{parser_8c_a657bde519ca555bae13c7cc272ff6a7d}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g1\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g1\+\_\+character\+\_\+set}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g1\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g1\+\_\+character\+\_\+set}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g1\+\_\+character\+\_\+set()}{tym\_i\_csq\_designate\_g1\_character\_set()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g1\+\_\+character\+\_\+set (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 46 of file designate\+\_\+character\+\_\+set.\+c.
+
+\mbox{\Hypertarget{parser_8c_aefb0d7ffdc16770629f492dbe84e7c58}\label{parser_8c_aefb0d7ffdc16770629f492dbe84e7c58}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g2\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g2\+\_\+character\+\_\+set}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g2\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g2\+\_\+character\+\_\+set}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g2\+\_\+character\+\_\+set()}{tym\_i\_csq\_designate\_g2\_character\_set()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g2\+\_\+character\+\_\+set (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 50 of file designate\+\_\+character\+\_\+set.\+c.
+
+\mbox{\Hypertarget{parser_8c_a18c44bdb3c0930c74295bd59ad64ed83}\label{parser_8c_a18c44bdb3c0930c74295bd59ad64ed83}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g3\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g3\+\_\+character\+\_\+set}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g3\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g3\+\_\+character\+\_\+set}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g3\+\_\+character\+\_\+set()}{tym\_i\_csq\_designate\_g3\_character\_set()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+designate\+\_\+g3\+\_\+character\+\_\+set (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 54 of file designate\+\_\+character\+\_\+set.\+c.
+
+\mbox{\Hypertarget{parser_8c_a93447de2f58e2fa987bd5f0c6f0a78ea}\label{parser_8c_a93447de2f58e2fa987bd5f0c6f0a78ea}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+device\+\_\+status\+\_\+report@{tym\+\_\+i\+\_\+csq\+\_\+device\+\_\+status\+\_\+report}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+device\+\_\+status\+\_\+report@{tym\+\_\+i\+\_\+csq\+\_\+device\+\_\+status\+\_\+report}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+device\+\_\+status\+\_\+report()}{tym\_i\_csq\_device\_status\_report()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+device\+\_\+status\+\_\+report (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 17 of file device\+\_\+status\+\_\+report.\+c.
+
+\mbox{\Hypertarget{parser_8c_ac3eb314c3b4a05806e2eabd36140e2af}\label{parser_8c_ac3eb314c3b4a05806e2eabd36140e2af}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+disable@{tym\+\_\+i\+\_\+csq\+\_\+disable}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+disable@{tym\+\_\+i\+\_\+csq\+\_\+disable}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+disable()}{tym\_i\_csq\_disable()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+disable (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file disable.\+c.
+
+\mbox{\Hypertarget{parser_8c_a407ced2ea4f3d28d365c55e4e417ec0f}\label{parser_8c_a407ced2ea4f3d28d365c55e4e417ec0f}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+bottom\+\_\+half@{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+bottom\+\_\+half}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+bottom\+\_\+half@{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+bottom\+\_\+half}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+bottom\+\_\+half()}{tym\_i\_csq\_double\_height\_line\_bottom\_half()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+bottom\+\_\+half (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_a809c7ab01c87c7630132c031d5b10fb6}\label{parser_8c_a809c7ab01c87c7630132c031d5b10fb6}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+top\+\_\+half@{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+top\+\_\+half}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+top\+\_\+half@{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+top\+\_\+half}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+top\+\_\+half()}{tym\_i\_csq\_double\_height\_line\_top\_half()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+height\+\_\+line\+\_\+top\+\_\+half (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_a7518934536b65c05180b6729bf99e534}\label{parser_8c_a7518934536b65c05180b6729bf99e534}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+width\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+width\+\_\+line}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+width\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+width\+\_\+line}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+width\+\_\+line()}{tym\_i\_csq\_double\_width\_line()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+double\+\_\+width\+\_\+line (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_aead754e392fd03159d99e5e2d30c226d}\label{parser_8c_aead754e392fd03159d99e5e2d30c226d}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+enable@{tym\+\_\+i\+\_\+csq\+\_\+enable}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+enable@{tym\+\_\+i\+\_\+csq\+\_\+enable}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+enable()}{tym\_i\_csq\_enable()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+enable (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 9 of file enable.\+c.
+
+\mbox{\Hypertarget{parser_8c_a85b7b97f48b3d1e9d2c2ba362251eb4f}\label{parser_8c_a85b7b97f48b3d1e9d2c2ba362251eb4f}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+characters@{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+characters}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+characters@{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+characters}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+characters()}{tym\_i\_csq\_erase\_characters()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+characters (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file erase\+\_\+characters.\+c.
+
+\mbox{\Hypertarget{parser_8c_a1adc243629388bae5470f5653d8ccef1}\label{parser_8c_a1adc243629388bae5470f5653d8ccef1}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+display@{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+display}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+display@{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+display}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+display()}{tym\_i\_csq\_erase\_in\_display()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+display (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file erase\+\_\+in\+\_\+display.\+c.
+
+\mbox{\Hypertarget{parser_8c_a882bcc41452fc34b9a79f30c05173469}\label{parser_8c_a882bcc41452fc34b9a79f30c05173469}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+line}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+line}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+line()}{tym\_i\_csq\_erase\_in\_line()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+erase\+\_\+in\+\_\+line (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file erase\+\_\+in\+\_\+line.\+c.
+
+\mbox{\Hypertarget{parser_8c_adeace6227fd20316cc5ca03cc73d8ee1}\label{parser_8c_adeace6227fd20316cc5ca03cc73d8ee1}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+g2\+\_\+character\+\_\+set\+\_\+for\+\_\+character@{tym\+\_\+i\+\_\+csq\+\_\+g2\+\_\+character\+\_\+set\+\_\+for\+\_\+character}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+g2\+\_\+character\+\_\+set\+\_\+for\+\_\+character@{tym\+\_\+i\+\_\+csq\+\_\+g2\+\_\+character\+\_\+set\+\_\+for\+\_\+character}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+g2\+\_\+character\+\_\+set\+\_\+for\+\_\+character()}{tym\_i\_csq\_g2\_character\_set\_for\_character()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+g2\+\_\+character\+\_\+set\+\_\+for\+\_\+character (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_aebf21391b2021c7b72c6ac18f3c6711b}\label{parser_8c_aebf21391b2021c7b72c6ac18f3c6711b}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+g3\+\_\+character\+\_\+set\+\_\+for\+\_\+character@{tym\+\_\+i\+\_\+csq\+\_\+g3\+\_\+character\+\_\+set\+\_\+for\+\_\+character}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+g3\+\_\+character\+\_\+set\+\_\+for\+\_\+character@{tym\+\_\+i\+\_\+csq\+\_\+g3\+\_\+character\+\_\+set\+\_\+for\+\_\+character}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+g3\+\_\+character\+\_\+set\+\_\+for\+\_\+character()}{tym\_i\_csq\_g3\_character\_set\_for\_character()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+g3\+\_\+character\+\_\+set\+\_\+for\+\_\+character (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_a95796d4b226e4c8315f106d2460e73a9}\label{parser_8c_a95796d4b226e4c8315f106d2460e73a9}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+character@{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+character}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+character@{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+character}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+character()}{tym\_i\_csq\_insert\_character()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+character (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file insert\+\_\+character.\+c.
+
+\mbox{\Hypertarget{parser_8c_ae23adcd09f3b1412c679fb1a3717abee}\label{parser_8c_ae23adcd09f3b1412c679fb1a3717abee}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+lines@{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+lines}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+lines@{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+lines}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+lines()}{tym\_i\_csq\_insert\_lines()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+insert\+\_\+lines (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file insert\+\_\+lines.\+c.
+
+\mbox{\Hypertarget{parser_8c_a30799f0e1cf5193ae0e51a378dd9c4b0}\label{parser_8c_a30799f0e1cf5193ae0e51a378dd9c4b0}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G0\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S1R@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G0\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S1R}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G0\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S1R@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G0\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S1R}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G0\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S1\+R()}{tym\_i\_csq\_invoke\_charset\_G0\_as\_GR\_LS1R()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G0\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S1R (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 47 of file invoke\+\_\+charset.\+c.
+
+\mbox{\Hypertarget{parser_8c_a92ff1c797a84d038564374de1e381d1b}\label{parser_8c_a92ff1c797a84d038564374de1e381d1b}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G1\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L2@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G1\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L2}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G1\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L2@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G1\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L2}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G1\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L2()}{tym\_i\_csq\_invoke\_charset\_G1\_as\_GL\_SL2()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G1\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L2 (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 31 of file invoke\+\_\+charset.\+c.
+
+\mbox{\Hypertarget{parser_8c_afce25a55cc197b7fc619ec14e8e00adb}\label{parser_8c_afce25a55cc197b7fc619ec14e8e00adb}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L3@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L3}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L3@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L3}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L3()}{tym\_i\_csq\_invoke\_charset\_G2\_as\_GL\_SL3()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+L\+\_\+\+S\+L3 (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 35 of file invoke\+\_\+charset.\+c.
+
+\mbox{\Hypertarget{parser_8c_aa3451d59ccffe61eae03f3beee20fd42}\label{parser_8c_aa3451d59ccffe61eae03f3beee20fd42}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S3R@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S3R}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S3R@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S3R}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S3\+R()}{tym\_i\_csq\_invoke\_charset\_G2\_as\_GR\_LS3R()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G2\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S3R (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 39 of file invoke\+\_\+charset.\+c.
+
+\mbox{\Hypertarget{parser_8c_a4718b2785debcc474399819ebfd2d85c}\label{parser_8c_a4718b2785debcc474399819ebfd2d85c}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G3\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S2R@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G3\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S2R}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G3\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S2R@{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G3\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S2R}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G3\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S2\+R()}{tym\_i\_csq\_invoke\_charset\_G3\_as\_GR\_LS2R()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+invoke\+\_\+charset\+\_\+\+G3\+\_\+as\+\_\+\+G\+R\+\_\+\+L\+S2R (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file invoke\+\_\+charset.\+c.
+
+\mbox{\Hypertarget{parser_8c_ad21c6bee3ed06f7010199ccf4759a0ea}\label{parser_8c_ad21c6bee3ed06f7010199ccf4759a0ea}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+line\+\_\+position\+\_\+absolute@{tym\+\_\+i\+\_\+csq\+\_\+line\+\_\+position\+\_\+absolute}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+line\+\_\+position\+\_\+absolute@{tym\+\_\+i\+\_\+csq\+\_\+line\+\_\+position\+\_\+absolute}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+line\+\_\+position\+\_\+absolute()}{tym\_i\_csq\_line\_position\_absolute()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+line\+\_\+position\+\_\+absolute (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file line\+\_\+position\+\_\+absolute.\+c.
+
+\mbox{\Hypertarget{parser_8c_ae05757e448fce5a446b7d62b164f62e4}\label{parser_8c_ae05757e448fce5a446b7d62b164f62e4}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+lock@{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+lock}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+lock@{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+lock}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+lock()}{tym\_i\_csq\_memory\_lock()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+lock (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_a68fa019eb84ef7ef073e0389f745837d}\label{parser_8c_a68fa019eb84ef7ef073e0389f745837d}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+unlock@{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+unlock}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+unlock@{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+unlock}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+unlock()}{tym\_i\_csq\_memory\_unlock()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+memory\+\_\+unlock (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_a4010025714d98265b3e9a62520cb7019}\label{parser_8c_a4010025714d98265b3e9a62520cb7019}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+normal\+\_\+keypad@{tym\+\_\+i\+\_\+csq\+\_\+normal\+\_\+keypad}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+normal\+\_\+keypad@{tym\+\_\+i\+\_\+csq\+\_\+normal\+\_\+keypad}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+normal\+\_\+keypad()}{tym\_i\_csq\_normal\_keypad()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+normal\+\_\+keypad (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file normal\+\_\+keypad.\+c.
+
+\mbox{\Hypertarget{parser_8c_a6e8a77774dd40175a26c219d8eb5bc4f}\label{parser_8c_a6e8a77774dd40175a26c219d8eb5bc4f}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+osc\+\_\+cmd@{tym\+\_\+i\+\_\+csq\+\_\+osc\+\_\+cmd}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+osc\+\_\+cmd@{tym\+\_\+i\+\_\+csq\+\_\+osc\+\_\+cmd}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+osc\+\_\+cmd()}{tym\_i\_csq\_osc\_cmd()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+osc\+\_\+cmd (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_afa7524049b9d3b6f21d52b75b1325df4}\label{parser_8c_afa7524049b9d3b6f21d52b75b1325df4}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+reset@{tym\+\_\+i\+\_\+csq\+\_\+reset}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+reset@{tym\+\_\+i\+\_\+csq\+\_\+reset}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+reset()}{tym\_i\_csq\_reset()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+reset (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file reset.\+c.
+
+\mbox{\Hypertarget{parser_8c_ad9c58e44a984a004229dac57cbba771e}\label{parser_8c_ad9c58e44a984a004229dac57cbba771e}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+reset\+\_\+mode@{tym\+\_\+i\+\_\+csq\+\_\+reset\+\_\+mode}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+reset\+\_\+mode@{tym\+\_\+i\+\_\+csq\+\_\+reset\+\_\+mode}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+reset\+\_\+mode()}{tym\_i\_csq\_reset\_mode()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+reset\+\_\+mode (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 9 of file reset\+\_\+mode.\+c.
+
+\mbox{\Hypertarget{parser_8c_a013d3dbbaa635a46697de98ccdb35fb6}\label{parser_8c_a013d3dbbaa635a46697de98ccdb35fb6}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+restore\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+csq\+\_\+restore\+\_\+cursor\+\_\+position}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+restore\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+csq\+\_\+restore\+\_\+cursor\+\_\+position}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+restore\+\_\+cursor\+\_\+position()}{tym\_i\_csq\_restore\_cursor\_position()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+restore\+\_\+cursor\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file restore\+\_\+cursor\+\_\+position.\+c.
+
+\mbox{\Hypertarget{parser_8c_ac6d294943f06a5f43991b00221cfcf4f}\label{parser_8c_ac6d294943f06a5f43991b00221cfcf4f}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+reverse\+\_\+index@{tym\+\_\+i\+\_\+csq\+\_\+reverse\+\_\+index}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+reverse\+\_\+index@{tym\+\_\+i\+\_\+csq\+\_\+reverse\+\_\+index}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+reverse\+\_\+index()}{tym\_i\_csq\_reverse\_index()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+reverse\+\_\+index (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file reverse\+\_\+index.\+c.
+
+\mbox{\Hypertarget{parser_8c_a0ed7105db8397d1306b53018cda4de5c}\label{parser_8c_a0ed7105db8397d1306b53018cda4de5c}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+save\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+csq\+\_\+save\+\_\+cursor\+\_\+position}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+save\+\_\+cursor\+\_\+position@{tym\+\_\+i\+\_\+csq\+\_\+save\+\_\+cursor\+\_\+position}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+save\+\_\+cursor\+\_\+position()}{tym\_i\_csq\_save\_cursor\_position()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+save\+\_\+cursor\+\_\+position (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file save\+\_\+cursor\+\_\+position.\+c.
+
+\mbox{\Hypertarget{parser_8c_a6285aae57a1ec1b17810823a7432e737}\label{parser_8c_a6285aae57a1ec1b17810823a7432e737}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+screen\+\_\+alignment\+\_\+test@{tym\+\_\+i\+\_\+csq\+\_\+screen\+\_\+alignment\+\_\+test}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+screen\+\_\+alignment\+\_\+test@{tym\+\_\+i\+\_\+csq\+\_\+screen\+\_\+alignment\+\_\+test}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+screen\+\_\+alignment\+\_\+test()}{tym\_i\_csq\_screen\_alignment\_test()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+screen\+\_\+alignment\+\_\+test (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 9 of file screen\+\_\+alignment\+\_\+test.\+c.
+
+\mbox{\Hypertarget{parser_8c_adf43094df653cac57075b9ac7afadf8d}\label{parser_8c_adf43094df653cac57075b9ac7afadf8d}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+down@{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+down}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+down@{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+down}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+down()}{tym\_i\_csq\_scroll\_down()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+down (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file scroll\+\_\+down.\+c.
+
+\mbox{\Hypertarget{parser_8c_a42182fd43748561f796b9f08c4c45cf6}\label{parser_8c_a42182fd43748561f796b9f08c4c45cf6}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+up@{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+up}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+up@{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+up}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+up()}{tym\_i\_csq\_scroll\_up()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+scroll\+\_\+up (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file scroll\+\_\+up.\+c.
+
+\mbox{\Hypertarget{parser_8c_a187d7b79dbb49d76b873e0711cb0ca91}\label{parser_8c_a187d7b79dbb49d76b873e0711cb0ca91}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+default\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+default\+\_\+character\+\_\+set}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+default\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+default\+\_\+character\+\_\+set}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+default\+\_\+character\+\_\+set()}{tym\_i\_csq\_select\_default\_character\_set()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+default\+\_\+character\+\_\+set (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 18 of file invoke\+\_\+charset.\+c.
+
+\mbox{\Hypertarget{parser_8c_a0ac4b7f9962eef4a6ea4902cab131ab2}\label{parser_8c_a0ac4b7f9962eef4a6ea4902cab131ab2}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+utf8\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+utf8\+\_\+character\+\_\+set}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+utf8\+\_\+character\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+utf8\+\_\+character\+\_\+set}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+utf8\+\_\+character\+\_\+set()}{tym\_i\_csq\_select\_utf8\_character\_set()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+select\+\_\+utf8\+\_\+character\+\_\+set (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 26 of file invoke\+\_\+charset.\+c.
+
+\mbox{\Hypertarget{parser_8c_adadbbbf0427585cb7601c9d7c1e11074}\label{parser_8c_adadbbbf0427585cb7601c9d7c1e11074}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary@{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary@{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary()}{tym\_i\_csq\_send\_device\_attributes\_primary()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 18 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{parser_8c_aacf6fd644e4d912cf28466eefdc30391}\label{parser_8c_aacf6fd644e4d912cf28466eefdc30391}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+mode@{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+mode}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+mode@{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+mode}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+mode()}{tym\_i\_csq\_set\_mode()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+mode (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 9 of file set\+\_\+mode.\+c.
+
+\mbox{\Hypertarget{parser_8c_a344df1971de0c9fe588b2d0118ccf920}\label{parser_8c_a344df1971de0c9fe588b2d0118ccf920}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+scrolling\+\_\+region}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+scrolling\+\_\+region@{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+scrolling\+\_\+region}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+scrolling\+\_\+region()}{tym\_i\_csq\_set\_scrolling\_region()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+set\+\_\+scrolling\+\_\+region (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file set\+\_\+scrolling\+\_\+region.\+c.
+
+\mbox{\Hypertarget{parser_8c_a7f6e5ad2989d7cf6d48818c5d0c5d5a0}\label{parser_8c_a7f6e5ad2989d7cf6d48818c5d0c5d5a0}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+single\+\_\+width\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+single\+\_\+width\+\_\+line}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+single\+\_\+width\+\_\+line@{tym\+\_\+i\+\_\+csq\+\_\+single\+\_\+width\+\_\+line}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+single\+\_\+width\+\_\+line()}{tym\_i\_csq\_single\_width\_line()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+single\+\_\+width\+\_\+line (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_ac729ee29c3971fdccfc19a7091b1c95f}\label{parser_8c_ac729ee29c3971fdccfc19a7091b1c95f}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+soft\+\_\+reset@{tym\+\_\+i\+\_\+csq\+\_\+soft\+\_\+reset}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+soft\+\_\+reset@{tym\+\_\+i\+\_\+csq\+\_\+soft\+\_\+reset}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+soft\+\_\+reset()}{tym\_i\_csq\_soft\_reset()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+soft\+\_\+reset (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file soft\+\_\+reset.\+c.
+
+\mbox{\Hypertarget{parser_8c_a39a5d7a832600c3582319edd355f09cc}\label{parser_8c_a39a5d7a832600c3582319edd355f09cc}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+tab\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+tab\+\_\+set}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+tab\+\_\+set@{tym\+\_\+i\+\_\+csq\+\_\+tab\+\_\+set}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+tab\+\_\+set()}{tym\_i\_csq\_tab\_set()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+tab\+\_\+set (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{parser_8c_ac0d205b99cee58a8b46436c8314ef08e}\label{parser_8c_ac0d205b99cee58a8b46436c8314ef08e}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+backwards@{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+backwards}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+backwards@{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+backwards}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+backwards()}{tym\_i\_csq\_vertical\_position\_backwards()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+backwards (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file vertical\+\_\+position\+\_\+backwards.\+c.
+
+\mbox{\Hypertarget{parser_8c_a0ce6fdd44e16faacaaba27e610ef8cc7}\label{parser_8c_a0ce6fdd44e16faacaaba27e610ef8cc7}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+relative@{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+relative}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+relative@{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+relative}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+relative()}{tym\_i\_csq\_vertical\_position\_relative()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+vertical\+\_\+position\+\_\+relative (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 7 of file vertical\+\_\+position\+\_\+relative.\+c.
+
+\mbox{\Hypertarget{parser_8c_ad9afd6b8b0fc45f4eadf4d390032ab21}\label{parser_8c_ad9afd6b8b0fc45f4eadf4d390032ab21}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+debug\+\_\+sequence\+\_\+params@{tym\+\_\+i\+\_\+debug\+\_\+sequence\+\_\+params}}
+\index{tym\+\_\+i\+\_\+debug\+\_\+sequence\+\_\+params@{tym\+\_\+i\+\_\+debug\+\_\+sequence\+\_\+params}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+debug\+\_\+sequence\+\_\+params()}{tym\_i\_debug\_sequence\_params()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+debug\+\_\+sequence\+\_\+params (\begin{DoxyParamCaption}\item[{const struct \hyperlink{structtym__i__command__sequence}{tym\+\_\+i\+\_\+command\+\_\+sequence} $\ast$}]{command,  }\item[{const struct \hyperlink{structtym__i__sequence__state}{tym\+\_\+i\+\_\+sequence\+\_\+state} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+
+Definition at line 322 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_a0000fa2741bb0aa1ad0f67ddb05d424b}\label{parser_8c_a0000fa2741bb0aa1ad0f67ddb05d424b}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+pane\+\_\+parse@{tym\+\_\+i\+\_\+pane\+\_\+parse}}
+\index{tym\+\_\+i\+\_\+pane\+\_\+parse@{tym\+\_\+i\+\_\+pane\+\_\+parse}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+pane\+\_\+parse()}{tym\_i\_pane\_parse()}}
+{\footnotesize\ttfamily void tym\+\_\+i\+\_\+pane\+\_\+parse (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{unsigned char}]{c }\end{DoxyParamCaption})}
+
+
+
+Definition at line 334 of file parser.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{parser_8c_a377f77fdbf5c71db368b11d24f8bce04}\label{parser_8c_a377f77fdbf5c71db368b11d24f8bce04}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map@{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map}}
+\index{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map@{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map}{tym\_i\_command\_sequence\_map}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__command__sequence}{tym\+\_\+i\+\_\+command\+\_\+sequence} tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+\textcolor{preprocessor}{#define CSQ(A,B) }
+
+
+
+
+
+ \{   .sequence=( \hyperlink{parser_8h_a06988dd4ec6773e75b0313adbd3b7e65}{RIS} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a06988dd4ec6773e75b0313adbd3b7e65}{RIS} )-1,   .callback\_name=(\textcolor{stringliteral}{"reset"}),   .callback=
+      \hyperlink{parser_8c_afa7524049b9d3b6f21d52b75b1325df4}{tym\_i\_csq\_reset}    \},   \{   .sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#3"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#3"} )-1,   .callback\_name=(\textcolor{stringliteral}{"double\_height\_line\_top\_half"}),   .callback=
+      \hyperlink{parser_8c_a809c7ab01c87c7630132c031d5b10fb6}{tym\_i\_csq\_double\_height\_line\_top\_half}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#4"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#4"} )-1,   .callback\_name=(\textcolor{stringliteral}{"double\_height\_line\_bottom\_half"}),   .
+      callback=\hyperlink{parser_8c_a407ced2ea4f3d28d365c55e4e417ec0f}{tym\_i\_csq\_double\_height\_line\_bottom\_half}    \},   \{   .
+      sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#5"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#5"} )-1,   .callback\_name=(\textcolor{stringliteral}{"single\_width\_line"}),   .callback=
+      \hyperlink{parser_8c_a7f6e5ad2989d7cf6d48818c5d0c5d5a0}{tym\_i\_csq\_single\_width\_line}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#6"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#6"} )-1,   .callback\_name=(\textcolor{stringliteral}{"double\_width\_line"}),   .callback=
+      \hyperlink{parser_8c_a7518934536b65c05180b6729bf99e534}{tym\_i\_csq\_double\_width\_line}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#8"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"#8"} )-1,   .callback\_name=(\textcolor{stringliteral}{"screen\_alignment\_test"}),   .callback=
+      \hyperlink{parser_8c_a6285aae57a1ec1b17810823a7432e737}{tym\_i\_csq\_screen\_alignment\_test}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"("} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"("} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} )-1,   .callback\_name=(\textcolor{stringliteral}{"designate\_g0\_character\_set"}),   .
+      callback=\hyperlink{parser_8c_a57af3394a27da50051d8864db48f69af}{tym\_i\_csq\_designate\_g0\_character\_set}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{")"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{")"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} )-1,   .callback\_name=(\textcolor{stringliteral}{"designate\_g1\_character\_set"}),   .
+      callback=\hyperlink{parser_8c_a657bde519ca555bae13c7cc272ff6a7d}{tym\_i\_csq\_designate\_g1\_character\_set}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"*"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"*"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} )-1,   .callback\_name=(\textcolor{stringliteral}{"designate\_g2\_character\_set"}),   .
+      callback=\hyperlink{parser_8c_aefb0d7ffdc16770629f492dbe84e7c58}{tym\_i\_csq\_designate\_g2\_character\_set}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"+"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"+"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} )-1,   .callback\_name=(\textcolor{stringliteral}{"designate\_g3\_character\_set"}),   .
+      callback=\hyperlink{parser_8c_a18c44bdb3c0930c74295bd59ad64ed83}{tym\_i\_csq\_designate\_g3\_character\_set}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"%@"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"%@"} )-1,   .callback\_name=(\textcolor{stringliteral}{"select\_default\_character\_set"}),   .
+      callback=\hyperlink{parser_8c_a187d7b79dbb49d76b873e0711cb0ca91}{tym\_i\_csq\_select\_default\_character\_set}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"%G"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"%G"} )-1,   .callback\_name=(\textcolor{stringliteral}{"select\_utf8\_character\_set"}),   .
+      callback=\hyperlink{parser_8c_a0ac4b7f9962eef4a6ea4902cab131ab2}{tym\_i\_csq\_select\_utf8\_character\_set}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"n"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"n"} )-1,   .callback\_name=(\textcolor{stringliteral}{"invoke\_charset\_G1\_as\_GL\_SL2"}),   .
+      callback=\hyperlink{parser_8c_a92ff1c797a84d038564374de1e381d1b}{tym\_i\_csq\_invoke\_charset\_G1\_as\_GL\_SL2}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"o"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"o"} )-1,   .callback\_name=(\textcolor{stringliteral}{"invoke\_charset\_G2\_as\_GL\_SL3"}),   .
+      callback=\hyperlink{parser_8c_afce25a55cc197b7fc619ec14e8e00adb}{tym\_i\_csq\_invoke\_charset\_G2\_as\_GL\_SL3}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"|"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"|"} )-1,   .callback\_name=(\textcolor{stringliteral}{"invoke\_charset\_G2\_as\_GR\_LS3R"}),   .
+      callback=\hyperlink{parser_8c_aa3451d59ccffe61eae03f3beee20fd42}{tym\_i\_csq\_invoke\_charset\_G2\_as\_GR\_LS3R}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"\}"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"\}"} )-1,   .callback\_name=(\textcolor{stringliteral}{"invoke\_charset\_G3\_as\_GR\_LS2R"}),   .
+      callback=\hyperlink{parser_8c_a4718b2785debcc474399819ebfd2d85c}{tym\_i\_csq\_invoke\_charset\_G3\_as\_GR\_LS2R}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"~"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"~"} )-1,   .callback\_name=(\textcolor{stringliteral}{"invoke\_charset\_G0\_as\_GR\_LS1R"}),   .
+      callback=\hyperlink{parser_8c_a30799f0e1cf5193ae0e51a378dd9c4b0}{tym\_i\_csq\_invoke\_charset\_G0\_as\_GR\_LS1R}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"7"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"7"} )-1,   .callback\_name=(\textcolor{stringliteral}{"save\_cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a0ed7105db8397d1306b53018cda4de5c}{tym\_i\_csq\_save\_cursor\_position}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"8"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"8"} )-1,   .callback\_name=(\textcolor{stringliteral}{"restore\_cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a013d3dbbaa635a46697de98ccdb35fb6}{tym\_i\_csq\_restore\_cursor\_position}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"="} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"="} )-1,   .callback\_name=(\textcolor{stringliteral}{"application\_keypad /* DECPAM */"}),   .
+      callback=\hyperlink{parser_8c_a83cefb2537e9eb6e8261f6cf2eb1dc6a}{tym\_i\_csq\_application\_keypad}     \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{">"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{">"} )-1,   .callback\_name=(\textcolor{stringliteral}{"normal\_keypad /* DECPNM */"}),   .
+      callback=\hyperlink{parser_8c_a4010025714d98265b3e9a62520cb7019}{tym\_i\_csq\_normal\_keypad}     \},   \{   .sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"F"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"F"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_to\_bottom\_left"}),   .callback=
+      \hyperlink{parser_8c_a242388e78d6c9d36a2b8564d59d0bf47}{tym\_i\_csq\_cursor\_to\_bottom\_left}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"l"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"l"} )-1,   .callback\_name=(\textcolor{stringliteral}{"memory\_lock"}),   .callback=
+      \hyperlink{parser_8c_ae05757e448fce5a446b7d62b164f62e4}{tym\_i\_csq\_memory\_lock}    \},   \{   .sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"m"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"m"} )-1,   .callback\_name=(\textcolor{stringliteral}{"memory\_unlock"}),   .callback=
+      \hyperlink{parser_8c_a68fa019eb84ef7ef073e0389f745837d}{tym\_i\_csq\_memory\_unlock}    \},   \{   .sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"D"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"D"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_down /* index (NEL) */"}),   .callback=
+      \hyperlink{parser_8c_a3f806b414a3000a1908b0116700d5e44}{tym\_i\_csq\_cursor\_down}     \},   \{   .sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"E"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"E"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_next\_line /* next line */"}),   .callback=
+      \hyperlink{parser_8c_a2d5bde8599fbe4b4a70219eafc6ab27a}{tym\_i\_csq\_cursor\_next\_line}     \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"H"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"H"} )-1,   .callback\_name=(\textcolor{stringliteral}{"tab\_set"}),   .callback=
+      \hyperlink{parser_8c_a39a5d7a832600c3582319edd355f09cc}{tym\_i\_csq\_tab\_set}    \},   \{   .sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"M"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"M"} )-1,   .callback\_name=(\textcolor{stringliteral}{"reverse\_index"}),   .callback=
+      \hyperlink{parser_8c_ac6d294943f06a5f43991b00221cfcf4f}{tym\_i\_csq\_reverse\_index}    \},   \{   .sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"N"} 
+      \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"N"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} )-1,   .callback\_name=(\textcolor{stringliteral}{"g2\_character\_set\_for\_character"}),   .callback
+      =\hyperlink{parser_8c_adeace6227fd20316cc5ca03cc73d8ee1}{tym\_i\_csq\_g2\_character\_set\_for\_character}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"O"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"O"} \hyperlink{parser_8h_ac4cf4b2ab929bd23951a8676eeac086b}{C} )-1,   .callback\_name=(\textcolor{stringliteral}{"g3\_character\_set\_for\_character"}), 
+        .callback=\hyperlink{parser_8c_aebf21391b2021c7b72c6ac18f3c6711b}{tym\_i\_csq\_g3\_character\_set\_for\_character}    \},   \{   .
+      sequence=( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"Z"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_a4af1b6159e447ba72652bb7fcdfa726e}{ESC} \textcolor{stringliteral}{"Z"} )-1,   .callback\_name=(\textcolor{stringliteral}{"send\_device\_attributes\_primary"})
+      ,   .callback=\hyperlink{parser_8c_adadbbbf0427585cb7601c9d7c1e11074}{tym\_i\_csq\_send\_device\_attributes\_primary}    \},   \{   .
+      sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"r"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"r"} )-1,   .callback\_name=(\textcolor{stringliteral}{"set\_scrolling\_region"}),   .
+      callback=\hyperlink{parser_8c_a344df1971de0c9fe588b2d0118ccf920}{tym\_i\_csq\_set\_scrolling\_region}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"r"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"r"} )-1,   .callback\_name=(\textcolor{stringliteral}{"set\_scrolling\_region"}),   
+      .callback=\hyperlink{parser_8c_a344df1971de0c9fe588b2d0118ccf920}{tym\_i\_csq\_set\_scrolling\_region}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"!p"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"!p"} )-1,   .callback\_name=(\textcolor{stringliteral}{"soft\_reset"}),   .callback=
+      \hyperlink{parser_8c_ac729ee29c3971fdccfc19a7091b1c95f}{tym\_i\_csq\_soft\_reset}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"h"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"h"} )-1,   .callback\_name=(\textcolor{stringliteral}{"set\_mode"}),   .callback=
+      \hyperlink{parser_8c_aacf6fd644e4d912cf28466eefdc30391}{tym\_i\_csq\_set\_mode}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"l"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"l"} )-1,   .callback\_name=(\textcolor{stringliteral}{"reset\_mode"}),   .callback=
+      \hyperlink{parser_8c_ad9c58e44a984a004229dac57cbba771e}{tym\_i\_csq\_reset\_mode}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"c"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"c"} )-1,   .callback\_name=(\textcolor{stringliteral}{"send\_device\_attributes\_primary"}),   .callback=
+      \hyperlink{parser_8c_adadbbbf0427585cb7601c9d7c1e11074}{tym\_i\_csq\_send\_device\_attributes\_primary}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"c"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"c"} )-1,   .callback\_name=(\textcolor{stringliteral}{"
+      send\_device\_attributes\_primary"}),   .callback=\hyperlink{parser_8c_adadbbbf0427585cb7601c9d7c1e11074}{tym\_i\_csq\_send\_device\_attributes\_primary}    \},  
+       \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"e"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"e"} )-1,   .callback\_name=(\textcolor{stringliteral}{"
+      vertical\_position\_relative /* VPR aka. line position forward */"}),   .callback=
+      \hyperlink{parser_8c_a0ce6fdd44e16faacaaba27e610ef8cc7}{tym\_i\_csq\_vertical\_position\_relative}     \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"e"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"e"} )-1,   .callback\_name=(\textcolor{stringliteral}{"vertical\_position\_relative
+      "}),   .callback=\hyperlink{parser_8c_a0ce6fdd44e16faacaaba27e610ef8cc7}{tym\_i\_csq\_vertical\_position\_relative}    \},   \{   .
+      sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"a"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"a"} )-1,   .callback\_name=(\textcolor{stringliteral}{"character\_position\_relative /* VPR
+       aka. character position forward */"}),   .callback=
+      \hyperlink{parser_8c_a41e68d8f73c5c42abd472bbacb06a8f6}{tym\_i\_csq\_character\_position\_relative}     \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"a"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"a"} )-1,   .callback\_name=(\textcolor{stringliteral}{"
+      character\_position\_relative"}),   .callback=\hyperlink{parser_8c_a41e68d8f73c5c42abd472bbacb06a8f6}{tym\_i\_csq\_character\_position\_relative}    \},   \{   .
+      sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"k"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"k"} )-1,   .callback\_name=(\textcolor{stringliteral}{"vertical\_position\_backwards /*
+       VPB */"}),   .callback=\hyperlink{parser_8c_ac0d205b99cee58a8b46436c8314ef08e}{tym\_i\_csq\_vertical\_position\_backwards}     \},   \{   
+      .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"k"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"k"} )-1,   .callback\_name=(\textcolor{stringliteral}{"
+      vertical\_position\_backwards"}),   .callback=\hyperlink{parser_8c_ac0d205b99cee58a8b46436c8314ef08e}{tym\_i\_csq\_vertical\_position\_backwards}    \},
+         \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"@"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"@"} )-1,   .callback\_name=(\textcolor{stringliteral}{"insert\_character /*
+       ICH */"}),   .callback=\hyperlink{parser_8c_a95796d4b226e4c8315f106d2460e73a9}{tym\_i\_csq\_insert\_character}     \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"@"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"@"} )-1,   .callback\_name=(\textcolor{stringliteral}{"insert\_character"}),   .
+      callback=\hyperlink{parser_8c_a95796d4b226e4c8315f106d2460e73a9}{tym\_i\_csq\_insert\_character}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"A"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"A"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_up"}),   .callback=
+      \hyperlink{parser_8c_a7fdd64b941af1b0ab7e3ee19cfccee7e}{tym\_i\_csq\_cursor\_up}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"A"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"A"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_up"}),   .callback=
+      \hyperlink{parser_8c_a7fdd64b941af1b0ab7e3ee19cfccee7e}{tym\_i\_csq\_cursor\_up}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"B"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"B"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_down"}),   .callback=
+      \hyperlink{parser_8c_a3f806b414a3000a1908b0116700d5e44}{tym\_i\_csq\_cursor\_down}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"B"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"B"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_down"}),   .callback=
+      \hyperlink{parser_8c_a3f806b414a3000a1908b0116700d5e44}{tym\_i\_csq\_cursor\_down}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"C"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"C"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_right"}),   .callback=
+      \hyperlink{parser_8c_abce9da67b45553b9592596794529ee5b}{tym\_i\_csq\_cursor\_right}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"C"} ),   .length=\textcolor{keyword}{sizeof}(
+       \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"C"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_right"}),   .callback=
+      \hyperlink{parser_8c_abce9da67b45553b9592596794529ee5b}{tym\_i\_csq\_cursor\_right}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"D"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"D"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_left"}),   .callback=
+      \hyperlink{parser_8c_ae9ded1814a8fc0dfdc1989ef6f8334d3}{tym\_i\_csq\_cursor\_left}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"D"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"D"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_left"}),   .callback=
+      \hyperlink{parser_8c_ae9ded1814a8fc0dfdc1989ef6f8334d3}{tym\_i\_csq\_cursor\_left}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"E"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"E"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_next\_line"}),   .callback=
+      \hyperlink{parser_8c_a2d5bde8599fbe4b4a70219eafc6ab27a}{tym\_i\_csq\_cursor\_next\_line}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"E"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"E"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_next\_line"}),   .callback=
+      \hyperlink{parser_8c_a2d5bde8599fbe4b4a70219eafc6ab27a}{tym\_i\_csq\_cursor\_next\_line}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"F"} ),   .length=\textcolor{keyword}{sizeof}
+      ( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"F"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_previous\_line"}),   .callback=
+      \hyperlink{parser_8c_abdd8d514cdef6718eceb8900036744d7}{tym\_i\_csq\_cursor\_previous\_line}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"F"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"F"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_previous\_line"}),   
+      .callback=\hyperlink{parser_8c_abdd8d514cdef6718eceb8900036744d7}{tym\_i\_csq\_cursor\_previous\_line}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"G"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"G"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_horizontal\_absolute"}),   .
+      callback=\hyperlink{parser_8c_adda7fb3005ce3e14592daf75ca701577}{tym\_i\_csq\_cursor\_horizontal\_absolute}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"G"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"G"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_horizontal\_absolute
+      "}),   .callback=\hyperlink{parser_8c_adda7fb3005ce3e14592daf75ca701577}{tym\_i\_csq\_cursor\_horizontal\_absolute}    \},   \{   .
+      sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"H"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"H"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a379af766aaf22fa706fa12c998f4732f}{tym\_i\_csq\_cursor\_position}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"H"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"H"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a379af766aaf22fa706fa12c998f4732f}{tym\_i\_csq\_cursor\_position}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"I"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"I"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_forward\_tabulation"}),   .callback=
+      \hyperlink{parser_8c_a7468a29e6d04cdf6aebd090f8da4f16e}{tym\_i\_csq\_cursor\_forward\_tabulation}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"I"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"I"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_forward\_tabulation"}
+      ),   .callback=\hyperlink{parser_8c_a7468a29e6d04cdf6aebd090f8da4f16e}{tym\_i\_csq\_cursor\_forward\_tabulation}    \},   \{   .sequence=
+      ( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"c"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"c"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_display"}
+      ),   .callback=\hyperlink{parser_8c_a1adc243629388bae5470f5653d8ccef1}{tym\_i\_csq\_erase\_in\_display}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"J"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"J"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_display"}),   .callback=
+      \hyperlink{parser_8c_a1adc243629388bae5470f5653d8ccef1}{tym\_i\_csq\_erase\_in\_display}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \textcolor{stringliteral}{"J"} ),   .length=\textcolor{keyword}{
+      sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \textcolor{stringliteral}{"J"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_display"}),   .callback=
+      \hyperlink{parser_8c_a1adc243629388bae5470f5653d8ccef1}{tym\_i\_csq\_erase\_in\_display}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"J"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"J"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_display"}),   .callback=
+      \hyperlink{parser_8c_a1adc243629388bae5470f5653d8ccef1}{tym\_i\_csq\_erase\_in\_display}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"J"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"J"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_display"}),   .
+      callback=\hyperlink{parser_8c_a1adc243629388bae5470f5653d8ccef1}{tym\_i\_csq\_erase\_in\_display}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"K"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"K"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_line"}),   .callback=
+      \hyperlink{parser_8c_a882bcc41452fc34b9a79f30c05173469}{tym\_i\_csq\_erase\_in\_line}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \textcolor{stringliteral}{"K"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \textcolor{stringliteral}{"K"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_line"}),   .callback=
+      \hyperlink{parser_8c_a882bcc41452fc34b9a79f30c05173469}{tym\_i\_csq\_erase\_in\_line}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"K"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"K"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_line"}),   .callback=
+      \hyperlink{parser_8c_a882bcc41452fc34b9a79f30c05173469}{tym\_i\_csq\_erase\_in\_line}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"K"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"K"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_in\_line"}),   .callback=
+      \hyperlink{parser_8c_a882bcc41452fc34b9a79f30c05173469}{tym\_i\_csq\_erase\_in\_line}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"L"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"L"} )-1,   .callback\_name=(\textcolor{stringliteral}{"insert\_lines"}),   .callback=
+      \hyperlink{parser_8c_ae23adcd09f3b1412c679fb1a3717abee}{tym\_i\_csq\_insert\_lines}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"L"} ),   .length=\textcolor{keyword}{sizeof}(
+       \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"L"} )-1,   .callback\_name=(\textcolor{stringliteral}{"insert\_lines"}),   .callback=
+      \hyperlink{parser_8c_ae23adcd09f3b1412c679fb1a3717abee}{tym\_i\_csq\_insert\_lines}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"M"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"M"} )-1,   .callback\_name=(\textcolor{stringliteral}{"delete\_lines"}),   .callback=
+      \hyperlink{parser_8c_ab25b071c2de9cfd796b02a19858643a0}{tym\_i\_csq\_delete\_lines}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"M"} ),   .length=\textcolor{keyword}{sizeof}(
+       \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"M"} )-1,   .callback\_name=(\textcolor{stringliteral}{"delete\_lines"}),   .callback=
+      \hyperlink{parser_8c_ab25b071c2de9cfd796b02a19858643a0}{tym\_i\_csq\_delete\_lines}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"P"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"P"} )-1,   .callback\_name=(\textcolor{stringliteral}{"delete\_characters"}),   .callback=
+      \hyperlink{parser_8c_a85cba34282f6ec76127e59ba9bd1fe82}{tym\_i\_csq\_delete\_characters}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"P"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"P"} )-1,   .callback\_name=(\textcolor{stringliteral}{"delete\_characters"}),   .
+      callback=\hyperlink{parser_8c_a85cba34282f6ec76127e59ba9bd1fe82}{tym\_i\_csq\_delete\_characters}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"S"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"S"} )-1,   .callback\_name=(\textcolor{stringliteral}{"scroll\_up"}),   .callback=
+      \hyperlink{parser_8c_a42182fd43748561f796b9f08c4c45cf6}{tym\_i\_csq\_scroll\_up}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"S"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"S"} )-1,   .callback\_name=(\textcolor{stringliteral}{"scroll\_up"}),   .callback=
+      \hyperlink{parser_8c_a42182fd43748561f796b9f08c4c45cf6}{tym\_i\_csq\_scroll\_up}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"T"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"T"} )-1,   .callback\_name=(\textcolor{stringliteral}{"scroll\_down"}),   .callback=
+      \hyperlink{parser_8c_adf43094df653cac57075b9ac7afadf8d}{tym\_i\_csq\_scroll\_down}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"T"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"T"} )-1,   .callback\_name=(\textcolor{stringliteral}{"scroll\_down"}),   .callback=
+      \hyperlink{parser_8c_adf43094df653cac57075b9ac7afadf8d}{tym\_i\_csq\_scroll\_down}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"X"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"X"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_characters"}),   .callback=
+      \hyperlink{parser_8c_a85b7b97f48b3d1e9d2c2ba362251eb4f}{tym\_i\_csq\_erase\_characters}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"X"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"X"} )-1,   .callback\_name=(\textcolor{stringliteral}{"erase\_characters"}),   .callback=
+      \hyperlink{parser_8c_a85b7b97f48b3d1e9d2c2ba362251eb4f}{tym\_i\_csq\_erase\_characters}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"d"} ),   .length=\textcolor{keyword}{sizeof}
+      ( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"d"} )-1,   .callback\_name=(\textcolor{stringliteral}{"line\_position\_absolute"}),   .callback=
+      \hyperlink{parser_8c_ad21c6bee3ed06f7010199ccf4759a0ea}{tym\_i\_csq\_line\_position\_absolute}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"d"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"d"} )-1,   .callback\_name=(\textcolor{stringliteral}{"line\_position\_absolute"}), 
+        .callback=\hyperlink{parser_8c_ad21c6bee3ed06f7010199ccf4759a0ea}{tym\_i\_csq\_line\_position\_absolute}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"f"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"f"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a379af766aaf22fa706fa12c998f4732f}{tym\_i\_csq\_cursor\_position}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} 
+      \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"f"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"f"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a379af766aaf22fa706fa12c998f4732f}{tym\_i\_csq\_cursor\_position}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"`"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"`"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_horizontal\_absolute /* character position absolute */"}),   .
+      callback=\hyperlink{parser_8c_adda7fb3005ce3e14592daf75ca701577}{tym\_i\_csq\_cursor\_horizontal\_absolute}     \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"`"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"`"} )-1,   .callback\_name=(\textcolor{stringliteral}{"cursor\_horizontal\_absolute
+       /* character position absolute */"}),   .callback=
+      \hyperlink{parser_8c_adda7fb3005ce3e14592daf75ca701577}{tym\_i\_csq\_cursor\_horizontal\_absolute}     \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"m"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"m"} )-1,   .callback\_name=(\textcolor{stringliteral}{"character\_attribute\_change"}),   .
+      callback=\hyperlink{parser_8c_ae5324a5fa09cb2c534e6e510264d3d96}{tym\_i\_csq\_character\_attribute\_change}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"m"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"m"} )-1,   .callback\_name=(\textcolor{stringliteral}{"character\_attribute\_change
+      "}),   .callback=\hyperlink{parser_8c_ae5324a5fa09cb2c534e6e510264d3d96}{tym\_i\_csq\_character\_attribute\_change}    \},   \{   .
+      sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"n"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"n"} )-1,   .callback\_name=(\textcolor{stringliteral}{"device\_status\_report"})
+      ,   .callback=\hyperlink{parser_8c_a93447de2f58e2fa987bd5f0c6f0a78ea}{tym\_i\_csq\_device\_status\_report}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"s"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"s"} )-1,   .callback\_name=(\textcolor{stringliteral}{"save\_cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a0ed7105db8397d1306b53018cda4de5c}{tym\_i\_csq\_save\_cursor\_position}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"u"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"u"} )-1,   .callback\_name=(\textcolor{stringliteral}{"restore\_cursor\_position"}),   .callback=
+      \hyperlink{parser_8c_a013d3dbbaa635a46697de98ccdb35fb6}{tym\_i\_csq\_restore\_cursor\_position}    \},   \{   .sequence=( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"h"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"h"} )-1,   .callback\_name=(\textcolor{stringliteral}{"enable"}),   .
+      callback=\hyperlink{parser_8c_aead754e392fd03159d99e5e2d30c226d}{tym\_i\_csq\_enable}    \},   \{   .sequence=( \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"l"} ),   .length=\textcolor{keyword}{sizeof}( 
+      \hyperlink{parser_8h_abc85bb07f8fa1e7c2eba467b6c8e8624}{CSI} \textcolor{stringliteral}{"?"} \hyperlink{parser_8h_aaf0952059602752258dccaa015d7b54a}{NUM} \textcolor{stringliteral}{"l"} )-1,   .callback\_name=(\textcolor{stringliteral}{"disable"}),   .callback=
+      \hyperlink{parser_8c_ac3eb314c3b4a05806e2eabd36140e2af}{tym\_i\_csq\_disable}    \},   \{   .sequence=( \hyperlink{parser_8h_ac9fd21467d416baa7f6aa4c175f8c6b5}{OSC} \hyperlink{parser_8h_a1292d2ed153d92b9e5bcf13c8dff8d58}{SNUM} \textcolor{stringliteral}{";"} 
+      \hyperlink{parser_8h_a52e3db5a1724beab41ebbabe72460f12}{TEXT} \hyperlink{parser_8h_ab52cdc475a6866d1be7b5807fb623f50}{ST} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_ac9fd21467d416baa7f6aa4c175f8c6b5}{OSC} \hyperlink{parser_8h_a1292d2ed153d92b9e5bcf13c8dff8d58}{SNUM} \textcolor{stringliteral}{";"} \hyperlink{parser_8h_a52e3db5a1724beab41ebbabe72460f12}{TEXT} \hyperlink{parser_8h_ab52cdc475a6866d1be7b5807fb623f50}{ST} )-1,   .callback\_name=(\textcolor{stringliteral}{"osc\_cmd"}),   .
+      callback=\hyperlink{parser_8c_a6e8a77774dd40175a26c219d8eb5bc4f}{tym\_i\_csq\_osc\_cmd}    \},   \{   .sequence=( \hyperlink{parser_8h_ac9fd21467d416baa7f6aa4c175f8c6b5}{OSC} \hyperlink{parser_8h_a1292d2ed153d92b9e5bcf13c8dff8d58}{SNUM} \textcolor{stringliteral}{";"} 
+      \hyperlink{parser_8h_a52e3db5a1724beab41ebbabe72460f12}{TEXT} \textcolor{stringliteral}{"\(\backslash\)7"} ),   .length=\textcolor{keyword}{sizeof}( \hyperlink{parser_8h_ac9fd21467d416baa7f6aa4c175f8c6b5}{OSC} \hyperlink{parser_8h_a1292d2ed153d92b9e5bcf13c8dff8d58}{SNUM} \textcolor{stringliteral}{";"} \hyperlink{parser_8h_a52e3db5a1724beab41ebbabe72460f12}{TEXT} \textcolor{stringliteral}{"\(\backslash\)7"} )-1,   .callback\_name=(\textcolor{stringliteral}{"osc\_cmd"}),   .
+      callback=\hyperlink{parser_8c_a6e8a77774dd40175a26c219d8eb5bc4f}{tym\_i\_csq\_osc\_cmd}    \}, 
+
+\}
+\end{DoxyCode}
+
+
+Definition at line 140 of file parser.\+c.
+
+\mbox{\Hypertarget{parser_8c_ac1add13dbe5f680e9e4597585d119263}\label{parser_8c_ac1add13dbe5f680e9e4597585d119263}} 
+\index{parser.\+c@{parser.\+c}!tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\+\_\+count@{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\+\_\+count}}
+\index{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\+\_\+count@{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\+\_\+count}!parser.\+c@{parser.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\+\_\+count}{tym\_i\_command\_sequence\_map\_count}}
+{\footnotesize\ttfamily const size\+\_\+t tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map\+\_\+count = sizeof(\hyperlink{parser_8c_a377f77fdbf5c71db368b11d24f8bce04}{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map})/sizeof($\ast$\hyperlink{parser_8c_a377f77fdbf5c71db368b11d24f8bce04}{tym\+\_\+i\+\_\+command\+\_\+sequence\+\_\+map})}
+
+
+
+Definition at line 150 of file parser.\+c.
+

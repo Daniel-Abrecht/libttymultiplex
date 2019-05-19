@@ -86,13 +86,13 @@ int tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_button
   pane->last_mouse_event_pos = pos;
   switch(pane->mouse_mode){
     case MOUSE_MODE_X10:
-      if(button == TYM_I_BUTTON_RELEASED)
+      if(button == TYM_BUTTON_RELEASED)
         break;
     case MOUSE_MODE_NORMAL:
       if(pane->last_button == button)
         break;
     case MOUSE_MODE_BUTTON:
-      if(pane->last_button == button && button == TYM_I_BUTTON_RELEASED)
+      if(pane->last_button == button && button == TYM_BUTTON_RELEASED)
         break;
     case MOUSE_MODE_ANY: {
       if(pos.x>254 || pos.y>254)

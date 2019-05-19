@@ -193,16 +193,16 @@ void* tym_i_main(void* ptr){
             unsigned y = event.y - top;
             tym_i_pane_focus(it);
             if(event.bstate & (BUTTON1_RELEASED | BUTTON2_RELEASED | BUTTON3_RELEASED)){
-              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});
+              tym_i_pts_send_mouse_event(it, TYM_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});
             }
             if(event.bstate & BUTTON1_PRESSED){
-              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_LEFT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+              tym_i_pts_send_mouse_event(it, TYM_BUTTON_LEFT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
             }
             if(event.bstate & BUTTON2_PRESSED){
-              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_MIDDLE_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+              tym_i_pts_send_mouse_event(it, TYM_BUTTON_MIDDLE_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
             }
             if(event.bstate & BUTTON3_PRESSED){
-              tym_i_pts_send_mouse_event(it, TYM_I_BUTTON_RIGHT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+              tym_i_pts_send_mouse_event(it, TYM_BUTTON_RIGHT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
             }
             break;
           }

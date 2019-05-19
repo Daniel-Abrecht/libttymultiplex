@@ -1,0 +1,111 @@
+\hypertarget{utf8_8h}{}\section{include/internal/utf8.h File Reference}
+\label{utf8_8h}\index{include/internal/utf8.\+h@{include/internal/utf8.\+h}}
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__i__utf8__character__state}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \hyperlink{utf8_8h_abed82baf7f470b522273a3e37c24c600a1371d2f9f9df00dc4e1582bb74b59f3e}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+T\+F8\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+M\+A\+X\+\_\+\+B\+Y\+T\+E\+\_\+\+C\+O\+U\+NT} = 4
+ \}
+\item 
+enum \hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result} \{ \newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243a8682693ec7ffa4351b9d938826f3c00f}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+E\+R\+R\+OR} = -\/1, 
+\newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243aa225bb998a29526080125ded2ddec08c}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+D\+O\+NE} = 0, 
+\newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243afde5946d29878362213fb53cadad33d7}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+C\+O\+N\+T\+I\+N\+UE}, 
+\newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243af4635037b1d15b1c255483779cf7f6d4}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+B\+R\+O\+K\+E\+N\+\_\+\+I\+G\+N\+O\+RE}, 
+\newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243aa2be62d4db7fc91f99bbf40bab81aeec}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+RT}, 
+\newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243a4ca7b82d75b70d1a0c85edd38341f969}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+R\+T\+\_\+\+F\+L\+AG} = 1$<$$<$15, 
+\newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243a956f2e3c998eed6c9230078207675052}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+S\+T\+A\+T\+E\+\_\+\+M\+A\+SK} = 0x00\+FF, 
+\newline
+\hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243a2da1899a36c95f1d5146d60ef86412ec}{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+F\+L\+A\+G\+\_\+\+M\+A\+SK} = 0x\+F\+F00
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result} \hyperlink{utf8_8h_a7c97c3b6540557da16e7e5c3a734e57f}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push} (struct \hyperlink{structtym__i__utf8__character__state}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state} $\ast$state, char c)
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{utf8_8h_abed82baf7f470b522273a3e37c24c600}\label{utf8_8h_abed82baf7f470b522273a3e37c24c600}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+T\+F8\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+M\+A\+X\+\_\+\+B\+Y\+T\+E\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+T\+F8\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+M\+A\+X\+\_\+\+B\+Y\+T\+E\+\_\+\+C\+O\+U\+NT}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+T\+F8\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+M\+A\+X\+\_\+\+B\+Y\+T\+E\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+T\+F8\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+M\+A\+X\+\_\+\+B\+Y\+T\+E\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{utf8_8h_abed82baf7f470b522273a3e37c24c600a1371d2f9f9df00dc4e1582bb74b59f3e}\label{utf8_8h_abed82baf7f470b522273a3e37c24c600a1371d2f9f9df00dc4e1582bb74b59f3e}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+T\+F8\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+M\+A\+X\+\_\+\+B\+Y\+T\+E\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 9 of file utf8.\+h.
+
+\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243}\label{utf8_8h_afbf551809047849a94cfca70fa270243}} 
+\index{utf8.\+h@{utf8.\+h}!tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result@{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result}}
+\index{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result@{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result}!utf8.\+h@{utf8.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result}{tym\_i\_utf8\_character\_state\_push\_result}}
+{\footnotesize\ttfamily enum \hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+E\+R\+R\+OR@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+E\+R\+R\+OR}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+E\+R\+R\+OR@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+E\+R\+R\+OR}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243a8682693ec7ffa4351b9d938826f3c00f}\label{utf8_8h_afbf551809047849a94cfca70fa270243a8682693ec7ffa4351b9d938826f3c00f}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+E\+R\+R\+OR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+D\+O\+NE@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+D\+O\+NE}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+D\+O\+NE@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+D\+O\+NE}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243aa225bb998a29526080125ded2ddec08c}\label{utf8_8h_afbf551809047849a94cfca70fa270243aa225bb998a29526080125ded2ddec08c}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+D\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+C\+O\+N\+T\+I\+N\+UE@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+C\+O\+N\+T\+I\+N\+UE}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+C\+O\+N\+T\+I\+N\+UE@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+C\+O\+N\+T\+I\+N\+UE}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243afde5946d29878362213fb53cadad33d7}\label{utf8_8h_afbf551809047849a94cfca70fa270243afde5946d29878362213fb53cadad33d7}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+C\+O\+N\+T\+I\+N\+UE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+B\+R\+O\+K\+E\+N\+\_\+\+I\+G\+N\+O\+RE@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+B\+R\+O\+K\+E\+N\+\_\+\+I\+G\+N\+O\+RE}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+B\+R\+O\+K\+E\+N\+\_\+\+I\+G\+N\+O\+RE@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+B\+R\+O\+K\+E\+N\+\_\+\+I\+G\+N\+O\+RE}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243af4635037b1d15b1c255483779cf7f6d4}\label{utf8_8h_afbf551809047849a94cfca70fa270243af4635037b1d15b1c255483779cf7f6d4}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+B\+R\+O\+K\+E\+N\+\_\+\+I\+G\+N\+O\+RE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+RT@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+RT}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+RT@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+RT}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243aa2be62d4db7fc91f99bbf40bab81aeec}\label{utf8_8h_afbf551809047849a94cfca70fa270243aa2be62d4db7fc91f99bbf40bab81aeec}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+RT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+R\+T\+\_\+\+F\+L\+AG@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+R\+T\+\_\+\+F\+L\+AG}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+R\+T\+\_\+\+F\+L\+AG@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+R\+T\+\_\+\+F\+L\+AG}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243a4ca7b82d75b70d1a0c85edd38341f969}\label{utf8_8h_afbf551809047849a94cfca70fa270243a4ca7b82d75b70d1a0c85edd38341f969}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+A\+B\+O\+R\+T\+\_\+\+F\+L\+AG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+S\+T\+A\+T\+E\+\_\+\+M\+A\+SK@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+S\+T\+A\+T\+E\+\_\+\+M\+A\+SK}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+S\+T\+A\+T\+E\+\_\+\+M\+A\+SK@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+S\+T\+A\+T\+E\+\_\+\+M\+A\+SK}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243a956f2e3c998eed6c9230078207675052}\label{utf8_8h_afbf551809047849a94cfca70fa270243a956f2e3c998eed6c9230078207675052}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+S\+T\+A\+T\+E\+\_\+\+M\+A\+SK&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+F\+L\+A\+G\+\_\+\+M\+A\+SK@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+F\+L\+A\+G\+\_\+\+M\+A\+SK}!utf8.\+h@{utf8.\+h}}\index{utf8.\+h@{utf8.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+F\+L\+A\+G\+\_\+\+M\+A\+SK@{T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+F\+L\+A\+G\+\_\+\+M\+A\+SK}}}\mbox{\Hypertarget{utf8_8h_afbf551809047849a94cfca70fa270243a2da1899a36c95f1d5146d60ef86412ec}\label{utf8_8h_afbf551809047849a94cfca70fa270243a2da1899a36c95f1d5146d60ef86412ec}} 
+T\+Y\+M\+\_\+\+I\+\_\+\+U\+C\+S\+\_\+\+F\+L\+A\+G\+\_\+\+M\+A\+SK&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 13 of file utf8.\+h.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{utf8_8h_a7c97c3b6540557da16e7e5c3a734e57f}\label{utf8_8h_a7c97c3b6540557da16e7e5c3a734e57f}} 
+\index{utf8.\+h@{utf8.\+h}!tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push@{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push}}
+\index{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push@{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push}!utf8.\+h@{utf8.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push()}{tym\_i\_utf8\_character\_state\_push()}}
+{\footnotesize\ttfamily enum \hyperlink{utf8_8h_afbf551809047849a94cfca70fa270243}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push\+\_\+result} tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state\+\_\+push (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__utf8__character__state}{tym\+\_\+i\+\_\+utf8\+\_\+character\+\_\+state} $\ast$}]{state,  }\item[{char}]{c }\end{DoxyParamCaption})}
+
+
+
+Definition at line 20 of file utf8.\+c.
+

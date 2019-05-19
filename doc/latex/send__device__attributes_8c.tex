@@ -1,0 +1,126 @@
+\hypertarget{send__device__attributes_8c}{}\section{src/sequencehandler/send\+\_\+device\+\_\+attributes.c File Reference}
+\label{send__device__attributes_8c}\index{src/sequencehandler/send\+\_\+device\+\_\+attributes.\+c@{src/sequencehandler/send\+\_\+device\+\_\+attributes.\+c}}
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$internal/parser.\+h$>$}\newline
+{\ttfamily \#include $<$internal/pseudoterminal.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a7af2b819775a05c6abffa71b2fd24b87}{R\+S\+P\+\_\+\+V\+T220}~\char`\"{}62;\char`\"{}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a73351113b801e41025b6088fbca7469e}{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+132\+\_\+\+C\+O\+L\+U\+M\+NS}~\char`\"{}2;\char`\"{}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a8df40749f2dd7b88ec41132a81de6bf6}{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+S\+E\+L\+E\+C\+T\+I\+V\+E\+\_\+\+E\+R\+A\+SE}~\char`\"{}6;\char`\"{}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a2cb372a4decff03da337f46267891d06}{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+U\+S\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+K\+E\+YS}~\char`\"{}8;\char`\"{}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a9f7186e886d20086d34d8e3857226604}{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+N\+A\+T\+I\+O\+N\+A\+L\+\_\+\+R\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+S\+E\+TS}~\char`\"{}9;\char`\"{}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a30a588d58c95f7c78e882181243b50ea}{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+T\+E\+C\+H\+N\+I\+C\+A\+L\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+RS}~\char`\"{}15;\char`\"{}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a4cd424a8dc46f3140d0200b5232dc2e1}{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+C\+O\+L\+OR}~\char`\"{}22;\char`\"{}
+\item 
+\#define \hyperlink{send__device__attributes_8c_a7e21e7fdb538f518f55269251ecf42df}{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+T\+E\+X\+T\+\_\+\+L\+O\+C\+A\+T\+OR}~\char`\"{}29;\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{send__device__attributes_8c_a5d3ba8c43edcef1195994e512a6d6621}{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{send__device__attributes_8c_a73351113b801e41025b6088fbca7469e}\label{send__device__attributes_8c_a73351113b801e41025b6088fbca7469e}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+132\+\_\+\+C\+O\+L\+U\+M\+NS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+132\+\_\+\+C\+O\+L\+U\+M\+NS}}
+\index{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+132\+\_\+\+C\+O\+L\+U\+M\+NS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+132\+\_\+\+C\+O\+L\+U\+M\+NS}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+132\+\_\+\+C\+O\+L\+U\+M\+NS}{RSP\_SUPPORT\_132\_COLUMNS}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+132\+\_\+\+C\+O\+L\+U\+M\+NS~\char`\"{}2;\char`\"{}}
+
+
+
+Definition at line 10 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{send__device__attributes_8c_a4cd424a8dc46f3140d0200b5232dc2e1}\label{send__device__attributes_8c_a4cd424a8dc46f3140d0200b5232dc2e1}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+C\+O\+L\+OR@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+C\+O\+L\+OR}}
+\index{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+C\+O\+L\+OR@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+C\+O\+L\+OR}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+C\+O\+L\+OR}{RSP\_SUPPORT\_ANSI\_COLOR}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+C\+O\+L\+OR~\char`\"{}22;\char`\"{}}
+
+
+
+Definition at line 15 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{send__device__attributes_8c_a7e21e7fdb538f518f55269251ecf42df}\label{send__device__attributes_8c_a7e21e7fdb538f518f55269251ecf42df}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+T\+E\+X\+T\+\_\+\+L\+O\+C\+A\+T\+OR@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+T\+E\+X\+T\+\_\+\+L\+O\+C\+A\+T\+OR}}
+\index{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+T\+E\+X\+T\+\_\+\+L\+O\+C\+A\+T\+OR@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+T\+E\+X\+T\+\_\+\+L\+O\+C\+A\+T\+OR}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+T\+E\+X\+T\+\_\+\+L\+O\+C\+A\+T\+OR}{RSP\_SUPPORT\_ANSI\_TEXT\_LOCATOR}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+A\+N\+S\+I\+\_\+\+T\+E\+X\+T\+\_\+\+L\+O\+C\+A\+T\+OR~\char`\"{}29;\char`\"{}}
+
+
+
+Definition at line 16 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{send__device__attributes_8c_a9f7186e886d20086d34d8e3857226604}\label{send__device__attributes_8c_a9f7186e886d20086d34d8e3857226604}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+N\+A\+T\+I\+O\+N\+A\+L\+\_\+\+R\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+S\+E\+TS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+N\+A\+T\+I\+O\+N\+A\+L\+\_\+\+R\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+S\+E\+TS}}
+\index{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+N\+A\+T\+I\+O\+N\+A\+L\+\_\+\+R\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+S\+E\+TS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+N\+A\+T\+I\+O\+N\+A\+L\+\_\+\+R\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+S\+E\+TS}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+N\+A\+T\+I\+O\+N\+A\+L\+\_\+\+R\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+S\+E\+TS}{RSP\_SUPPORT\_NATIONAL\_REPLACEMENT\_CHARACTER\_SETS}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+N\+A\+T\+I\+O\+N\+A\+L\+\_\+\+R\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+R\+\_\+\+S\+E\+TS~\char`\"{}9;\char`\"{}}
+
+
+
+Definition at line 13 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{send__device__attributes_8c_a8df40749f2dd7b88ec41132a81de6bf6}\label{send__device__attributes_8c_a8df40749f2dd7b88ec41132a81de6bf6}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+S\+E\+L\+E\+C\+T\+I\+V\+E\+\_\+\+E\+R\+A\+SE@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+S\+E\+L\+E\+C\+T\+I\+V\+E\+\_\+\+E\+R\+A\+SE}}
+\index{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+S\+E\+L\+E\+C\+T\+I\+V\+E\+\_\+\+E\+R\+A\+SE@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+S\+E\+L\+E\+C\+T\+I\+V\+E\+\_\+\+E\+R\+A\+SE}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+S\+E\+L\+E\+C\+T\+I\+V\+E\+\_\+\+E\+R\+A\+SE}{RSP\_SUPPORT\_SELECTIVE\_ERASE}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+S\+E\+L\+E\+C\+T\+I\+V\+E\+\_\+\+E\+R\+A\+SE~\char`\"{}6;\char`\"{}}
+
+
+
+Definition at line 11 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{send__device__attributes_8c_a30a588d58c95f7c78e882181243b50ea}\label{send__device__attributes_8c_a30a588d58c95f7c78e882181243b50ea}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+T\+E\+C\+H\+N\+I\+C\+A\+L\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+RS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+T\+E\+C\+H\+N\+I\+C\+A\+L\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+RS}}
+\index{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+T\+E\+C\+H\+N\+I\+C\+A\+L\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+RS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+T\+E\+C\+H\+N\+I\+C\+A\+L\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+RS}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+T\+E\+C\+H\+N\+I\+C\+A\+L\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+RS}{RSP\_SUPPORT\_TECHNICAL\_CHARACTERS}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+T\+E\+C\+H\+N\+I\+C\+A\+L\+\_\+\+C\+H\+A\+R\+A\+C\+T\+E\+RS~\char`\"{}15;\char`\"{}}
+
+
+
+Definition at line 14 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{send__device__attributes_8c_a2cb372a4decff03da337f46267891d06}\label{send__device__attributes_8c_a2cb372a4decff03da337f46267891d06}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+U\+S\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+K\+E\+YS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+U\+S\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+K\+E\+YS}}
+\index{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+U\+S\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+K\+E\+YS@{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+U\+S\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+K\+E\+YS}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+U\+S\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+K\+E\+YS}{RSP\_SUPPORT\_USER\_DEFINED\_KEYS}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+S\+U\+P\+P\+O\+R\+T\+\_\+\+U\+S\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+K\+E\+YS~\char`\"{}8;\char`\"{}}
+
+
+
+Definition at line 12 of file send\+\_\+device\+\_\+attributes.\+c.
+
+\mbox{\Hypertarget{send__device__attributes_8c_a7af2b819775a05c6abffa71b2fd24b87}\label{send__device__attributes_8c_a7af2b819775a05c6abffa71b2fd24b87}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!R\+S\+P\+\_\+\+V\+T220@{R\+S\+P\+\_\+\+V\+T220}}
+\index{R\+S\+P\+\_\+\+V\+T220@{R\+S\+P\+\_\+\+V\+T220}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{R\+S\+P\+\_\+\+V\+T220}{RSP\_VT220}}
+{\footnotesize\ttfamily \#define R\+S\+P\+\_\+\+V\+T220~\char`\"{}62;\char`\"{}}
+
+
+
+Definition at line 9 of file send\+\_\+device\+\_\+attributes.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{send__device__attributes_8c_a5d3ba8c43edcef1195994e512a6d6621}\label{send__device__attributes_8c_a5d3ba8c43edcef1195994e512a6d6621}} 
+\index{send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}!tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary@{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary}}
+\index{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary@{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary}!send\+\_\+device\+\_\+attributes.\+c@{send\+\_\+device\+\_\+attributes.\+c}}
+\subsubsection{\texorpdfstring{tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary()}{tym\_i\_csq\_send\_device\_attributes\_primary()}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+csq\+\_\+send\+\_\+device\+\_\+attributes\+\_\+primary (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 18 of file send\+\_\+device\+\_\+attributes.\+c.
+

@@ -1,0 +1,62 @@
+\hypertarget{curses_8c}{}\section{src/backend/curses.c File Reference}
+\label{curses_8c}\index{src/backend/curses.\+c@{src/backend/curses.\+c}}
+{\ttfamily \#include $<$ncurses.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$internal/main.\+h$>$}\newline
+{\ttfamily \#include $<$internal/pane.\+h$>$}\newline
+{\ttfamily \#include $<$internal/backend.\+h$>$}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcurses__screen__state}{curses\+\_\+screen\+\_\+state}
+\item 
+struct \hyperlink{structcurses__backend__pane}{curses\+\_\+backend\+\_\+pane}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{curses_8c_aed810e2b2ba68c10d60d26745666eb30}{C\+O\+L\+O\+R\+P\+A\+I\+R\+\_\+\+M\+A\+P\+P\+I\+N\+G\+\_\+\+N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+F\+L\+AG}~0x80
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{curses_8c_a0a4a688081331641a244d3bacc72fdb7}{pane\+\_\+delete\+\_\+characters} (struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$pane, struct \hyperlink{structtym__i__cell__position}{tym\+\_\+i\+\_\+cell\+\_\+position} position, unsigned n)
+\item 
+int \hyperlink{curses_8c_a79ffe227579fac9be2906880a2a88d87}{resize} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{curses_8c_aed810e2b2ba68c10d60d26745666eb30}\label{curses_8c_aed810e2b2ba68c10d60d26745666eb30}} 
+\index{curses.\+c@{curses.\+c}!C\+O\+L\+O\+R\+P\+A\+I\+R\+\_\+\+M\+A\+P\+P\+I\+N\+G\+\_\+\+N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+F\+L\+AG@{C\+O\+L\+O\+R\+P\+A\+I\+R\+\_\+\+M\+A\+P\+P\+I\+N\+G\+\_\+\+N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+F\+L\+AG}}
+\index{C\+O\+L\+O\+R\+P\+A\+I\+R\+\_\+\+M\+A\+P\+P\+I\+N\+G\+\_\+\+N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+F\+L\+AG@{C\+O\+L\+O\+R\+P\+A\+I\+R\+\_\+\+M\+A\+P\+P\+I\+N\+G\+\_\+\+N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+F\+L\+AG}!curses.\+c@{curses.\+c}}
+\subsubsection{\texorpdfstring{C\+O\+L\+O\+R\+P\+A\+I\+R\+\_\+\+M\+A\+P\+P\+I\+N\+G\+\_\+\+N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+F\+L\+AG}{COLORPAIR\_MAPPING\_NEGATIVE\_FLAG}}
+{\footnotesize\ttfamily \#define C\+O\+L\+O\+R\+P\+A\+I\+R\+\_\+\+M\+A\+P\+P\+I\+N\+G\+\_\+\+N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+F\+L\+AG~0x80}
+
+
+
+Definition at line 10 of file curses.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{curses_8c_a0a4a688081331641a244d3bacc72fdb7}\label{curses_8c_a0a4a688081331641a244d3bacc72fdb7}} 
+\index{curses.\+c@{curses.\+c}!pane\+\_\+delete\+\_\+characters@{pane\+\_\+delete\+\_\+characters}}
+\index{pane\+\_\+delete\+\_\+characters@{pane\+\_\+delete\+\_\+characters}!curses.\+c@{curses.\+c}}
+\subsubsection{\texorpdfstring{pane\+\_\+delete\+\_\+characters()}{pane\_delete\_characters()}}
+{\footnotesize\ttfamily int pane\+\_\+delete\+\_\+characters (\begin{DoxyParamCaption}\item[{struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$}]{pane,  }\item[{struct \hyperlink{structtym__i__cell__position}{tym\+\_\+i\+\_\+cell\+\_\+position}}]{position,  }\item[{unsigned}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line 226 of file curses.\+c.
+
+\mbox{\Hypertarget{curses_8c_a79ffe227579fac9be2906880a2a88d87}\label{curses_8c_a79ffe227579fac9be2906880a2a88d87}} 
+\index{curses.\+c@{curses.\+c}!resize@{resize}}
+\index{resize@{resize}!curses.\+c@{curses.\+c}}
+\subsubsection{\texorpdfstring{resize()}{resize()}}
+{\footnotesize\ttfamily int resize (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 300 of file curses.\+c.
+

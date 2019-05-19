@@ -1,0 +1,830 @@
+\hypertarget{libttymultiplex_8h}{}\section{include/libttymultiplex.h File Reference}
+\label{libttymultiplex_8h}\index{include/libttymultiplex.\+h@{include/libttymultiplex.\+h}}
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__special__key__name}{tym\+\_\+special\+\_\+key\+\_\+name}
+\item 
+struct \hyperlink{structtym__unit}{tym\+\_\+unit}
+\item 
+struct \hyperlink{structtym__position}{tym\+\_\+position}
+\item 
+struct \hyperlink{structtym__super__position}{tym\+\_\+super\+\_\+position}
+\item 
+struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle}
+\item 
+struct \hyperlink{structtym__absolute__position}{tym\+\_\+absolute\+\_\+position}
+\item 
+struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{libttymultiplex_8h_a38b3812f6946e5e4e9ca228ae8fd80db}{T\+Y\+M\+\_\+\+E\+X\+P\+O\+RT}
+\item 
+\#define \hyperlink{libttymultiplex_8h_aab15c447a26f5f7189de903eaccb3395}{T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB}(A,  B)~A \#\# B
+\item 
+\#define \hyperlink{libttymultiplex_8h_a56ebe64af9d05b1e2af14ed083ad7de5}{T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT}(A,  B)~\hyperlink{libttymultiplex_8h_aab15c447a26f5f7189de903eaccb3395}{T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB}(A,B)
+\item 
+\#define \hyperlink{libttymultiplex_8h_a2f972d18597076cb1e4d8e9578c23310}{T\+Y\+M\+\_\+\+S\+P\+E\+C\+I\+A\+L\+\_\+\+K\+E\+YS}
+\item 
+\#define \hyperlink{libttymultiplex_8h_a5c2e111a5d2ee2eeaada4ab973e4f1d9}{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD}(F)~F(C\+H\+A\+R\+F\+I\+E\+LD, I\+N\+T\+E\+G\+ER, long  , integer)
+\item 
+\#define \hyperlink{libttymultiplex_8h_a1a8c179805436e8c8aef6d9fe4fc23fa}{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+R\+A\+T\+IO}(F)~F(R\+A\+T\+IO    , R\+E\+AL   , double, real   )
+\item 
+\#define \hyperlink{libttymultiplex_8h_a843168cb794e358ffd86e1c78de1da6a}{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+I\+ST}
+\item 
+\#define \hyperlink{libttymultiplex_8h_ae7834688a0fd03a1db2df17143c75082}{T\+Y\+M\+\_\+\+P\+A\+N\+E\+\_\+\+F\+O\+C\+US}~1
+\item 
+\#define \hyperlink{libttymultiplex_8h_a0417e647dcaa9bde060c2763f127d8f8}{T\+Y\+M\+\_\+\+I\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+S\+P\+E\+C\+I\+A\+L\+I\+S\+A\+T\+I\+ON}(X)
+\item 
+\#define \hyperlink{libttymultiplex_8h_a336241181f601e996e95fdb6ec2fb9fe}{T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME}(PT,  U,  T,  N)~N
+\item 
+\#define \hyperlink{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}(P\+O\+S\+I\+T\+I\+ON,  P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE,  A\+X\+IS)~(P\+O\+S\+I\+T\+I\+ON).type\mbox{[}T\+Y\+M\+\_\+\+P\+\_\+ \#\# P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE\mbox{]}.axis\mbox{[}(A\+X\+IS)\mbox{]}.\hyperlink{libttymultiplex_8h_a56ebe64af9d05b1e2af14ed083ad7de5}{value.\+T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT}(T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE)(\hyperlink{libttymultiplex_8h_a336241181f601e996e95fdb6ec2fb9fe}{T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME})
+\item 
+\#define \hyperlink{libttymultiplex_8h_adf9af6dd5d60b89789941c7749c3c1aa}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+P\+O\+S\+\_\+\+R\+EF}(R\+E\+CT,  P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE,  P\+O\+S\+I\+T\+I\+ON)~\hyperlink{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}((R\+E\+CT).edge\mbox{[}(P\+O\+S\+I\+T\+I\+ON) \% \hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT}\mbox{]}, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE, (P\+O\+S\+I\+T\+I\+ON) / \hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT})
+\item 
+\#define \hyperlink{libttymultiplex_8h_ade60e943f7150fb731c0fb08e07f0a9e}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+S\+I\+ZE}(R\+E\+CT,  P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE,  A\+X\+IS)~(\hyperlink{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}((R\+E\+CT).edge\mbox{[}\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834a92f60658124eca25806fa10a24e79d63}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT}\mbox{]}, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE, (A\+X\+IS)) -\/ \hyperlink{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}((R\+E\+CT).edge\mbox{[}\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834a38cef3c1942d69df22086e4ce2ae36d8}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT}\mbox{]}, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE, (A\+X\+IS)))
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void($\ast$ \hyperlink{libttymultiplex_8h_a7b785cb846faa92e5f2f5fbf32bdcde4}{tym\+\_\+resize\+\_\+handler\+\_\+t}) (void $\ast$ptr, int pane, const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$input, const struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} $\ast$computed)
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025ac}{tym\+\_\+special\+\_\+key} \{ \newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca6a9ff9e6ff1d6146dcb969bc1efd7584}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+N\+T\+ER} = \textquotesingle{}\textbackslash{}n\textquotesingle{}, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca8314d19470544d75bcc8f6dde60eb804}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+H\+O\+ME} = \textquotesingle{}\textbackslash{}r\textquotesingle{}, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca2d89e035ab669bb13f32754fdbc64db5}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+B\+A\+C\+K\+S\+P\+A\+CE} = \textquotesingle{}\textbackslash{}b\textquotesingle{}, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025acaf0151eee8535e71829dd030e538a8d39}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+T\+AB} = \textquotesingle{}\textbackslash{}t\textquotesingle{}, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025acac0e8218d9f686a49d963fa85175e47a7}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+S\+C\+A\+PE} = \textquotesingle{}\textbackslash{}x1B\textquotesingle{}, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca41d1149d82fae88a931678ae30cae662}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+E\+L\+E\+TE} = \textquotesingle{}\textbackslash{}x7F\textquotesingle{}, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca23fec3c47337bb66e36fcfaeb192b062}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+UP} = 0x100, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca0da3a236f3e778d6906c2177e0db1747}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+O\+WN} = 0x101, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca335615e5b7058e5f11be7333086eaacf}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+R\+I\+G\+HT} = 0x102, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca382f03f63dd0aa56ee5ec30bc90d0d8c}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+L\+E\+FT} = 0x103, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca09e5c1f437c9dabb98954dd5d97befd9}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+ND} = 0x104, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca1566bf142de43929b2eb03fb42186c92}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+UP} = 0x105, 
+\newline
+\hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca57200c90bf61aa00c6fb5785bf5f98fc}{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+D\+O\+WN} = 0x106
+ \}
+\item 
+enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button} \{ \newline
+\hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3a834f3f8106167bb9a1c49eb143b7742d}{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+L\+E\+F\+T\+\_\+\+P\+R\+E\+S\+S\+ED}, 
+\newline
+\hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3aa7649cada822cc1767e3bfdb4755d212}{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+M\+I\+D\+D\+L\+E\+\_\+\+P\+R\+E\+S\+S\+ED}, 
+\newline
+\hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3af00ba6fd9c5a9465cfe6e9cb227915cb}{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+I\+G\+H\+T\+\_\+\+P\+R\+E\+S\+S\+ED}, 
+\newline
+\hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3a36b6ca730ceee275c67ac5822d0a144b}{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+E\+L\+E\+A\+S\+ED}
+ \}
+\item 
+enum \hyperlink{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653}{tym\+\_\+position\+\_\+type} \{ \newline
+\hyperlink{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653abcaf785dcdc95d5df3d9fbe1ec2f950c}{T\+Y\+M\+\_\+\+P\+\_\+\+U\+N\+S\+ET}, 
+\newline
+\hyperlink{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653a6c21bf454ffbc5733fd64674c5fef046}{T\+Y\+M\+\_\+\+P\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD}, 
+\newline
+\hyperlink{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653ac66766fb3234fd74f7d8d041fcd4fa72}{T\+Y\+M\+\_\+\+P\+\_\+\+R\+A\+T\+IO}, 
+\newline
+\hyperlink{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653a483bfa59d0a2b43731d992c418a42db7}{T\+Y\+M\+\_\+\+P\+\_\+\+C\+O\+U\+NT}
+ \}
+\item 
+enum \hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}{tym\+\_\+unit\+\_\+type} \{ \newline
+\hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415ab796b9cf7b0afb473a68113333d297a9}{T\+Y\+M\+\_\+\+U\+\_\+\+U\+N\+S\+ET}, 
+\newline
+\hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415af188b6d51068a1e0dc3aacff656363b0}{T\+Y\+M\+\_\+\+U\+\_\+\+I\+N\+T\+E\+G\+ER}, 
+\newline
+\hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415a649d82be93d1e63bd2389cb1cd8e5f13}{T\+Y\+M\+\_\+\+U\+\_\+\+R\+E\+AL}, 
+\newline
+\hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415a6084dfbaf14d9d1d2132de918d2a111f}{T\+Y\+M\+\_\+\+U\+\_\+\+C\+O\+U\+NT}
+ \}
+\item 
+enum \hyperlink{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17be}{tym\+\_\+axis} \{ \newline
+\hyperlink{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17beaef78e4fb552316bfbbfedd2b5124d449}{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+H\+O\+R\+I\+Z\+O\+N\+T\+AL}, 
+\newline
+\hyperlink{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17bea77bd0c7c098de3be7dcf8013bc70ece5}{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+V\+E\+R\+T\+I\+C\+AL}, 
+\newline
+\hyperlink{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17beab5ce57254240d63c232aba1d7552322f}{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+C\+O\+U\+NT}
+ \}
+\item 
+enum \hyperlink{libttymultiplex_8h_a7f7538226399784c522f57d45065611f}{tym\+\_\+direction} \{ \newline
+\hyperlink{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa3b737d616a34ee2b50c92ffbdddc1f08}{T\+Y\+M\+\_\+\+L\+E\+FT}, 
+\newline
+\hyperlink{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa7d05ba52cff3aa1018c4a48403f22e64}{T\+Y\+M\+\_\+\+R\+I\+G\+HT}, 
+\newline
+\hyperlink{libttymultiplex_8h_a7f7538226399784c522f57d45065611fac40f8a7b770bd560be2f5b3a42e1e235}{T\+Y\+M\+\_\+\+T\+OP}, 
+\newline
+\hyperlink{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa5a13f65c6b67dc24f5a07bf37186c4ae}{T\+Y\+M\+\_\+\+B\+O\+T\+T\+OM}, 
+\newline
+\hyperlink{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa681163415e92b516c80825347bdec2b3}{T\+Y\+M\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+\_\+\+C\+O\+U\+NT}
+ \}
+\item 
+enum \hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834}{tym\+\_\+rectangle\+\_\+edge} \{ \newline
+\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834a38cef3c1942d69df22086e4ce2ae36d8}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT}, 
+\newline
+\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834a92f60658124eca25806fa10a24e79d63}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT}, 
+\newline
+\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT}
+ \}
+\item 
+enum \hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}{tym\+\_\+flag} \{ \newline
+\hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8acf45b77f2a197d2eca408ec87abd970d}{T\+Y\+M\+\_\+\+P\+F\+\_\+\+F\+O\+C\+US}, 
+\newline
+\hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8ae4f79309a6de4ec3489172dceac661ee}{T\+Y\+M\+\_\+\+P\+F\+\_\+\+D\+I\+S\+A\+L\+L\+O\+W\+\_\+\+F\+O\+C\+US}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{libttymultiplex_8h_abd14f465860fa5c2a5c2ee593dd67779}{tym\+\_\+init} (void)
+\item 
+int \hyperlink{libttymultiplex_8h_a1b42d905d66ebdfb520a793242780d05}{tym\+\_\+shutdown} (void)
+\item 
+int \hyperlink{libttymultiplex_8h_a957d3155520a3720827f9b76c1407cda}{tym\+\_\+pane\+\_\+create} (const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict super\+\_\+position)
+\item 
+int \hyperlink{libttymultiplex_8h_ab734f1177040e7ad662a503fdd55b6b1}{tym\+\_\+pane\+\_\+destroy} (int pane)
+\item 
+int \hyperlink{libttymultiplex_8h_a4d39024d897690ee926d4812f16451e8}{tym\+\_\+pane\+\_\+resize} (int pane, const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict super\+\_\+position)
+\item 
+int \hyperlink{libttymultiplex_8h_aa133cb1aadbd1fe0b30038de451ee44c}{tym\+\_\+pane\+\_\+reset} (int pane)
+\item 
+int \hyperlink{libttymultiplex_8h_ad11ee9d8a1922d6feed400caf5a52437}{tym\+\_\+register\+\_\+resize\+\_\+handler} (int pane, void $\ast$ptr, \hyperlink{libttymultiplex_8h_a7b785cb846faa92e5f2f5fbf32bdcde4}{tym\+\_\+resize\+\_\+handler\+\_\+t} handler)
+\item 
+int \hyperlink{libttymultiplex_8h_a5b29d374752efafe921869644b127ab9}{tym\+\_\+unregister\+\_\+resize\+\_\+handler} (int pane, void $\ast$ptr, \hyperlink{libttymultiplex_8h_a7b785cb846faa92e5f2f5fbf32bdcde4}{tym\+\_\+resize\+\_\+handler\+\_\+t} handler)
+\item 
+int \hyperlink{libttymultiplex_8h_a81eddaff42544fd35027c29df30d80bd}{tym\+\_\+pane\+\_\+set\+\_\+flag} (int pane, enum \hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}{tym\+\_\+flag} flag, bool status)
+\item 
+int \hyperlink{libttymultiplex_8h_a774be0b2880e8af2941d5b5b39b8b551}{tym\+\_\+pane\+\_\+get\+\_\+flag} (int pane, enum \hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}{tym\+\_\+flag} flag)
+\item 
+int \hyperlink{libttymultiplex_8h_a649e4ba707bc2cd4371fb3119e1bd2b4}{tym\+\_\+pane\+\_\+set\+\_\+env} (int pane)
+\item 
+int \hyperlink{libttymultiplex_8h_a3e533d7a5376aaf6667b92540c7d3fce}{tym\+\_\+pane\+\_\+get\+\_\+slavefd} (int pane)
+\item 
+int \hyperlink{libttymultiplex_8h_a0fc757b137228b81d19ef0f8e297ab4e}{tym\+\_\+pane\+\_\+send\+\_\+key} (int pane, int\+\_\+least16\+\_\+t key)
+\item 
+int \hyperlink{libttymultiplex_8h_ad712d7c00a8e814b9ca82985bfacde6d}{tym\+\_\+pane\+\_\+send\+\_\+keys} (int pane, size\+\_\+t count, const int\+\_\+least16\+\_\+t keys\mbox{[}count\mbox{]})
+\item 
+int \hyperlink{libttymultiplex_8h_a30d947aa7d53f9b997000d74e8a95526}{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name} (int pane, const char $\ast$key\+\_\+name)
+\item 
+int \hyperlink{libttymultiplex_8h_ade90966292fc278bc68c8da84697b6e9}{tym\+\_\+pane\+\_\+type} (int pane, size\+\_\+t count, const char keys\mbox{[}count\mbox{]})
+\item 
+int \hyperlink{libttymultiplex_8h_adf78fea39742c49dd33f0a305e6b7b4c}{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event} (int pane, enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button} button, const struct \hyperlink{structtym__super__position}{tym\+\_\+super\+\_\+position} $\ast$restrict super\+\_\+position)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const struct \hyperlink{structtym__special__key__name}{tym\+\_\+special\+\_\+key\+\_\+name} \hyperlink{libttymultiplex_8h_ad28789439cf6d0a6775af362252f9774}{tym\+\_\+special\+\_\+key\+\_\+list} \mbox{[}$\,$\mbox{]}
+\item 
+const size\+\_\+t \hyperlink{libttymultiplex_8h_a601e2b5a9b4b9f1baa239cc48f8ccb6f}{tym\+\_\+special\+\_\+key\+\_\+count}
+\item 
+enum \hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}{tym\+\_\+unit\+\_\+type} \hyperlink{libttymultiplex_8h_a08338bec80b1aa511058ad78970bed40}{tym\+\_\+positon\+\_\+unit\+\_\+map} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{libttymultiplex_8h_a56ebe64af9d05b1e2af14ed083ad7de5}\label{libttymultiplex_8h_a56ebe64af9d05b1e2af14ed083ad7de5}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT@{T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT}}
+\index{T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT@{T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT}{TYM\_CONCAT}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT(\begin{DoxyParamCaption}\item[{}]{A,  }\item[{}]{B }\end{DoxyParamCaption})~\hyperlink{libttymultiplex_8h_aab15c447a26f5f7189de903eaccb3395}{T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB}(A,B)}
+
+
+
+Definition at line 20 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_aab15c447a26f5f7189de903eaccb3395}\label{libttymultiplex_8h_aab15c447a26f5f7189de903eaccb3395}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB@{T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB}}
+\index{T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB@{T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB}{TYM\_CONCAT\_SUB}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+C\+O\+N\+C\+A\+T\+\_\+\+S\+UB(\begin{DoxyParamCaption}\item[{}]{A,  }\item[{}]{B }\end{DoxyParamCaption})~A \#\# B}
+
+
+
+Definition at line 19 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a38b3812f6946e5e4e9ca228ae8fd80db}\label{libttymultiplex_8h_a38b3812f6946e5e4e9ca228ae8fd80db}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+E\+X\+P\+O\+RT@{T\+Y\+M\+\_\+\+E\+X\+P\+O\+RT}}
+\index{T\+Y\+M\+\_\+\+E\+X\+P\+O\+RT@{T\+Y\+M\+\_\+\+E\+X\+P\+O\+RT}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+E\+X\+P\+O\+RT}{TYM\_EXPORT}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+E\+X\+P\+O\+RT}
+
+
+
+Definition at line 15 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a0417e647dcaa9bde060c2763f127d8f8}\label{libttymultiplex_8h_a0417e647dcaa9bde060c2763f127d8f8}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+S\+P\+E\+C\+I\+A\+L\+I\+S\+A\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+S\+P\+E\+C\+I\+A\+L\+I\+S\+A\+T\+I\+ON}}
+\index{T\+Y\+M\+\_\+\+I\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+S\+P\+E\+C\+I\+A\+L\+I\+S\+A\+T\+I\+ON@{T\+Y\+M\+\_\+\+I\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+S\+P\+E\+C\+I\+A\+L\+I\+S\+A\+T\+I\+ON}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+I\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+S\+P\+E\+C\+I\+A\+L\+I\+S\+A\+T\+I\+ON}{TYM\_I\_POSITION\_SPECIALISATION}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+I\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+S\+P\+E\+C\+I\+A\+L\+I\+S\+A\+T\+I\+ON(\begin{DoxyParamCaption}\item[{}]{X }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keyword}{struct }tym\_ ## X ## \_position \{ \(\backslash\)
+    struct \hyperlink{structtym__position}{tym\_position} type[\hyperlink{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653a483bfa59d0a2b43731d992c418a42db7}{TYM\_P\_COUNT}]; \(\backslash\)
+  \}; \(\backslash\)
+  struct tym\_ ## X ## \_position\_rectangle \{ \(\backslash\)
+    struct tym\_ ## X ## \_position edge[\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}{TYM\_EDGE\_COUNT}]; \(\backslash\)
+  \};
+\end{DoxyCode}
+
+
+Definition at line 129 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a336241181f601e996e95fdb6ec2fb9fe}\label{libttymultiplex_8h_a336241181f601e996e95fdb6ec2fb9fe}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME@{T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME}}
+\index{T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME@{T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME}{TYM\_I\_PT\_UNIT\_NAME}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME(\begin{DoxyParamCaption}\item[{}]{PT,  }\item[{}]{U,  }\item[{}]{T,  }\item[{}]{N }\end{DoxyParamCaption})~N}
+
+
+
+Definition at line 142 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ae7834688a0fd03a1db2df17143c75082}\label{libttymultiplex_8h_ae7834688a0fd03a1db2df17143c75082}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+A\+N\+E\+\_\+\+F\+O\+C\+US@{T\+Y\+M\+\_\+\+P\+A\+N\+E\+\_\+\+F\+O\+C\+US}}
+\index{T\+Y\+M\+\_\+\+P\+A\+N\+E\+\_\+\+F\+O\+C\+US@{T\+Y\+M\+\_\+\+P\+A\+N\+E\+\_\+\+F\+O\+C\+US}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+P\+A\+N\+E\+\_\+\+F\+O\+C\+US}{TYM\_PANE\_FOCUS}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+P\+A\+N\+E\+\_\+\+F\+O\+C\+US~1}
+
+
+
+Definition at line 112 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}\label{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF@{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}}
+\index{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF@{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}{TYM\_POS\_REF}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF(\begin{DoxyParamCaption}\item[{}]{P\+O\+S\+I\+T\+I\+ON,  }\item[{}]{P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE,  }\item[{}]{A\+X\+IS }\end{DoxyParamCaption})~(P\+O\+S\+I\+T\+I\+ON).type\mbox{[}T\+Y\+M\+\_\+\+P\+\_\+ \#\# P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE\mbox{]}.axis\mbox{[}(A\+X\+IS)\mbox{]}.\hyperlink{libttymultiplex_8h_a56ebe64af9d05b1e2af14ed083ad7de5}{value.\+T\+Y\+M\+\_\+\+C\+O\+N\+C\+AT}(T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE)(\hyperlink{libttymultiplex_8h_a336241181f601e996e95fdb6ec2fb9fe}{T\+Y\+M\+\_\+\+I\+\_\+\+P\+T\+\_\+\+U\+N\+I\+T\+\_\+\+N\+A\+ME})}
+
+
+
+Definition at line 144 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a5c2e111a5d2ee2eeaada4ab973e4f1d9}\label{libttymultiplex_8h_a5c2e111a5d2ee2eeaada4ab973e4f1d9}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD@{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD}}
+\index{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD@{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD}{TYM\_POSITION\_TYPE\_\_CHARFIELD}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD(\begin{DoxyParamCaption}\item[{}]{F }\end{DoxyParamCaption})~F(C\+H\+A\+R\+F\+I\+E\+LD, I\+N\+T\+E\+G\+ER, long  , integer)}
+
+
+
+Definition at line 63 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a1a8c179805436e8c8aef6d9fe4fc23fa}\label{libttymultiplex_8h_a1a8c179805436e8c8aef6d9fe4fc23fa}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+R\+A\+T\+IO@{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+R\+A\+T\+IO}}
+\index{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+R\+A\+T\+IO@{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+R\+A\+T\+IO}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+R\+A\+T\+IO}{TYM\_POSITION\_TYPE\_\_RATIO}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+\_\+\+R\+A\+T\+IO(\begin{DoxyParamCaption}\item[{}]{F }\end{DoxyParamCaption})~F(R\+A\+T\+IO    , R\+E\+AL   , double, real   )}
+
+
+
+Definition at line 64 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a843168cb794e358ffd86e1c78de1da6a}\label{libttymultiplex_8h_a843168cb794e358ffd86e1c78de1da6a}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+I\+ST@{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+I\+ST}}
+\index{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+I\+ST@{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+I\+ST}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+I\+ST}{TYM\_POSITION\_TYPE\_LIST}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+I\+ST}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+X(CHARFIELD) \(\backslash\)
+  X(RATIO)
+\end{DoxyCode}
+
+
+Definition at line 66 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_adf9af6dd5d60b89789941c7749c3c1aa}\label{libttymultiplex_8h_adf9af6dd5d60b89789941c7749c3c1aa}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+P\+O\+S\+\_\+\+R\+EF@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+P\+O\+S\+\_\+\+R\+EF}}
+\index{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+P\+O\+S\+\_\+\+R\+EF@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+P\+O\+S\+\_\+\+R\+EF}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+P\+O\+S\+\_\+\+R\+EF}{TYM\_RECT\_POS\_REF}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+P\+O\+S\+\_\+\+R\+EF(\begin{DoxyParamCaption}\item[{}]{R\+E\+CT,  }\item[{}]{P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE,  }\item[{}]{P\+O\+S\+I\+T\+I\+ON }\end{DoxyParamCaption})~\hyperlink{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}((R\+E\+CT).edge\mbox{[}(P\+O\+S\+I\+T\+I\+ON) \% \hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT}\mbox{]}, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE, (P\+O\+S\+I\+T\+I\+ON) / \hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT})}
+
+
+
+Definition at line 146 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ade60e943f7150fb731c0fb08e07f0a9e}\label{libttymultiplex_8h_ade60e943f7150fb731c0fb08e07f0a9e}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+S\+I\+ZE@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+S\+I\+ZE}}
+\index{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+S\+I\+ZE@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+S\+I\+ZE}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+S\+I\+ZE}{TYM\_RECT\_SIZE}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+S\+I\+ZE(\begin{DoxyParamCaption}\item[{}]{R\+E\+CT,  }\item[{}]{P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE,  }\item[{}]{A\+X\+IS }\end{DoxyParamCaption})~(\hyperlink{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}((R\+E\+CT).edge\mbox{[}\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834a92f60658124eca25806fa10a24e79d63}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT}\mbox{]}, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE, (A\+X\+IS)) -\/ \hyperlink{libttymultiplex_8h_a2739eb88105e6e39f8c30097ccdecd9a}{T\+Y\+M\+\_\+\+P\+O\+S\+\_\+\+R\+EF}((R\+E\+CT).edge\mbox{[}\hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834a38cef3c1942d69df22086e4ce2ae36d8}{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT}\mbox{]}, P\+O\+S\+I\+T\+I\+O\+N\+\_\+\+T\+Y\+PE, (A\+X\+IS)))}
+
+
+
+Definition at line 148 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a2f972d18597076cb1e4d8e9578c23310}\label{libttymultiplex_8h_a2f972d18597076cb1e4d8e9578c23310}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+S\+P\+E\+C\+I\+A\+L\+\_\+\+K\+E\+YS@{T\+Y\+M\+\_\+\+S\+P\+E\+C\+I\+A\+L\+\_\+\+K\+E\+YS}}
+\index{T\+Y\+M\+\_\+\+S\+P\+E\+C\+I\+A\+L\+\_\+\+K\+E\+YS@{T\+Y\+M\+\_\+\+S\+P\+E\+C\+I\+A\+L\+\_\+\+K\+E\+YS}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{T\+Y\+M\+\_\+\+S\+P\+E\+C\+I\+A\+L\+\_\+\+K\+E\+YS}{TYM\_SPECIAL\_KEYS}}
+{\footnotesize\ttfamily \#define T\+Y\+M\+\_\+\+S\+P\+E\+C\+I\+A\+L\+\_\+\+K\+E\+YS}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+X(ENTER    , \textcolor{charliteral}{'\(\backslash\)n'}  ) \(\backslash\)
+  X(HOME     , \textcolor{charliteral}{'\(\backslash\)r'}  ) \(\backslash\)
+  X(BACKSPACE, \textcolor{charliteral}{'\(\backslash\)b'}  ) \(\backslash\)
+  X(TAB      , \textcolor{charliteral}{'\(\backslash\)t'}  ) \(\backslash\)
+  X(ESCAPE   , \textcolor{stringliteral}{'\(\backslash\)x1B'}) \(\backslash\)
+  X(DELETE   , \textcolor{stringliteral}{'\(\backslash\)x7F'}) \(\backslash\)
+  X(UP       , 0x100 ) \(\backslash\)
+  X(DOWN     , 0x101 ) \(\backslash\)
+  X(RIGHT    , 0x102 ) \(\backslash\)
+  X(LEFT     , 0x103 ) \(\backslash\)
+  X(END      , 0x104 ) \(\backslash\)
+  X(PAGE\_UP  , 0x105 ) \(\backslash\)
+  X(PAGE\_DOWN, 0x106 ) \(\backslash\)
+\end{DoxyCode}
+
+
+Definition at line 26 of file libttymultiplex.\+h.
+
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{libttymultiplex_8h_a7b785cb846faa92e5f2f5fbf32bdcde4}\label{libttymultiplex_8h_a7b785cb846faa92e5f2f5fbf32bdcde4}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+resize\+\_\+handler\+\_\+t@{tym\+\_\+resize\+\_\+handler\+\_\+t}}
+\index{tym\+\_\+resize\+\_\+handler\+\_\+t@{tym\+\_\+resize\+\_\+handler\+\_\+t}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+resize\+\_\+handler\+\_\+t}{tym\_resize\_handler\_t}}
+{\footnotesize\ttfamily typedef void($\ast$ tym\+\_\+resize\+\_\+handler\+\_\+t) (void $\ast$ptr, int pane, const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$input, const struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} $\ast$computed)}
+
+
+
+Definition at line 151 of file libttymultiplex.\+h.
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17be}\label{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17be}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+axis@{tym\+\_\+axis}}
+\index{tym\+\_\+axis@{tym\+\_\+axis}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+axis}{tym\_axis}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17be}{tym\+\_\+axis}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+H\+O\+R\+I\+Z\+O\+N\+T\+AL@{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+H\+O\+R\+I\+Z\+O\+N\+T\+AL}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+H\+O\+R\+I\+Z\+O\+N\+T\+AL@{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+H\+O\+R\+I\+Z\+O\+N\+T\+AL}}}\mbox{\Hypertarget{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17beaef78e4fb552316bfbbfedd2b5124d449}\label{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17beaef78e4fb552316bfbbfedd2b5124d449}} 
+T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+H\+O\+R\+I\+Z\+O\+N\+T\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+V\+E\+R\+T\+I\+C\+AL@{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+V\+E\+R\+T\+I\+C\+AL}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+V\+E\+R\+T\+I\+C\+AL@{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+V\+E\+R\+T\+I\+C\+AL}}}\mbox{\Hypertarget{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17bea77bd0c7c098de3be7dcf8013bc70ece5}\label{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17bea77bd0c7c098de3be7dcf8013bc70ece5}} 
+T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+V\+E\+R\+T\+I\+C\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+C\+O\+U\+NT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17beab5ce57254240d63c232aba1d7552322f}\label{libttymultiplex_8h_a6b9111693b9da18b1f567760f5bc17beab5ce57254240d63c232aba1d7552322f}} 
+T\+Y\+M\+\_\+\+A\+X\+I\+S\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 87 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}\label{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+button@{tym\+\_\+button}}
+\index{tym\+\_\+button@{tym\+\_\+button}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+button}{tym\_button}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+L\+E\+F\+T\+\_\+\+P\+R\+E\+S\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+L\+E\+F\+T\+\_\+\+P\+R\+E\+S\+S\+ED}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+L\+E\+F\+T\+\_\+\+P\+R\+E\+S\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+L\+E\+F\+T\+\_\+\+P\+R\+E\+S\+S\+ED}}}\mbox{\Hypertarget{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3a834f3f8106167bb9a1c49eb143b7742d}\label{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3a834f3f8106167bb9a1c49eb143b7742d}} 
+T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+L\+E\+F\+T\+\_\+\+P\+R\+E\+S\+S\+ED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+M\+I\+D\+D\+L\+E\+\_\+\+P\+R\+E\+S\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+M\+I\+D\+D\+L\+E\+\_\+\+P\+R\+E\+S\+S\+ED}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+M\+I\+D\+D\+L\+E\+\_\+\+P\+R\+E\+S\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+M\+I\+D\+D\+L\+E\+\_\+\+P\+R\+E\+S\+S\+ED}}}\mbox{\Hypertarget{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3aa7649cada822cc1767e3bfdb4755d212}\label{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3aa7649cada822cc1767e3bfdb4755d212}} 
+T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+M\+I\+D\+D\+L\+E\+\_\+\+P\+R\+E\+S\+S\+ED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+I\+G\+H\+T\+\_\+\+P\+R\+E\+S\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+I\+G\+H\+T\+\_\+\+P\+R\+E\+S\+S\+ED}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+I\+G\+H\+T\+\_\+\+P\+R\+E\+S\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+I\+G\+H\+T\+\_\+\+P\+R\+E\+S\+S\+ED}}}\mbox{\Hypertarget{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3af00ba6fd9c5a9465cfe6e9cb227915cb}\label{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3af00ba6fd9c5a9465cfe6e9cb227915cb}} 
+T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+I\+G\+H\+T\+\_\+\+P\+R\+E\+S\+S\+ED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+E\+L\+E\+A\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+E\+L\+E\+A\+S\+ED}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+E\+L\+E\+A\+S\+ED@{T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+E\+L\+E\+A\+S\+ED}}}\mbox{\Hypertarget{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3a36b6ca730ceee275c67ac5822d0a144b}\label{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3a36b6ca730ceee275c67ac5822d0a144b}} 
+T\+Y\+M\+\_\+\+B\+U\+T\+T\+O\+N\+\_\+\+R\+E\+L\+E\+A\+S\+ED&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 56 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a7f7538226399784c522f57d45065611f}\label{libttymultiplex_8h_a7f7538226399784c522f57d45065611f}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+direction@{tym\+\_\+direction}}
+\index{tym\+\_\+direction@{tym\+\_\+direction}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+direction}{tym\_direction}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a7f7538226399784c522f57d45065611f}{tym\+\_\+direction}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+L\+E\+FT@{T\+Y\+M\+\_\+\+L\+E\+FT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+L\+E\+FT@{T\+Y\+M\+\_\+\+L\+E\+FT}}}\mbox{\Hypertarget{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa3b737d616a34ee2b50c92ffbdddc1f08}\label{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa3b737d616a34ee2b50c92ffbdddc1f08}} 
+T\+Y\+M\+\_\+\+L\+E\+FT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+R\+I\+G\+HT@{T\+Y\+M\+\_\+\+R\+I\+G\+HT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+R\+I\+G\+HT@{T\+Y\+M\+\_\+\+R\+I\+G\+HT}}}\mbox{\Hypertarget{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa7d05ba52cff3aa1018c4a48403f22e64}\label{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa7d05ba52cff3aa1018c4a48403f22e64}} 
+T\+Y\+M\+\_\+\+R\+I\+G\+HT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+T\+OP@{T\+Y\+M\+\_\+\+T\+OP}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+T\+OP@{T\+Y\+M\+\_\+\+T\+OP}}}\mbox{\Hypertarget{libttymultiplex_8h_a7f7538226399784c522f57d45065611fac40f8a7b770bd560be2f5b3a42e1e235}\label{libttymultiplex_8h_a7f7538226399784c522f57d45065611fac40f8a7b770bd560be2f5b3a42e1e235}} 
+T\+Y\+M\+\_\+\+T\+OP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+B\+O\+T\+T\+OM@{T\+Y\+M\+\_\+\+B\+O\+T\+T\+OM}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+B\+O\+T\+T\+OM@{T\+Y\+M\+\_\+\+B\+O\+T\+T\+OM}}}\mbox{\Hypertarget{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa5a13f65c6b67dc24f5a07bf37186c4ae}\label{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa5a13f65c6b67dc24f5a07bf37186c4ae}} 
+T\+Y\+M\+\_\+\+B\+O\+T\+T\+OM&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+\_\+\+C\+O\+U\+NT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa681163415e92b516c80825347bdec2b3}\label{libttymultiplex_8h_a7f7538226399784c522f57d45065611fa681163415e92b516c80825347bdec2b3}} 
+T\+Y\+M\+\_\+\+D\+I\+R\+E\+C\+T\+I\+O\+N\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 93 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}\label{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+flag@{tym\+\_\+flag}}
+\index{tym\+\_\+flag@{tym\+\_\+flag}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+flag}{tym\_flag}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}{tym\+\_\+flag}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+F\+\_\+\+F\+O\+C\+US@{T\+Y\+M\+\_\+\+P\+F\+\_\+\+F\+O\+C\+US}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+F\+\_\+\+F\+O\+C\+US@{T\+Y\+M\+\_\+\+P\+F\+\_\+\+F\+O\+C\+US}}}\mbox{\Hypertarget{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8acf45b77f2a197d2eca408ec87abd970d}\label{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8acf45b77f2a197d2eca408ec87abd970d}} 
+T\+Y\+M\+\_\+\+P\+F\+\_\+\+F\+O\+C\+US&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+F\+\_\+\+D\+I\+S\+A\+L\+L\+O\+W\+\_\+\+F\+O\+C\+US@{T\+Y\+M\+\_\+\+P\+F\+\_\+\+D\+I\+S\+A\+L\+L\+O\+W\+\_\+\+F\+O\+C\+US}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+F\+\_\+\+D\+I\+S\+A\+L\+L\+O\+W\+\_\+\+F\+O\+C\+US@{T\+Y\+M\+\_\+\+P\+F\+\_\+\+D\+I\+S\+A\+L\+L\+O\+W\+\_\+\+F\+O\+C\+US}}}\mbox{\Hypertarget{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8ae4f79309a6de4ec3489172dceac661ee}\label{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8ae4f79309a6de4ec3489172dceac661ee}} 
+T\+Y\+M\+\_\+\+P\+F\+\_\+\+D\+I\+S\+A\+L\+L\+O\+W\+\_\+\+F\+O\+C\+US&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 107 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653}\label{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+position\+\_\+type@{tym\+\_\+position\+\_\+type}}
+\index{tym\+\_\+position\+\_\+type@{tym\+\_\+position\+\_\+type}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+position\+\_\+type}{tym\_position\_type}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653}{tym\+\_\+position\+\_\+type}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+\_\+\+U\+N\+S\+ET@{T\+Y\+M\+\_\+\+P\+\_\+\+U\+N\+S\+ET}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+\_\+\+U\+N\+S\+ET@{T\+Y\+M\+\_\+\+P\+\_\+\+U\+N\+S\+ET}}}\mbox{\Hypertarget{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653abcaf785dcdc95d5df3d9fbe1ec2f950c}\label{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653abcaf785dcdc95d5df3d9fbe1ec2f950c}} 
+T\+Y\+M\+\_\+\+P\+\_\+\+U\+N\+S\+ET&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD@{T\+Y\+M\+\_\+\+P\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD@{T\+Y\+M\+\_\+\+P\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD}}}\mbox{\Hypertarget{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653a6c21bf454ffbc5733fd64674c5fef046}\label{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653a6c21bf454ffbc5733fd64674c5fef046}} 
+T\+Y\+M\+\_\+\+P\+\_\+\+C\+H\+A\+R\+F\+I\+E\+LD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+\_\+\+R\+A\+T\+IO@{T\+Y\+M\+\_\+\+P\+\_\+\+R\+A\+T\+IO}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+\_\+\+R\+A\+T\+IO@{T\+Y\+M\+\_\+\+P\+\_\+\+R\+A\+T\+IO}}}\mbox{\Hypertarget{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653ac66766fb3234fd74f7d8d041fcd4fa72}\label{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653ac66766fb3234fd74f7d8d041fcd4fa72}} 
+T\+Y\+M\+\_\+\+P\+\_\+\+R\+A\+T\+IO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+P\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+P\+\_\+\+C\+O\+U\+NT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+P\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+P\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653a483bfa59d0a2b43731d992c418a42db7}\label{libttymultiplex_8h_a23b539c9dc1c137633f8783517fc2653a483bfa59d0a2b43731d992c418a42db7}} 
+T\+Y\+M\+\_\+\+P\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 70 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ad8856480bf629c72938051528100b834}\label{libttymultiplex_8h_ad8856480bf629c72938051528100b834}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+rectangle\+\_\+edge@{tym\+\_\+rectangle\+\_\+edge}}
+\index{tym\+\_\+rectangle\+\_\+edge@{tym\+\_\+rectangle\+\_\+edge}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+rectangle\+\_\+edge}{tym\_rectangle\_edge}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_ad8856480bf629c72938051528100b834}{tym\+\_\+rectangle\+\_\+edge}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT}}}\mbox{\Hypertarget{libttymultiplex_8h_ad8856480bf629c72938051528100b834a38cef3c1942d69df22086e4ce2ae36d8}\label{libttymultiplex_8h_ad8856480bf629c72938051528100b834a38cef3c1942d69df22086e4ce2ae36d8}} 
+T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+T\+O\+P\+\_\+\+L\+E\+FT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT@{T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT}}}\mbox{\Hypertarget{libttymultiplex_8h_ad8856480bf629c72938051528100b834a92f60658124eca25806fa10a24e79d63}\label{libttymultiplex_8h_ad8856480bf629c72938051528100b834a92f60658124eca25806fa10a24e79d63}} 
+T\+Y\+M\+\_\+\+R\+E\+C\+T\+\_\+\+B\+O\+T\+T\+O\+M\+\_\+\+R\+I\+G\+HT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}\label{libttymultiplex_8h_ad8856480bf629c72938051528100b834ac0bfa9550b58bc257ca09715d719de7f}} 
+T\+Y\+M\+\_\+\+E\+D\+G\+E\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 101 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025ac}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025ac}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+special\+\_\+key@{tym\+\_\+special\+\_\+key}}
+\index{tym\+\_\+special\+\_\+key@{tym\+\_\+special\+\_\+key}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+special\+\_\+key}{tym\_special\_key}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025ac}{tym\+\_\+special\+\_\+key}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+N\+T\+ER@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+N\+T\+ER}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+N\+T\+ER@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+N\+T\+ER}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca6a9ff9e6ff1d6146dcb969bc1efd7584}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca6a9ff9e6ff1d6146dcb969bc1efd7584}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+N\+T\+ER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+H\+O\+ME@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+H\+O\+ME}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+H\+O\+ME@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+H\+O\+ME}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca8314d19470544d75bcc8f6dde60eb804}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca8314d19470544d75bcc8f6dde60eb804}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+H\+O\+ME&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+B\+A\+C\+K\+S\+P\+A\+CE@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+B\+A\+C\+K\+S\+P\+A\+CE}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+B\+A\+C\+K\+S\+P\+A\+CE@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+B\+A\+C\+K\+S\+P\+A\+CE}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca2d89e035ab669bb13f32754fdbc64db5}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca2d89e035ab669bb13f32754fdbc64db5}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+B\+A\+C\+K\+S\+P\+A\+CE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+T\+AB@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+T\+AB}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+T\+AB@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+T\+AB}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025acaf0151eee8535e71829dd030e538a8d39}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025acaf0151eee8535e71829dd030e538a8d39}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+T\+AB&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+S\+C\+A\+PE@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+S\+C\+A\+PE}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+S\+C\+A\+PE@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+S\+C\+A\+PE}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025acac0e8218d9f686a49d963fa85175e47a7}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025acac0e8218d9f686a49d963fa85175e47a7}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+S\+C\+A\+PE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+E\+L\+E\+TE@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+E\+L\+E\+TE}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+E\+L\+E\+TE@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+E\+L\+E\+TE}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca41d1149d82fae88a931678ae30cae662}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca41d1149d82fae88a931678ae30cae662}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+E\+L\+E\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+UP@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+UP}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+UP@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+UP}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca23fec3c47337bb66e36fcfaeb192b062}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca23fec3c47337bb66e36fcfaeb192b062}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+UP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+O\+WN@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+O\+WN}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+O\+WN@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+O\+WN}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca0da3a236f3e778d6906c2177e0db1747}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca0da3a236f3e778d6906c2177e0db1747}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+D\+O\+WN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+R\+I\+G\+HT@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+R\+I\+G\+HT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+R\+I\+G\+HT@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+R\+I\+G\+HT}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca335615e5b7058e5f11be7333086eaacf}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca335615e5b7058e5f11be7333086eaacf}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+R\+I\+G\+HT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+L\+E\+FT@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+L\+E\+FT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+L\+E\+FT@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+L\+E\+FT}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca382f03f63dd0aa56ee5ec30bc90d0d8c}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca382f03f63dd0aa56ee5ec30bc90d0d8c}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+L\+E\+FT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+ND@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+ND}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+ND@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+ND}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca09e5c1f437c9dabb98954dd5d97befd9}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca09e5c1f437c9dabb98954dd5d97befd9}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+E\+ND&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+UP@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+UP}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+UP@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+UP}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca1566bf142de43929b2eb03fb42186c92}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca1566bf142de43929b2eb03fb42186c92}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+UP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+D\+O\+WN@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+D\+O\+WN}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+D\+O\+WN@{T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+D\+O\+WN}}}\mbox{\Hypertarget{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca57200c90bf61aa00c6fb5785bf5f98fc}\label{libttymultiplex_8h_abc86b175aee7ad5c631cdc10ff2025aca57200c90bf61aa00c6fb5785bf5f98fc}} 
+T\+Y\+M\+\_\+\+K\+E\+Y\+\_\+\+P\+A\+G\+E\+\_\+\+D\+O\+WN&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 41 of file libttymultiplex.\+h.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}\label{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+unit\+\_\+type@{tym\+\_\+unit\+\_\+type}}
+\index{tym\+\_\+unit\+\_\+type@{tym\+\_\+unit\+\_\+type}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+unit\+\_\+type}{tym\_unit\_type}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}{tym\+\_\+unit\+\_\+type}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+U\+\_\+\+U\+N\+S\+ET@{T\+Y\+M\+\_\+\+U\+\_\+\+U\+N\+S\+ET}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+U\+\_\+\+U\+N\+S\+ET@{T\+Y\+M\+\_\+\+U\+\_\+\+U\+N\+S\+ET}}}\mbox{\Hypertarget{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415ab796b9cf7b0afb473a68113333d297a9}\label{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415ab796b9cf7b0afb473a68113333d297a9}} 
+T\+Y\+M\+\_\+\+U\+\_\+\+U\+N\+S\+ET&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+U\+\_\+\+I\+N\+T\+E\+G\+ER@{T\+Y\+M\+\_\+\+U\+\_\+\+I\+N\+T\+E\+G\+ER}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+U\+\_\+\+I\+N\+T\+E\+G\+ER@{T\+Y\+M\+\_\+\+U\+\_\+\+I\+N\+T\+E\+G\+ER}}}\mbox{\Hypertarget{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415af188b6d51068a1e0dc3aacff656363b0}\label{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415af188b6d51068a1e0dc3aacff656363b0}} 
+T\+Y\+M\+\_\+\+U\+\_\+\+I\+N\+T\+E\+G\+ER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+U\+\_\+\+R\+E\+AL@{T\+Y\+M\+\_\+\+U\+\_\+\+R\+E\+AL}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+U\+\_\+\+R\+E\+AL@{T\+Y\+M\+\_\+\+U\+\_\+\+R\+E\+AL}}}\mbox{\Hypertarget{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415a649d82be93d1e63bd2389cb1cd8e5f13}\label{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415a649d82be93d1e63bd2389cb1cd8e5f13}} 
+T\+Y\+M\+\_\+\+U\+\_\+\+R\+E\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+Y\+M\+\_\+\+U\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+U\+\_\+\+C\+O\+U\+NT}!libttymultiplex.\+h@{libttymultiplex.\+h}}\index{libttymultiplex.\+h@{libttymultiplex.\+h}!T\+Y\+M\+\_\+\+U\+\_\+\+C\+O\+U\+NT@{T\+Y\+M\+\_\+\+U\+\_\+\+C\+O\+U\+NT}}}\mbox{\Hypertarget{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415a6084dfbaf14d9d1d2132de918d2a111f}\label{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415a6084dfbaf14d9d1d2132de918d2a111f}} 
+T\+Y\+M\+\_\+\+U\+\_\+\+C\+O\+U\+NT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 78 of file libttymultiplex.\+h.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{libttymultiplex_8h_abd14f465860fa5c2a5c2ee593dd67779}\label{libttymultiplex_8h_abd14f465860fa5c2a5c2ee593dd67779}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+init@{tym\+\_\+init}}
+\index{tym\+\_\+init@{tym\+\_\+init}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+init()}{tym\_init()}}
+{\footnotesize\ttfamily int tym\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 23 of file libttymultiplex.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a957d3155520a3720827f9b76c1407cda}\label{libttymultiplex_8h_a957d3155520a3720827f9b76c1407cda}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+create@{tym\+\_\+pane\+\_\+create}}
+\index{tym\+\_\+pane\+\_\+create@{tym\+\_\+pane\+\_\+create}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+create()}{tym\_pane\_create()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+create (\begin{DoxyParamCaption}\item[{const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict}]{super\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 137 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ab734f1177040e7ad662a503fdd55b6b1}\label{libttymultiplex_8h_ab734f1177040e7ad662a503fdd55b6b1}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+destroy@{tym\+\_\+pane\+\_\+destroy}}
+\index{tym\+\_\+pane\+\_\+destroy@{tym\+\_\+pane\+\_\+destroy}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+destroy()}{tym\_pane\_destroy()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+destroy (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 238 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a774be0b2880e8af2941d5b5b39b8b551}\label{libttymultiplex_8h_a774be0b2880e8af2941d5b5b39b8b551}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+get\+\_\+flag@{tym\+\_\+pane\+\_\+get\+\_\+flag}}
+\index{tym\+\_\+pane\+\_\+get\+\_\+flag@{tym\+\_\+pane\+\_\+get\+\_\+flag}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+get\+\_\+flag()}{tym\_pane\_get\_flag()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+get\+\_\+flag (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{enum \hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}{tym\+\_\+flag}}]{flag }\end{DoxyParamCaption})}
+
+
+
+Definition at line 37 of file pane\+\_\+flag.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a3e533d7a5376aaf6667b92540c7d3fce}\label{libttymultiplex_8h_a3e533d7a5376aaf6667b92540c7d3fce}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+get\+\_\+slavefd@{tym\+\_\+pane\+\_\+get\+\_\+slavefd}}
+\index{tym\+\_\+pane\+\_\+get\+\_\+slavefd@{tym\+\_\+pane\+\_\+get\+\_\+slavefd}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+get\+\_\+slavefd()}{tym\_pane\_get\_slavefd()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+get\+\_\+slavefd (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 412 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_aa133cb1aadbd1fe0b30038de451ee44c}\label{libttymultiplex_8h_aa133cb1aadbd1fe0b30038de451ee44c}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+reset@{tym\+\_\+pane\+\_\+reset}}
+\index{tym\+\_\+pane\+\_\+reset@{tym\+\_\+pane\+\_\+reset}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+reset()}{tym\_pane\_reset()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+reset (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 463 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a4d39024d897690ee926d4812f16451e8}\label{libttymultiplex_8h_a4d39024d897690ee926d4812f16451e8}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+resize@{tym\+\_\+pane\+\_\+resize}}
+\index{tym\+\_\+pane\+\_\+resize@{tym\+\_\+pane\+\_\+resize}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+resize()}{tym\_pane\_resize()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+resize (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{const struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} $\ast$restrict}]{super\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 369 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a0fc757b137228b81d19ef0f8e297ab4e}\label{libttymultiplex_8h_a0fc757b137228b81d19ef0f8e297ab4e}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+send\+\_\+key@{tym\+\_\+pane\+\_\+send\+\_\+key}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+key@{tym\+\_\+pane\+\_\+send\+\_\+key}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+key()}{tym\_pane\_send\_key()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+key (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{int\+\_\+least16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Definition at line 476 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ad712d7c00a8e814b9ca82985bfacde6d}\label{libttymultiplex_8h_ad712d7c00a8e814b9ca82985bfacde6d}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+send\+\_\+keys@{tym\+\_\+pane\+\_\+send\+\_\+keys}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+keys@{tym\+\_\+pane\+\_\+send\+\_\+keys}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+keys()}{tym\_pane\_send\_keys()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+keys (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{size\+\_\+t}]{count,  }\item[{const int\+\_\+least16\+\_\+t}]{keys\mbox{[}count\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 496 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_adf78fea39742c49dd33f0a305e6b7b4c}\label{libttymultiplex_8h_adf78fea39742c49dd33f0a305e6b7b4c}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event@{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event@{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event()}{tym\_pane\_send\_mouse\_event()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+mouse\+\_\+event (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button}}]{button,  }\item[{const struct \hyperlink{structtym__super__position}{tym\+\_\+super\+\_\+position} $\ast$restrict}]{super\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+Definition at line 551 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a30d947aa7d53f9b997000d74e8a95526}\label{libttymultiplex_8h_a30d947aa7d53f9b997000d74e8a95526}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name@{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name}}
+\index{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name@{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name()}{tym\_pane\_send\_special\_key\_by\_name()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+send\+\_\+special\+\_\+key\+\_\+by\+\_\+name (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{const char $\ast$}]{key\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 536 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a649e4ba707bc2cd4371fb3119e1bd2b4}\label{libttymultiplex_8h_a649e4ba707bc2cd4371fb3119e1bd2b4}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+set\+\_\+env@{tym\+\_\+pane\+\_\+set\+\_\+env}}
+\index{tym\+\_\+pane\+\_\+set\+\_\+env@{tym\+\_\+pane\+\_\+set\+\_\+env}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+set\+\_\+env()}{tym\_pane\_set\_env()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+set\+\_\+env (\begin{DoxyParamCaption}\item[{int}]{pane }\end{DoxyParamCaption})}
+
+
+
+Definition at line 389 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a81eddaff42544fd35027c29df30d80bd}\label{libttymultiplex_8h_a81eddaff42544fd35027c29df30d80bd}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+set\+\_\+flag@{tym\+\_\+pane\+\_\+set\+\_\+flag}}
+\index{tym\+\_\+pane\+\_\+set\+\_\+flag@{tym\+\_\+pane\+\_\+set\+\_\+flag}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+set\+\_\+flag()}{tym\_pane\_set\_flag()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+set\+\_\+flag (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{enum \hyperlink{libttymultiplex_8h_a16dbc92598626f92b600f55e48f59ef8}{tym\+\_\+flag}}]{flag,  }\item[{bool}]{status }\end{DoxyParamCaption})}
+
+
+
+Definition at line 10 of file pane\+\_\+flag.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ade90966292fc278bc68c8da84697b6e9}\label{libttymultiplex_8h_ade90966292fc278bc68c8da84697b6e9}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+pane\+\_\+type@{tym\+\_\+pane\+\_\+type}}
+\index{tym\+\_\+pane\+\_\+type@{tym\+\_\+pane\+\_\+type}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+pane\+\_\+type()}{tym\_pane\_type()}}
+{\footnotesize\ttfamily int tym\+\_\+pane\+\_\+type (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{size\+\_\+t}]{count,  }\item[{const char}]{keys\mbox{[}count\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 516 of file pane.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ad11ee9d8a1922d6feed400caf5a52437}\label{libttymultiplex_8h_ad11ee9d8a1922d6feed400caf5a52437}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+register\+\_\+resize\+\_\+handler@{tym\+\_\+register\+\_\+resize\+\_\+handler}}
+\index{tym\+\_\+register\+\_\+resize\+\_\+handler@{tym\+\_\+register\+\_\+resize\+\_\+handler}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+register\+\_\+resize\+\_\+handler()}{tym\_register\_resize\_handler()}}
+{\footnotesize\ttfamily int tym\+\_\+register\+\_\+resize\+\_\+handler (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{void $\ast$}]{ptr,  }\item[{\hyperlink{libttymultiplex_8h_a7b785cb846faa92e5f2f5fbf32bdcde4}{tym\+\_\+resize\+\_\+handler\+\_\+t}}]{handler }\end{DoxyParamCaption})}
+
+
+
+Definition at line 100 of file libttymultiplex.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a1b42d905d66ebdfb520a793242780d05}\label{libttymultiplex_8h_a1b42d905d66ebdfb520a793242780d05}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+shutdown@{tym\+\_\+shutdown}}
+\index{tym\+\_\+shutdown@{tym\+\_\+shutdown}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+shutdown()}{tym\_shutdown()}}
+{\footnotesize\ttfamily int tym\+\_\+shutdown (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 79 of file libttymultiplex.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a5b29d374752efafe921869644b127ab9}\label{libttymultiplex_8h_a5b29d374752efafe921869644b127ab9}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+unregister\+\_\+resize\+\_\+handler@{tym\+\_\+unregister\+\_\+resize\+\_\+handler}}
+\index{tym\+\_\+unregister\+\_\+resize\+\_\+handler@{tym\+\_\+unregister\+\_\+resize\+\_\+handler}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+unregister\+\_\+resize\+\_\+handler()}{tym\_unregister\_resize\_handler()}}
+{\footnotesize\ttfamily int tym\+\_\+unregister\+\_\+resize\+\_\+handler (\begin{DoxyParamCaption}\item[{int}]{pane,  }\item[{void $\ast$}]{ptr,  }\item[{\hyperlink{libttymultiplex_8h_a7b785cb846faa92e5f2f5fbf32bdcde4}{tym\+\_\+resize\+\_\+handler\+\_\+t}}]{handler }\end{DoxyParamCaption})}
+
+
+
+Definition at line 122 of file libttymultiplex.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{libttymultiplex_8h_a08338bec80b1aa511058ad78970bed40}\label{libttymultiplex_8h_a08338bec80b1aa511058ad78970bed40}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+positon\+\_\+unit\+\_\+map@{tym\+\_\+positon\+\_\+unit\+\_\+map}}
+\index{tym\+\_\+positon\+\_\+unit\+\_\+map@{tym\+\_\+positon\+\_\+unit\+\_\+map}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+positon\+\_\+unit\+\_\+map}{tym\_positon\_unit\_map}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a11fda113de846a40d8d1851f94bc4415}{tym\+\_\+unit\+\_\+type} tym\+\_\+positon\+\_\+unit\+\_\+map\mbox{[}$\,$\mbox{]}}
+
+
+
+Definition at line 8 of file calc.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_a601e2b5a9b4b9f1baa239cc48f8ccb6f}\label{libttymultiplex_8h_a601e2b5a9b4b9f1baa239cc48f8ccb6f}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+special\+\_\+key\+\_\+count@{tym\+\_\+special\+\_\+key\+\_\+count}}
+\index{tym\+\_\+special\+\_\+key\+\_\+count@{tym\+\_\+special\+\_\+key\+\_\+count}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+special\+\_\+key\+\_\+count}{tym\_special\_key\_count}}
+{\footnotesize\ttfamily const size\+\_\+t tym\+\_\+special\+\_\+key\+\_\+count}
+
+
+
+Definition at line 40 of file main.\+c.
+
+\mbox{\Hypertarget{libttymultiplex_8h_ad28789439cf6d0a6775af362252f9774}\label{libttymultiplex_8h_ad28789439cf6d0a6775af362252f9774}} 
+\index{libttymultiplex.\+h@{libttymultiplex.\+h}!tym\+\_\+special\+\_\+key\+\_\+list@{tym\+\_\+special\+\_\+key\+\_\+list}}
+\index{tym\+\_\+special\+\_\+key\+\_\+list@{tym\+\_\+special\+\_\+key\+\_\+list}!libttymultiplex.\+h@{libttymultiplex.\+h}}
+\subsubsection{\texorpdfstring{tym\+\_\+special\+\_\+key\+\_\+list}{tym\_special\_key\_list}}
+{\footnotesize\ttfamily const struct \hyperlink{structtym__special__key__name}{tym\+\_\+special\+\_\+key\+\_\+name} tym\+\_\+special\+\_\+key\+\_\+list\mbox{[}$\,$\mbox{]}}
+
+
+
+Definition at line 30 of file main.\+c.
+

@@ -1,0 +1,262 @@
+\hypertarget{structtym__i__pane__internal}{}\section{tym\+\_\+i\+\_\+pane\+\_\+internal Struct Reference}
+\label{structtym__i__pane__internal}\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+
+
+{\ttfamily \#include $<$pane.\+h$>$}
+
+
+
+Collaboration diagram for tym\+\_\+i\+\_\+pane\+\_\+internal\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structtym__i__pane__internal__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{structtym__i__pane__internal_a922aa2239bb2f3d008bc35a3caddb8c3}{previous}
+\item 
+struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ \hyperlink{structtym__i__pane__internal_a6a0cdccfe24cb9b09ae1754cf9d4c029}{next}
+\item 
+int \hyperlink{structtym__i__pane__internal_a17e1f7d06c7214ae1ad4912370dcc4a1}{id}
+\item 
+int \hyperlink{structtym__i__pane__internal_ae32841ea8e94f488eac503995206380b}{master}
+\item 
+int \hyperlink{structtym__i__pane__internal_aae38651ca650725201ea0e4a7ac5e893}{slave}
+\item 
+bool \hyperlink{structtym__i__pane__internal_ad10df02effe8dee789bf80a8a6f85b41}{nofocus}
+\item 
+void $\ast$ \hyperlink{structtym__i__pane__internal_af6a6ae990267090f21c804525a89128a}{backend}
+\item 
+struct \hyperlink{structtym__i__sequence__state}{tym\+\_\+i\+\_\+sequence\+\_\+state} \hyperlink{structtym__i__pane__internal_acee6942f5fc8a08292cdacf9f50fcf6e}{sequence}
+\item 
+struct termios \hyperlink{structtym__i__pane__internal_a4d03c0c97686307362307fd44c3edd50}{termios}
+\item 
+struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} \hyperlink{structtym__i__pane__internal_a6130559b5f02e294f71981c51535fd06}{super\+\_\+position}
+\item 
+struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} \hyperlink{structtym__i__pane__internal_a05be638aab84faf85b300b6021b772d8}{absolute\+\_\+position}
+\item 
+size\+\_\+t \hyperlink{structtym__i__pane__internal_a084a6b169726095a350eddddbdd78c65}{resize\+\_\+handler\+\_\+count}
+\item 
+struct \hyperlink{structtym__i__handler__ptr__pair}{tym\+\_\+i\+\_\+handler\+\_\+ptr\+\_\+pair} $\ast$ \hyperlink{structtym__i__pane__internal_a563a81b01e867376d388aa77061c1ca8}{resize\+\_\+handler\+\_\+list}
+\item 
+struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character} \hyperlink{structtym__i__pane__internal_a019ad181f81cb30eca1396c630b6e4be}{character}
+\item 
+enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen} \hyperlink{structtym__i__pane__internal_a7ec548dbe248ba7f654569127819dc3c}{current\+\_\+screen}
+\item 
+struct \hyperlink{structtym__i__cell__position}{tym\+\_\+i\+\_\+cell\+\_\+position} \hyperlink{structtym__i__pane__internal_a89ad2bf59a75b2813352bc070e039f04}{last\+\_\+mouse\+\_\+event\+\_\+pos}
+\item 
+enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button} \hyperlink{structtym__i__pane__internal_adaeb64342d1a99fa26110a0f41993326}{last\+\_\+button}
+\item 
+enum \hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4}{mouse\+\_\+mode} \hyperlink{structtym__i__pane__internal_a55eb70f7a40f96f3348dc1690e9c53c2}{mouse\+\_\+mode}
+\item 
+struct \hyperlink{structtym__i__pane__screen__state}{tym\+\_\+i\+\_\+pane\+\_\+screen\+\_\+state} \hyperlink{structtym__i__pane__internal_a169132da2187f1791ae9252c63b7321a}{screen} \mbox{[}\hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761a4675b455ce9ebdc1c317e91e0c66e5e0}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT}\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 136 of file pane.\+h.
+
+
+
+\subsection{Field Documentation}
+\mbox{\Hypertarget{structtym__i__pane__internal_a05be638aab84faf85b300b6021b772d8}\label{structtym__i__pane__internal_a05be638aab84faf85b300b6021b772d8}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!absolute\+\_\+position@{absolute\+\_\+position}}
+\index{absolute\+\_\+position@{absolute\+\_\+position}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{absolute\+\_\+position}{absolute\_position}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__absolute__position__rectangle}{tym\+\_\+absolute\+\_\+position\+\_\+rectangle} tym\+\_\+i\+\_\+pane\+\_\+internal\+::absolute\+\_\+position}
+
+
+
+Definition at line 145 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_af6a6ae990267090f21c804525a89128a}\label{structtym__i__pane__internal_af6a6ae990267090f21c804525a89128a}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!backend@{backend}}
+\index{backend@{backend}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{backend}{backend}}
+{\footnotesize\ttfamily void$\ast$ tym\+\_\+i\+\_\+pane\+\_\+internal\+::backend}
+
+
+
+Definition at line 141 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a019ad181f81cb30eca1396c630b6e4be}\label{structtym__i__pane__internal_a019ad181f81cb30eca1396c630b6e4be}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!character@{character}}
+\index{character@{character}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{character}{character}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__character}{tym\+\_\+i\+\_\+character} tym\+\_\+i\+\_\+pane\+\_\+internal\+::character}
+
+
+
+Definition at line 149 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a7ec548dbe248ba7f654569127819dc3c}\label{structtym__i__pane__internal_a7ec548dbe248ba7f654569127819dc3c}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!current\+\_\+screen@{current\+\_\+screen}}
+\index{current\+\_\+screen@{current\+\_\+screen}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{current\+\_\+screen}{current\_screen}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761}{tym\+\_\+i\+\_\+pane\+\_\+screen} tym\+\_\+i\+\_\+pane\+\_\+internal\+::current\+\_\+screen}
+
+
+
+Definition at line 150 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a17e1f7d06c7214ae1ad4912370dcc4a1}\label{structtym__i__pane__internal_a17e1f7d06c7214ae1ad4912370dcc4a1}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!id@{id}}
+\index{id@{id}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+internal\+::id}
+
+
+
+Definition at line 138 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_adaeb64342d1a99fa26110a0f41993326}\label{structtym__i__pane__internal_adaeb64342d1a99fa26110a0f41993326}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!last\+\_\+button@{last\+\_\+button}}
+\index{last\+\_\+button@{last\+\_\+button}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{last\+\_\+button}{last\_button}}
+{\footnotesize\ttfamily enum \hyperlink{libttymultiplex_8h_a9223cca7368df5ee528dec0bfa0c3ab3}{tym\+\_\+button} tym\+\_\+i\+\_\+pane\+\_\+internal\+::last\+\_\+button}
+
+
+
+Definition at line 152 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a89ad2bf59a75b2813352bc070e039f04}\label{structtym__i__pane__internal_a89ad2bf59a75b2813352bc070e039f04}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!last\+\_\+mouse\+\_\+event\+\_\+pos@{last\+\_\+mouse\+\_\+event\+\_\+pos}}
+\index{last\+\_\+mouse\+\_\+event\+\_\+pos@{last\+\_\+mouse\+\_\+event\+\_\+pos}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{last\+\_\+mouse\+\_\+event\+\_\+pos}{last\_mouse\_event\_pos}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__cell__position}{tym\+\_\+i\+\_\+cell\+\_\+position} tym\+\_\+i\+\_\+pane\+\_\+internal\+::last\+\_\+mouse\+\_\+event\+\_\+pos}
+
+
+
+Definition at line 151 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_ae32841ea8e94f488eac503995206380b}\label{structtym__i__pane__internal_ae32841ea8e94f488eac503995206380b}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!master@{master}}
+\index{master@{master}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{master}{master}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+internal\+::master}
+
+
+
+Definition at line 139 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a55eb70f7a40f96f3348dc1690e9c53c2}\label{structtym__i__pane__internal_a55eb70f7a40f96f3348dc1690e9c53c2}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!mouse\+\_\+mode@{mouse\+\_\+mode}}
+\index{mouse\+\_\+mode@{mouse\+\_\+mode}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{mouse\+\_\+mode}{mouse\_mode}}
+{\footnotesize\ttfamily enum \hyperlink{pane_8h_a271f5b51a492d1598aad17ccd8ebd0c4}{mouse\+\_\+mode} tym\+\_\+i\+\_\+pane\+\_\+internal\+::mouse\+\_\+mode}
+
+
+
+Definition at line 153 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a6a0cdccfe24cb9b09ae1754cf9d4c029}\label{structtym__i__pane__internal_a6a0cdccfe24cb9b09ae1754cf9d4c029}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!next@{next}}
+\index{next@{next}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{next}{next}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal} $\ast$ tym\+\_\+i\+\_\+pane\+\_\+internal\+::next}
+
+
+
+Definition at line 137 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_ad10df02effe8dee789bf80a8a6f85b41}\label{structtym__i__pane__internal_ad10df02effe8dee789bf80a8a6f85b41}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!nofocus@{nofocus}}
+\index{nofocus@{nofocus}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{nofocus}{nofocus}}
+{\footnotesize\ttfamily bool tym\+\_\+i\+\_\+pane\+\_\+internal\+::nofocus}
+
+
+
+Definition at line 140 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a922aa2239bb2f3d008bc35a3caddb8c3}\label{structtym__i__pane__internal_a922aa2239bb2f3d008bc35a3caddb8c3}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!previous@{previous}}
+\index{previous@{previous}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{previous}{previous}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__internal}{tym\+\_\+i\+\_\+pane\+\_\+internal}$\ast$ tym\+\_\+i\+\_\+pane\+\_\+internal\+::previous}
+
+
+
+Definition at line 137 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a084a6b169726095a350eddddbdd78c65}\label{structtym__i__pane__internal_a084a6b169726095a350eddddbdd78c65}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!resize\+\_\+handler\+\_\+count@{resize\+\_\+handler\+\_\+count}}
+\index{resize\+\_\+handler\+\_\+count@{resize\+\_\+handler\+\_\+count}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{resize\+\_\+handler\+\_\+count}{resize\_handler\_count}}
+{\footnotesize\ttfamily size\+\_\+t tym\+\_\+i\+\_\+pane\+\_\+internal\+::resize\+\_\+handler\+\_\+count}
+
+
+
+Definition at line 146 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a563a81b01e867376d388aa77061c1ca8}\label{structtym__i__pane__internal_a563a81b01e867376d388aa77061c1ca8}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!resize\+\_\+handler\+\_\+list@{resize\+\_\+handler\+\_\+list}}
+\index{resize\+\_\+handler\+\_\+list@{resize\+\_\+handler\+\_\+list}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{resize\+\_\+handler\+\_\+list}{resize\_handler\_list}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__handler__ptr__pair}{tym\+\_\+i\+\_\+handler\+\_\+ptr\+\_\+pair}$\ast$ tym\+\_\+i\+\_\+pane\+\_\+internal\+::resize\+\_\+handler\+\_\+list}
+
+
+
+Definition at line 147 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a169132da2187f1791ae9252c63b7321a}\label{structtym__i__pane__internal_a169132da2187f1791ae9252c63b7321a}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!screen@{screen}}
+\index{screen@{screen}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{screen}{screen}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__pane__screen__state}{tym\+\_\+i\+\_\+pane\+\_\+screen\+\_\+state} tym\+\_\+i\+\_\+pane\+\_\+internal\+::screen\mbox{[}\hyperlink{pane_8h_a49f1d9b192f4f01ff444123abde24761a4675b455ce9ebdc1c317e91e0c66e5e0}{T\+Y\+M\+\_\+\+I\+\_\+\+S\+C\+R\+E\+E\+N\+\_\+\+C\+O\+U\+NT}\mbox{]}}
+
+
+
+Definition at line 155 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_acee6942f5fc8a08292cdacf9f50fcf6e}\label{structtym__i__pane__internal_acee6942f5fc8a08292cdacf9f50fcf6e}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!sequence@{sequence}}
+\index{sequence@{sequence}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{sequence}{sequence}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__i__sequence__state}{tym\+\_\+i\+\_\+sequence\+\_\+state} tym\+\_\+i\+\_\+pane\+\_\+internal\+::sequence}
+
+
+
+Definition at line 142 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_aae38651ca650725201ea0e4a7ac5e893}\label{structtym__i__pane__internal_aae38651ca650725201ea0e4a7ac5e893}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!slave@{slave}}
+\index{slave@{slave}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{slave}{slave}}
+{\footnotesize\ttfamily int tym\+\_\+i\+\_\+pane\+\_\+internal\+::slave}
+
+
+
+Definition at line 139 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a6130559b5f02e294f71981c51535fd06}\label{structtym__i__pane__internal_a6130559b5f02e294f71981c51535fd06}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!super\+\_\+position@{super\+\_\+position}}
+\index{super\+\_\+position@{super\+\_\+position}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{super\+\_\+position}{super\_position}}
+{\footnotesize\ttfamily struct \hyperlink{structtym__super__position__rectangle}{tym\+\_\+super\+\_\+position\+\_\+rectangle} tym\+\_\+i\+\_\+pane\+\_\+internal\+::super\+\_\+position}
+
+
+
+Definition at line 144 of file pane.\+h.
+
+\mbox{\Hypertarget{structtym__i__pane__internal_a4d03c0c97686307362307fd44c3edd50}\label{structtym__i__pane__internal_a4d03c0c97686307362307fd44c3edd50}} 
+\index{tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}!termios@{termios}}
+\index{termios@{termios}!tym\+\_\+i\+\_\+pane\+\_\+internal@{tym\+\_\+i\+\_\+pane\+\_\+internal}}
+\subsubsection{\texorpdfstring{termios}{termios}}
+{\footnotesize\ttfamily struct termios tym\+\_\+i\+\_\+pane\+\_\+internal\+::termios}
+
+
+
+Definition at line 143 of file pane.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/\hyperlink{pane_8h}{pane.\+h}\end{DoxyCompactItemize}

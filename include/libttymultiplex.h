@@ -54,10 +54,10 @@ extern const struct tym_special_key_name tym_special_key_list[];
 extern const size_t tym_special_key_count;
 
 enum tym_button {
-  TYM_I_BUTTON_LEFT_PRESSED,
-  TYM_I_BUTTON_MIDDLE_PRESSED,
-  TYM_I_BUTTON_RIGHT_PRESSED,
-  TYM_I_BUTTON_RELEASED,
+  TYM_BUTTON_LEFT_PRESSED,
+  TYM_BUTTON_MIDDLE_PRESSED,
+  TYM_BUTTON_RIGHT_PRESSED,
+  TYM_BUTTON_RELEASED,
 };
 
 #define TYM_POSITION_TYPE__CHARFIELD(F) F(CHARFIELD, INTEGER, long  , integer)
