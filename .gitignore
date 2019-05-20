@@ -1,5 +1,6 @@
 build/
 repo/
+doc/
 bin/
 .repo
 .dir
