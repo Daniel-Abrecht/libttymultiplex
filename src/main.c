@@ -34,7 +34,7 @@ const struct tym_special_key_name tym_special_key_list[] = {
     .name = #ID, \
     .name_length = sizeof(#ID)-1, \
   },
-TYM_SPECIAL_KEYS
+TYM_I_SPECIAL_KEYS
 #undef X
 };
 const size_t tym_special_key_count = sizeof(tym_special_key_list) / sizeof(*tym_special_key_list);

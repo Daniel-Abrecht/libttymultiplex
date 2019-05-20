@@ -51,6 +51,11 @@ all: bin/libttymultiplex.so bin/libttymultiplex.a
 	mkdir -p "$(dir $@)"
 	touch "$@"
 
+docs:
+	rm -rf doc
+	export PROJECT_NUMBER="$$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
+	doxygen
+
 build/%.o: src/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
 	$(CC) $(CC_OPTS) -c -o $@ $<

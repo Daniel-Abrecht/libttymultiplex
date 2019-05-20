@@ -208,7 +208,7 @@ int tym_pane_create(const struct tym_super_position_rectangle*restrict super_pos
     },
     .sequence.seq_opt_max = -1
   };
-  struct tym_i_pane_internal* pane = TYM_COPY((hpane));
+  struct tym_i_pane_internal* pane = tym_i_copy(sizeof(hpane), &hpane);
   pane->super_position = *super_position;
   tym_i_calc_rectangle_absolut_position(&pane->absolute_position, &pane->super_position);
   unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);

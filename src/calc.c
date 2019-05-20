@@ -6,9 +6,9 @@
 #include <internal/calc.h>
 
 const enum tym_unit_type tym_positon_unit_map[] = {
-#define E(PT, U, T, N) [TYM_CONCAT(TYM_P_, PT)] = TYM_CONCAT(TYM_U_, U),
-#define X(ID) TYM_CONCAT(TYM_POSITION_TYPE__, ID)(E)
-  TYM_POSITION_TYPE_LIST
+#define E(PT, U, T, N) [TYM_I_CONCAT(TYM_P_, PT)] = TYM_I_CONCAT(TYM_U_, U),
+#define X(ID) TYM_I_CONCAT(TYM_I_POSITION_TYPE__, ID)(E)
+  TYM_I_POSITION_TYPE_LIST
 #undef X
 #undef E
 };

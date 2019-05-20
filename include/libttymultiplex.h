@@ -16,14 +16,14 @@
 #endif
 #endif
 
-#define TYM_CONCAT_SUB(A,B) A ## B
-#define TYM_CONCAT(A,B) TYM_CONCAT_SUB(A,B)
+#define TYM_I_CONCAT_SUB(A,B) A ## B
+#define TYM_I_CONCAT(A,B) TYM_I_CONCAT_SUB(A,B)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define TYM_SPECIAL_KEYS \
+#define TYM_I_SPECIAL_KEYS \
   X(ENTER    , '\n'  ) \
   X(HOME     , '\r'  ) \
   X(BACKSPACE, '\b'  ) \
@@ -40,7 +40,7 @@ extern "C" {
 
 enum tym_special_key {
 #define X(ID, VAL) TYM_KEY_ ## ID = VAL,
-TYM_SPECIAL_KEYS
+TYM_I_SPECIAL_KEYS
 #undef X
 };
 
@@ -60,17 +60,17 @@ enum tym_button {
   TYM_BUTTON_RELEASED,
 };
 
-#define TYM_POSITION_TYPE__CHARFIELD(F) F(CHARFIELD, INTEGER, long  , integer)
-#define TYM_POSITION_TYPE__RATIO(F)     F(RATIO    , REAL   , double, real   )
+#define TYM_I_POSITION_TYPE__CHARFIELD(F) F(CHARFIELD, INTEGER, long  , integer)
+#define TYM_I_POSITION_TYPE__RATIO(F)     F(RATIO    , REAL   , double, real   )
 
-#define TYM_POSITION_TYPE_LIST \
+#define TYM_I_POSITION_TYPE_LIST \
   X(CHARFIELD) \
   X(RATIO)
 
 enum tym_position_type {
   TYM_P_UNSET,
 #define X(ID) TYM_P_ ## ID,
-  TYM_POSITION_TYPE_LIST
+  TYM_I_POSITION_TYPE_LIST
 #undef X
   TYM_P_COUNT
 };
@@ -78,8 +78,8 @@ enum tym_position_type {
 enum tym_unit_type {
   TYM_U_UNSET,
 #define E(PT, U, T, N) TYM_U_ ## U,
-#define X(ID) TYM_CONCAT(TYM_POSITION_TYPE__, ID)(E)
-  TYM_POSITION_TYPE_LIST
+#define X(ID) TYM_I_CONCAT(TYM_I_POSITION_TYPE__, ID)(E)
+  TYM_I_POSITION_TYPE_LIST
 #undef X
 #undef E
   TYM_U_COUNT
@@ -116,8 +116,8 @@ struct tym_unit {
   enum tym_unit_type type;
   union {
 #define E(PT, U, T, N) T N;
-#define X(ID) TYM_CONCAT(TYM_POSITION_TYPE__, ID)(E)
-  TYM_POSITION_TYPE_LIST
+#define X(ID) TYM_I_CONCAT(TYM_I_POSITION_TYPE__, ID)(E)
+  TYM_I_POSITION_TYPE_LIST
 #undef X
 #undef E
   } value;
@@ -144,7 +144,7 @@ TYM_I_POSITION_SPECIALISATION(absolute)
 #define TYM_I_PT_UNIT_NAME(PT, U, T, N) N
 
 #define TYM_POS_REF(POSITION, POSITION_TYPE, AXIS) \
-  (POSITION).type[TYM_P_ ## POSITION_TYPE].axis[(AXIS)].value.TYM_CONCAT(TYM_POSITION_TYPE__, POSITION_TYPE)(TYM_I_PT_UNIT_NAME)
+  (POSITION).type[TYM_P_ ## POSITION_TYPE].axis[(AXIS)].value.TYM_I_CONCAT(TYM_I_POSITION_TYPE__, POSITION_TYPE)(TYM_I_PT_UNIT_NAME)
 #define TYM_RECT_POS_REF(RECT, POSITION_TYPE, POSITION) \
   TYM_POS_REF((RECT).edge[(POSITION) % TYM_EDGE_COUNT], POSITION_TYPE, (POSITION) / TYM_EDGE_COUNT)
 #define TYM_RECT_SIZE(RECT, POSITION_TYPE, AXIS) \
