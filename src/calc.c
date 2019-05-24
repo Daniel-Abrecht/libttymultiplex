@@ -6,11 +6,9 @@
 #include <internal/calc.h>
 
 const enum tym_unit_type tym_positon_unit_map[] = {
-#define E(PT, U, T, N) [TYM_I_CONCAT(TYM_P_, PT)] = TYM_I_CONCAT(TYM_U_, U),
-#define X(ID) TYM_I_CONCAT(TYM_I_POSITION_TYPE__, ID)(E)
-  TYM_I_POSITION_TYPE_LIST
+#define X(PT, U, DOC) [TYM_P_ ## PT] = TYM_U_ ## U,
+  TYM_I_POSITION_TYPE_LIST(X)
 #undef X
-#undef E
 };
 
 void tym_i_calc_init_absolute_position(struct tym_absolute_position* position){
@@ -46,7 +44,7 @@ void tym_i_calc_absolut_position(
 
 void tym_i_calc_rectangle_absolut_position( struct tym_absolute_position_rectangle*restrict result, const struct tym_super_position_rectangle*restrict super_position ){
   struct tym_absolute_position_rectangle res;
-  for(int edge=0; edge<TYM_EDGE_COUNT; edge++)
+  for(int edge=0; edge<TYM_RECT_EDGE_COUNT; edge++)
     tym_i_calc_absolut_position(&res.edge[edge], &tym_i_bounds, &super_position->edge[edge], true);
   if( TYM_RECT_POS_REF(res, CHARFIELD, TYM_LEFT) >= TYM_RECT_POS_REF(res, CHARFIELD, TYM_RIGHT )
    || TYM_RECT_POS_REF(res, CHARFIELD, TYM_TOP ) >= TYM_RECT_POS_REF(res, CHARFIELD, TYM_BOTTOM)
