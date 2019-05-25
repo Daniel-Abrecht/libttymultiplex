@@ -460,14 +460,36 @@ int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_scre
   return res;
 }
 
+int tym_i_pane_reset(struct tym_i_pane_internal* pane){
+  memset(pane->screen, 0, sizeof(pane->screen));
+  struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
+  unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
+  unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
+  pane->mouse_mode = MOUSE_MODE_OFF;
+  pane->character.not_utf8 = false;
+  tym_i_backend->pane_erase_area(pane, (struct tym_i_cell_position){.x=0,.y=0}, (struct tym_i_cell_position){.x=w,.y=h}, false, screen->character_format);
+  tym_i_pane_set_cursor_position( pane,
+    TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
+    TYM_I_SCP_SMM_NO_SCROLLING, TYM_I_SCP_PM_ORIGIN_RELATIVE, 0,
+    TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, false
+  );
+  return 0;
+}
+
 int tym_pane_reset(int pane){
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
     errno = EINVAL;
     goto error;
   }
-  (void)pane;
-  errno = ENOSYS;
+  struct tym_i_pane_internal* ppane = tym_i_pane_get(pane);
+  if(!ppane){
+    errno = ENOENT;
+    goto error;
+  }
+  int ret = tym_i_pane_reset(ppane);
+  pthread_mutex_unlock(&tym_i_lock);
+  return ret;
 error:
   pthread_mutex_unlock(&tym_i_lock);
   return -1;

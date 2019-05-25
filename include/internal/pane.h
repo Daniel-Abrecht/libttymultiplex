@@ -175,6 +175,7 @@ int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned
 int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n);
 int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y, int n);
 void tym_i_perror(const char*);
+int tym_i_pane_reset(struct tym_i_pane_internal* pane);
 
 enum tym_i_scp_scroll_region_behaviour {
   TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE,

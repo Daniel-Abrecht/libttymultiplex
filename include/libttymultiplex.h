@@ -245,6 +245,11 @@ TYM_I_POSITION_SPECIALISATION(absolute, (
  * Type for callback function for #tym_register_resize_handler and #tym_unregister_resize_handler.
  * This callback is called if a panes computed position and/or size changes or has to be recomputed.
  * 
+ * It is allowed to call other tym_* functions from within this callback. Avoid anything
+ * that takes a long time though, the main loop can't process any requests before this
+ * callback returns. Do not resize any panes because of a pane resize event, you could
+ * end up with inconsistencies or infinite recursions.
+ * 
  * \param ptr The pointer passed to tym_register_resize_handler.
  * \param pane The pane which was resized or changed position.
  * \param input The position & size of the pane as specified, see tym_super_position and tym_super_position_rectangle for details.
@@ -255,23 +260,130 @@ typedef void(*tym_resize_handler_t)(void* ptr, int pane, const struct tym_super_
 /** Mapping from #tym_position_type to #tym_unit_type. */
 extern const enum tym_unit_type tym_positon_unit_map[];
 
+
+
+/**
+ * This function has to be called before any other function.
+ * It starts the internal main/event loop thread.
+ * If another function is called first, it will return -1 and set errno to EINVAL.
+ * All functions return -1 on error and set errno accordingly.
+ */
 TYM_EXPORT int tym_init(void);
+
+/**
+ * This function should be called after libttymultiplex is no longer needed.
+ * It is also automatically called before the program exits normally, but reying
+ * on that isn't recommended.
+ */
 TYM_EXPORT int tym_shutdown(void);
+
+/**
+ * Create a new pane. A pane is a region on the screen which contains a virtual
+ * terminal. libttymultiplex is an xterm-compatible terminal emulator. Some escape
+ * sequences aren't implemented yet though.
+ * 
+ * \param super_position The position & size of the pane. See tym_super_position
+ *   and tym_super_position_rectangle for how this coordinate system works.
+ * \returns The pane handle, or -1 on error
+ */
 TYM_EXPORT int tym_pane_create(const struct tym_super_position_rectangle*restrict super_position);
+
+/** Destroy a pane */
 TYM_EXPORT int tym_pane_destroy(int pane);
+
+/**
+ * Changes the pane size & position.
+ * 
+ * \param super_position The position & size of the pane. See tym_super_position
+ *   and tym_super_position_rectangle for how this coordinate system works. 
+ */
 TYM_EXPORT int tym_pane_resize(int pane, const struct tym_super_position_rectangle*restrict super_position);
+
+/**
+ * Clears the pane content and resets almost any state it had, such as cursor position and so on.
+ * It does not reset any flags previously set.
+ */
 TYM_EXPORT int tym_pane_reset(int pane);
+
+/**
+ * Registers a callback function that is called from the libttymultiplex main/event loop
+ * whenever the size and position of the pane has to be recalculated.
+ * 
+ * \see tym_resize_handler_t
+ * 
+ * \param ptr A pointer which will be passed to the callback function
+ * \param handler The callback function
+ */
 TYM_EXPORT int tym_register_resize_handler( int pane, void* ptr, tym_resize_handler_t handler );
+
+/**
+ * Removes every registered matching callback function pointer pair. If ptr is 0,
+ * any matching callback function is removed regardless of the ptr value used at registration time.
+ * 
+ * \param ptr The same pointer that was passed during registration or 0
+ * \param handler The callback function which shall be unregistred
+ */
 TYM_EXPORT int tym_unregister_resize_handler( int pane, void* ptr, tym_resize_handler_t handler );
+
+/**
+ * Set a flag on a pane. 
+ */
 TYM_EXPORT int tym_pane_set_flag(int pane, enum tym_flag flag, bool status);
+
+/**
+ * Get the current state of a flag.
+ * 
+ * \returns The flag state (0 or 1) or -1 in case of a error.
+ */
 TYM_EXPORT int tym_pane_get_flag(int pane, enum tym_flag flag);
+
+/**
+ * Set up the environment and file descriptors so any output will go to the selected pane.
+ * This is intended to be used after a fork. Forks sometimes aren't handled correctly
+ * at the moment though, there will be some changes in how this functions should be used in
+ * future versions.
+ */
 TYM_EXPORT int tym_pane_set_env(int pane);
+
+/**
+ * The pts (pseudo terminal (pty) slave) file descriptor.
+ * Anything written to this file descriptor is displayed on the pane, any input
+ * sent to the pane can be read from this file descriptor, and so on.
+ * 
+ * \returns The pts fd or -1 on error
+ **/
 TYM_EXPORT int tym_pane_get_slavefd(int pane);
 
+/**
+ * Send a key press to the pane. You can also use the #tym_special_key constants.
+ * Control characters are possible, but not recommended.
+ */
 TYM_EXPORT int tym_pane_send_key(int pane, int_least16_t key);
+
+/**
+ * Send multiple keys. Control characters are possible, but not recommended.
+ * 
+ * \see tym_pane_send_key
+ * 
+ * \param count The umber of keys to be sent
+ * \param keys The keys to be sent
+ */
 TYM_EXPORT int tym_pane_send_keys(int pane, size_t count, const int_least16_t keys[count]);
+
+/**
+ * Send a special key to the pane by key name. See #tym_special_key for possible key names.
+ * Omit the prefix TYM_KEY_. 
+ */
 TYM_EXPORT int tym_pane_send_special_key_by_name(int pane, const char* key_name);
+
+/**
+ * Send multiple characters to the pane. utf-8 is allowed. Control characters are possible, but not recommended.
+ */
 TYM_EXPORT int tym_pane_type(int pane, size_t count, const char keys[count]);
+
+/**
+ * Send a mouse button event at the specified position.
+ */
 TYM_EXPORT int tym_pane_send_mouse_event(int pane, enum tym_button button, const struct tym_super_position*restrict super_position);
 
 #ifdef __cplusplus

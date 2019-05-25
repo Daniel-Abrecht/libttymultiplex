@@ -9,6 +9,6 @@ int tym_i_csq_soft_reset(struct tym_i_pane_internal* pane){
     errno = ENOENT;
     return -1;
   }
-  int tym_i_csq_reset(struct tym_i_pane_internal*);
-  return tym_i_csq_reset(pane);
+  tym_i_pane_reset(pane);
+  return 0;
 }
