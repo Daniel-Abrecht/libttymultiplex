@@ -54,7 +54,7 @@ all: bin/libttymultiplex.so bin/libttymultiplex.a
 docs:
 	rm -rf doc
 	export PROJECT_NUMBER="$$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
-	doxygen
+	doxygen doxygen/Doxyfile
 
 build/%.o: src/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
