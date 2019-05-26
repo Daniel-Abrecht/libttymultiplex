@@ -12,3 +12,4 @@ If you want to create a new backend, see struct tym_i_backend in internal/backen
 for the libttymultiplex backend documentation.
 
 This library is still in early development and it's API will probably still change slightly.
+There may also still be some bugs.

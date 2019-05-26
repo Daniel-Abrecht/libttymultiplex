@@ -13,12 +13,12 @@ void tym_i_backend_register(struct tym_i_backend_entry* entry){
   bool bad = false;
   if(!entry->name || !*entry->name)
     return;
-  #define R(RET, ID, PARAMS) \
+  #define R(RET, ID, PARAMS, DOC) \
     if(!entry->backend.ID){ \
       fprintf(stderr,"Backend \"%s\" is missing required function \"%s\"\n",entry->name,#ID); \
       bad = true; \
     }
-  #define O(RET, ID, PARAMS) \
+  #define O(RET, ID, PARAMS, DOC) \
     if(!entry->backend.ID) \
       entry->backend.ID = tym_i_ ## ID ## _default_proc;
   TYM_I_BACKEND_CALLBACKS

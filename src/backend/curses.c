@@ -223,7 +223,7 @@ static int pane_set_cursor_position(struct tym_i_pane_internal* pane, struct tym
   return wmove(cscreen->window, position.y, position.x) == OK ? 0 : -1;
 }
 
-int pane_delete_characters(struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n){
+static int pane_delete_characters(struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n){
   struct curses_backend_pane* cbp = pane->backend;
   struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
   while(n--)
@@ -297,7 +297,7 @@ static int pane_set_character(
   return 0;
 }
 
-int resize(void){
+static int resize(void){
   int scw = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_HORIZONTAL);
   int sch = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_VERTICAL);
   resizeterm(sch, scw);
