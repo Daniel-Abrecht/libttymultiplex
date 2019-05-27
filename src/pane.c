@@ -261,11 +261,12 @@ error:
 
 /**
  * This function sets the cursor position & handles bound checks and scrolling if necessary.
- * This functions is split into 4 steps:
- *  1) Calculate absolute desired position in pane based on given coordinate (x,y) and what these relate to (pm_x,pm_y)
- *  2) What are the boundaries for our cursor movement?
- *  3) Do we need to scroll the scrolling region?
- *  4) Clamp the cursor coordinates to the boundary it's allowed in & finally set the cursor position.
+ * This functions is split into 4 steps: <br/>
+ *  1) Calculate absolute desired position in pane based on given coordinate (x,y) and what these relate to (pm_x,pm_y) <br/>
+ *  2) What are the boundaries for our cursor movement? <br/>
+ *  3) Do we need to scroll the scrolling region? <br/>
+ *  4) Clamp the cursor coordinates to the boundary it's allowed in & finally set the cursor position. <br/>
+ *  <br/>
  **/
 int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,

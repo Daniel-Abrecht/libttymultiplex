@@ -4,6 +4,8 @@
 #ifndef TYM_INTERNAL_PANE_H
 #define TYM_INTERNAL_PANE_H
 
+/** \file */
+
 #include <poll.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -18,10 +20,11 @@ struct tym_i_handler_ptr_pair {
   tym_resize_handler_t callback;
 };
 
+/** The selected screen. */
 enum tym_i_pane_screen {
-  TYM_I_SCREEN_DEFAULT,
-  TYM_I_SCREEN_ALTERNATE,
-  TYM_I_SCREEN_COUNT
+  TYM_I_SCREEN_DEFAULT /** 0 */,
+  TYM_I_SCREEN_ALTERNATE /** 1 */,
+  TYM_I_SCREEN_COUNT /** 2 */
 };
 
 enum {
@@ -133,25 +136,50 @@ struct tym_i_pane_screen_state {
   bool wraparound_mode_off : 1;
 };
 
+/** Internal variables of a pane */
 struct tym_i_pane_internal {
-  struct tym_i_pane_internal *previous, *next;
+  /** Doubly linked list, previous entry */
+  struct tym_i_pane_internal *previous;
+  /** Doubly linked list, next entry */
+  struct tym_i_pane_internal *next;
+  /**
+   * The unique pane id. Some number bigger than 1.
+   * 1 is reserved for the pane in focus, see #TYM_PANE_FOCUS.
+   * The pane in focus doesn't have the id 1 though, the id never changes
+   */
   int id;
-  int master, slave;
+  /** The pseudo terminal master (PTM) file descriptor */
+  int master;
+  /** The pseudo terminal slave (PTS) file descriptor */
+  int slave;
+  /** A flag indicating if fetting the focus on this pane is disallowed */
   bool nofocus;
+  /** A private variable reserved for usage by the backend */
   void* backend;
+  /** The current state of the escape sequence parser. */
   struct tym_i_sequence_state sequence;
+  /** The initial settings of the pseudo terminal */
   struct termios termios;
+  /** The user specified position of the pane */
   struct tym_super_position_rectangle super_position;
+  /** The computed position of the pane */
   struct tym_absolute_position_rectangle absolute_position;
+  /** The number of registred resize handlers */
   size_t resize_handler_count;
+  /** A list of registred resize handlers */
   struct tym_i_handler_ptr_pair* resize_handler_list;
-
+  /** The parser state of the current character */
   struct tym_i_character character;
+  /** The current screen */
   enum tym_i_pane_screen current_screen;
+  /** The position of the mouse during the last event. This is used to check wheter it changed for the next event. */
   struct tym_i_cell_position last_mouse_event_pos;
+  /** The mouse button state of the last event. This is used to check wheter it changed for the next event. */
   enum tym_button last_button;
+  /** The current mouse mode. Specifies what kind of mouse events are sent and how. */
   enum mouse_mode mouse_mode;
 
+  /** These are states which apply on a per-screen basis rather than a per-pane basis. */
   struct tym_i_pane_screen_state screen[TYM_I_SCREEN_COUNT];
 };
 

@@ -27,14 +27,14 @@ pthread_t tym_i_main_loop;
 pthread_mutexattr_t tym_i_lock_attr;
 pthread_mutex_t tym_i_lock; /* reentrant mutex */
 
-#define X(ID, VAL) \
+#define Y1(ID, VAL) \
   { \
     .key  = TYM_KEY_ ## ID, \
     .name = #ID, \
     .name_length = sizeof(#ID)-1, \
   },
-const struct tym_special_key_name tym_special_key_list[] = { TYM_I_SPECIAL_KEYS };
-#undef X
+const struct tym_special_key_name tym_special_key_list[] = { TYM_I_SPECIAL_KEYS(Y1) };
+#undef Y1
 const size_t tym_special_key_count = sizeof(tym_special_key_list) / sizeof(*tym_special_key_list);
 
 static FILE* tym_i_debugfd;

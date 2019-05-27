@@ -4,6 +4,8 @@
 #ifndef LIBTTYMULTIPLEX_H
 #define LIBTTYMULTIPLEX_H
 
+/** \file */
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -25,7 +27,7 @@
 extern "C" {
 #endif
 
-#define TYM_I_SPECIAL_KEYS \
+#define TYM_I_SPECIAL_KEYS(X) \
   X(ENTER    , '\n'  ) \
   X(HOME     , '\r'  ) \
   X(BACKSPACE, '\b'  ) \
@@ -46,9 +48,9 @@ extern "C" {
  * but can be used with tym_pane_send_key and tym_pane_send_keys.
  */
 enum tym_special_key {
-#define X(ID, VAL) TYM_KEY_ ## ID = VAL,
-TYM_I_SPECIAL_KEYS
-#undef X
+#define X1(ID, VAL) TYM_KEY_ ## ID = VAL,
+TYM_I_SPECIAL_KEYS(X1)
+#undef X1
 };
 
 /** Informations about supported special keys. */
@@ -99,9 +101,9 @@ enum tym_button {
 enum tym_position_type {
   /** The position type was never set */
   TYM_P_UNSET,
-#define X(PT, U, DOC) TYM_I_DOKUMENTATION DOC TYM_P_ ## PT,
-  TYM_I_POSITION_TYPE_LIST(X)
-#undef X
+#define X2(PT, U, DOC) TYM_I_DOKUMENTATION DOC TYM_P_ ## PT,
+  TYM_I_POSITION_TYPE_LIST(X2)
+#undef X2
   /** The number of position types. */
   TYM_P_COUNT
 };
@@ -110,34 +112,34 @@ enum tym_position_type {
 enum tym_unit_type {
   /** The unit type was never set */
   TYM_U_UNSET,
-#define X(U, T, N) TYM_U_ ## U,
-  TYM_I_UNIT_TYPE_LIST(X)
-#undef X
+#define X3(U, T, N) /** Use tym_unit::value::##N. */ TYM_U_ ## U,
+  TYM_I_UNIT_TYPE_LIST(X3)
+#undef X3
   /** The number of position types */
   TYM_U_COUNT
 };
 
 /** The axis of our space, one for each dimension */
 enum tym_axis {
-  TYM_AXIS_HORIZONTAL,
-  TYM_AXIS_VERTICAL,
-  TYM_AXIS_COUNT
+  TYM_AXIS_HORIZONTAL /** 0 */,
+  TYM_AXIS_VERTICAL /** 1 */,
+  TYM_AXIS_COUNT /** 2 */
 };
 
 /** Every direction, two for each #tym_axis */
 enum tym_direction {
-  TYM_LEFT,
-  TYM_RIGHT,
-  TYM_TOP,
-  TYM_BOTTOM,
-  TYM_DIRECTION_COUNT
+  TYM_LEFT /** 0 */,
+  TYM_RIGHT /** 1 */,
+  TYM_TOP /** 2 */,
+  TYM_BOTTOM /** 3 */,
+  TYM_DIRECTION_COUNT /** 4 */
 };
 
 /** The edges of the tym_*_position_rectangle types. */
 enum tym_rectangle_edge {
-  TYM_RECT_TOP_LEFT,
-  TYM_RECT_BOTTOM_RIGHT,
-  TYM_RECT_EDGE_COUNT
+  TYM_RECT_TOP_LEFT /** 1 */,
+  TYM_RECT_BOTTOM_RIGHT /** 2 */,
+  TYM_RECT_EDGE_COUNT /** 3 */
 };
 
 /** Flags for #tym_pane_set_flag */
@@ -157,10 +159,11 @@ enum tym_flag {
 struct tym_unit {
   /** The type specifies which value has to be used. */
   enum tym_unit_type type;
+  /** The value, one field for each type. */
   union {
-#define X(U, T, N) T N;
-  TYM_I_UNIT_TYPE_LIST(X)
-#undef X
+#define X4(U, T, N)  /** Field for unit #TYM_U_ ## U */ T N;
+  TYM_I_UNIT_TYPE_LIST(X4)
+#undef X4
   } value;
 };
 

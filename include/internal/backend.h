@@ -4,6 +4,8 @@
 #ifndef TYM_I_BACKEND_H
 #define TYM_I_BACKEND_H
 
+/** \file */
+
 #include <internal/utils.h>
 #include <libttymultiplex.h>
 #include <stdbool.h>
