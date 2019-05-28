@@ -262,11 +262,14 @@ error:
 /**
  * This function sets the cursor position & handles bound checks and scrolling if necessary.
  * This functions is split into 4 steps: <br/>
- *  1) Calculate absolute desired position in pane based on given coordinate (x,y) and what these relate to (pm_x,pm_y) <br/>
+ *  1) Calculate absolute desired position in the pane based on the given coordinates (x,y) and what these relate to (pm_x,pm_y) <br/>
  *  2) What are the boundaries for our cursor movement? <br/>
  *  3) Do we need to scroll the scrolling region? <br/>
  *  4) Clamp the cursor coordinates to the boundary it's allowed in & finally set the cursor position. <br/>
- *  <br/>
+ * 
+ * \param x The new x position
+ * \param y The new y position
+ * \param allow_cursor_on_right_edge If the cursor position advances due to an added character at the very right most, it won't wrap around yet. Currently, this state is stored as the cursor being one past the last character of the line, just outside the usual boundaries. It can't be placed there by escape sequences or similar means.
  **/
 int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,

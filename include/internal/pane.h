@@ -94,45 +94,82 @@ struct tym_i_termcolor {
   unsigned char index, red, green, blue;
 };
 
+/** Character formate attributes. Multiple are possible. */
 enum tym_i_character_attribute {
-  TYM_I_CA_DEFAULT   = 0,
-  TYM_I_CA_BOLD      = 1<<0,
-  TYM_I_CA_UNDERLINE = 1<<1,
-  TYM_I_CA_BLINK     = 1<<2,
-  TYM_I_CA_INVERSE   = 1<<3,
-  TYM_I_CA_INVISIBLE = 1<<4
+  TYM_I_CA_DEFAULT   = 0,    //!< The default, no sepcial formatting
+  TYM_I_CA_BOLD      = 1<<0, //!< Bold text
+  TYM_I_CA_UNDERLINE = 1<<1, //!< Underlined text
+  TYM_I_CA_BLINK     = 1<<2, //!< Blinking text
+  TYM_I_CA_INVERSE   = 1<<3, //!< Switch foreground and background color
+  TYM_I_CA_INVISIBLE = 1<<4  //!< The text isn't visible at all
 };
 
+/** The format of the current character */
 struct tym_i_character_format {
+  /** Character attribute */
   enum tym_i_character_attribute attribute;
+  /** The foreground color */
   struct tym_i_termcolor fgcolor;
+  /** The background color */
   struct tym_i_termcolor bgcolor;
 };
 
+/** A position specified in characters */
 struct tym_i_cell_position {
-  unsigned x, y;
+  /** The X position */
+  unsigned x;
+  /** The Y position */
+  unsigned y;
 };
 
+/** The character data of tym_i_character */
 union tym_i_character_data {
+  /** In case of a utf-8 character. If it is one can be checked using tym_i_character_is_utf8. */
   struct tym_i_utf8_character_state utf8;
+  /**
+   * The character code in case of a non-utf8 charset.
+   * It'll be converted to utf-8 before usage by considering tym_i_character::charset_g and tym_i_translation_table though.
+   */
   char byte;
 };
 
+/** Parser state of the current character. */
 struct tym_i_character {
+  /** The selected charset designation from charset_g. */
   enum charset_selection charset_selection;
+  /** If the character is not utf-8. The opposit isn't always true, use tym_i_character_is_utf8 for checking if it's a utf-8 character. */
   bool not_utf8;
+  /** The selected character sets. \see charset_selection */
   enum tym_i_charset_type charset_g[TYM_I_G_CHARSET_COUNT];
+  /** The actual character. */
   union tym_i_character_data data;
 };
 
+/**
+ * These are pane states which apply on a per-screen basis rather than a per-pane basis.
+ * \see tym_i_pane_internal::screen
+ * \see tym_i_pane_internal::current_screen
+ */
 struct tym_i_pane_screen_state {
-  struct tym_i_cell_position cursor, saved_cursor;
+  /** The current cursor position */
+  struct tym_i_cell_position cursor;
+  /** The last cursor sequence saved by an escape sequence, can be restored later. */
+  struct tym_i_cell_position saved_cursor;
+  /** The current formatting for the characters that will be written next. */
   struct tym_i_character_format character_format;
+  /** This doesn't actually do anything at the moment */
   enum tym_i_keypad_mode keypad_mode;
+  /** This affects the escape sequence which has to be sent for some keys. This is handled in pseudoterminal.h. */
   enum tym_i_cursor_key_mode cursor_key_mode;
-  unsigned scroll_region_top, scroll_region_bottom;
+  /** The top of the scrolling region. */
+  unsigned scroll_region_top;
+  /** The bottom of the scrolling region. */
+  unsigned scroll_region_bottom;
+  /** A flag indicating wheter the insert mode is active */
   bool insert_mode : 1;
+  /** A flag indicating wheter the origin mode is active. \see tym_i_pane_set_cursor_position */
   bool origin_mode : 1;
+  /** Indicates wheter at one character after the end of a line, after a character is input, the cursor should not be put on the next line before writing it. */
   bool wraparound_mode_off : 1;
 };
 
@@ -205,21 +242,24 @@ int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y,
 void tym_i_perror(const char*);
 int tym_i_pane_reset(struct tym_i_pane_internal* pane);
 
+/** How the coordinate change is affected by the scrolling region. */
 enum tym_i_scp_scroll_region_behaviour {
-  TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE,
-  TYM_I_SCP_SCROLLING_REGION_IRRELEVANT,
-  TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE,
+  TYM_I_SCP_SCROLLING_REGION_LOCKIN_IN_ORIGIN_MODE, //!< If origin mode is active, the cursor can't be placed outside the scrolling region.
+  TYM_I_SCP_SCROLLING_REGION_IRRELEVANT, //!< The scrolling region doesn't matter at all
+  TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, //!< The cursor can't go from inside to outside the scrolling region
 };
+/** Is scrolling possible */
 enum tym_i_scp_scrolling_mode {
-  TYM_I_SCP_SMM_NO_SCROLLING,
-  TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY,
-  TYM_I_SCP_SMM_SCROLL_BACKWARD_ONLY,
-  TYM_I_SCP_SMM_UNRESTRICTED_SCROLLING,
+  TYM_I_SCP_SMM_NO_SCROLLING, //!< Never scroll
+  TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, //!< It's only possible to scroll forwards (down/right)
+  TYM_I_SCP_SMM_SCROLL_BACKWARD_ONLY, //!< It's only possible to scroll backwards (up/left) 
+  TYM_I_SCP_SMM_UNRESTRICTED_SCROLLING, //!< Allow scrolling in any direction
 };
+/** What the specified position is relative to */
 enum tym_i_scp_position_mode {
-  TYM_I_SCP_PM_ABSOLUTE,
-  TYM_I_SCP_PM_RELATIVE,
-  TYM_I_SCP_PM_ORIGIN_RELATIVE,
+  TYM_I_SCP_PM_ABSOLUTE, //!< The cursor position is relative to the pane
+  TYM_I_SCP_PM_RELATIVE, //!< The cursor position is relative to the current cursor position
+  TYM_I_SCP_PM_ORIGIN_RELATIVE, //!< The cursor position is relative to the scrolling region if it is valid and origin mode is set. Otherwise, it's relative to the pane
 };
 int tym_i_pane_set_cursor_position(
   struct tym_i_pane_internal* pane,

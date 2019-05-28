@@ -353,6 +353,8 @@ TYM_EXPORT int tym_pane_set_env(int pane);
  * Anything written to this file descriptor is displayed on the pane, any input
  * sent to the pane can be read from this file descriptor, and so on.
  * 
+ * \todo Fix fork bahaviour and update API accordingly.
+ * 
  * \returns The pts fd or -1 on error
  **/
 TYM_EXPORT int tym_pane_get_slavefd(int pane);
