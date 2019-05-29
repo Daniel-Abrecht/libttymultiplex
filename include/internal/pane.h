@@ -32,36 +32,64 @@ enum {
   TYM_I_MAX_INT_COUNT = 12,
 };
 
+/** The state of the escape sequence parser */
 struct tym_i_sequence_state {
+  /** The number of characters in buffer, which may be part of an escape sequence */
   unsigned short length;
+  /** The offset into the escape sequence template for comparing the next character against */
   unsigned short index;
+  /**
+   * See specialmatch() in parser.c.
+   * This is for multi character elements of the escape sequence template, such as numbers, for example.
+   * Indicates that the last match was such an element.
+   */
   bool last_special_match_continue;
+  /** The buffer containing the sequence currently being parsed. */
   char buffer[TYM_I_MAX_SEQ_LEN];
+  /** The number of integer arguments of the escape sequence which have been parsed. */
   unsigned integer_count;
+  /** The integer arguments contained in the escape sequence. */
   int integer[TYM_I_MAX_INT_COUNT];
-  ssize_t seq_opt_min, seq_opt_max;
+  /** The escape sequence templates are sorted. This is the first sequence which could still match. */
+  ssize_t seq_opt_min;
+  /** The escape sequence templates are sorted. This is the last sequence which could still match. */
+  ssize_t seq_opt_max;
 };
 
 enum { TYM_I_G_CHARSET_COUNT=4 };
 
+/** This doesn't actually do anything at the moment */
 enum tym_i_keypad_mode {
   TYM_I_KEYPAD_MODE_NORMAL, // (numeric keypad mode)
   TYM_I_KEYPAD_MODE_APPLICATION,
 };
 
+/** This affects the escape sequence which has to be sent for some keys. This is handled in pseudoterminal.h. */
 enum tym_i_cursor_key_mode {
   TYM_I_CURSOR_KEY_MODE_NORMAL,
   TYM_I_CURSOR_KEY_MODE_APPLICATION,
 };
 
-enum mouse_mode {
-  MOUSE_MODE_OFF,
-  MOUSE_MODE_X10,
-  MOUSE_MODE_BUTTON,
-  MOUSE_MODE_NORMAL, // VT220
-  MOUSE_MODE_ANY
+/**
+ * The current mouse reporting mode.
+ * This determines the escape sequence to be sent after a mouse event, see tym_i_pts_send_mouse_event.
+ * If the input is read from a terminal, that terminals mouse support may vary too.
+ * If, for example, #TYM_I_MOUSE_MODE_NORMAL is selected, but the underlaying terminal
+ * only supports #TYM_I_MOUSE_MODE_X10, then a mouse button release event will never be sent,
+ * because it can never be received. Since an application can't expect any terminal it
+ * will be used on to support any specific mouse mode, this shouldn't cause any major problems, though.
+ * 
+ * \see tym_i_pts_send_mouse_event
+ */
+enum tym_i_mouse_mode {
+  TYM_I_MOUSE_MODE_OFF, //!< Mouse reporting is disabled
+  TYM_I_MOUSE_MODE_X10, //!< Only button presses
+  TYM_I_MOUSE_MODE_BUTTON, //!< Almost the same as TYM_I_MOUSE_MODE_NORMAL
+  TYM_I_MOUSE_MODE_NORMAL, //!< Mouse buttom presses and releases
+  TYM_I_MOUSE_MODE_ANY //!< Mouse buttom presses, releases & movement
 };
 
+/** Modes which can be set by the set_mode (SM) and reset_mode (RM) sequences. */
 enum tym_i_setmode {
   TYM_I_SM_KEYBOARD_ACTION,
   TYM_I_SM_INSERT,
@@ -69,6 +97,7 @@ enum tym_i_setmode {
   TYM_I_SM_AUTOMATIC_NEWLINE
 };
 
+/** Modes to be enabled/disabled by the DEC Private Mode Set (DECSET) and DEC Private Mode Reset (DECRST) escape sequences. */
 enum tym_i_decset_decres {
   TYM_I_DSDR_APPLICATION_CURSOR_KEYS = 1,
 /*  TYM_I_DSDR_DESIGNATE_USASCII_CHARACTER_SETS = 2,
@@ -214,7 +243,7 @@ struct tym_i_pane_internal {
   /** The mouse button state of the last event. This is used to check wheter it changed for the next event. */
   enum tym_button last_button;
   /** The current mouse mode. Specifies what kind of mouse events are sent and how. */
-  enum mouse_mode mouse_mode;
+  enum tym_i_mouse_mode mouse_mode;
 
   /** These are states which apply on a per-screen basis rather than a per-pane basis. */
   struct tym_i_pane_screen_state screen[TYM_I_SCREEN_COUNT];

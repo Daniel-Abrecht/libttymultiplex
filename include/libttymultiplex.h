@@ -345,6 +345,8 @@ TYM_EXPORT int tym_pane_get_flag(int pane, enum tym_flag flag);
  * This is intended to be used after a fork. Forks sometimes aren't handled correctly
  * at the moment though, there will be some changes in how this functions should be used in
  * future versions.
+ * 
+ * \todo Fix fork bahaviour and update API accordingly.
  */
 TYM_EXPORT int tym_pane_set_env(int pane);
 
@@ -352,8 +354,6 @@ TYM_EXPORT int tym_pane_set_env(int pane);
  * The pts (pseudo terminal (pty) slave) file descriptor.
  * Anything written to this file descriptor is displayed on the pane, any input
  * sent to the pane can be read from this file descriptor, and so on.
- * 
- * \todo Fix fork bahaviour and update API accordingly.
  * 
  * \returns The pts fd or -1 on error
  **/

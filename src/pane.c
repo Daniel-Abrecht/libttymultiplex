@@ -469,7 +469,7 @@ int tym_i_pane_reset(struct tym_i_pane_internal* pane){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
   unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
-  pane->mouse_mode = MOUSE_MODE_OFF;
+  pane->mouse_mode = TYM_I_MOUSE_MODE_OFF;
   pane->character.not_utf8 = false;
   tym_i_backend->pane_erase_area(pane, (struct tym_i_cell_position){.x=0,.y=0}, (struct tym_i_cell_position){.x=w,.y=h}, false, screen->character_format);
   tym_i_pane_set_cursor_position( pane,

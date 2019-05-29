@@ -11,6 +11,11 @@
 
 #define S(X) sizeof(X)-1, X
 
+/**
+ * Write some data to the pseudo terminal master (ptm), so it can be read by the pseudo terminal slave (pts).
+ * The pseudo terminal (pty) may modifythe these data though, see termios(3). Use one of the other
+ * tym_i_pts_* functions to deal with that.
+ */
 int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*restrict data){
   if(!pane){
     errno = EINVAL;
@@ -21,6 +26,9 @@ int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*res
   return ret == -1 ? -1 : 0;
 }
 
+/**
+ * \see tym_pane_send_key
+ */
 int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
   if(!pane){
     errno = EINVAL;
@@ -65,18 +73,32 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
   return -1;
 }
 
+/**
+ * \see tym_pane_send_keys
+ */
 int tym_i_pts_send_keys(struct tym_i_pane_internal* pane, size_t count, const int_least16_t keys[count]){
   for(size_t i=0; i<count; i++)
     tym_i_pts_send_key(pane, keys[i]);
   return 0;
 }
 
+/**
+ * \see tym_pane_type
+ */
 int tym_i_pts_type(struct tym_i_pane_internal* pane, size_t count, const char keys[count]){
   for(size_t i=0; i<count; i++)
     tym_i_pts_send_key(pane, keys[i]);
   return 0;
 }
 
+/**
+ * Send the escape sequence for a mouse event.
+ * 
+ * \see tym_pane_send_mouse_event
+ * 
+ * \todo Currently, only positions from 0 to 254 characters can be specified.
+ *       There are other encodings to circumvent this limitation, but those have yet to be implemented.
+ */
 int tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_button button, struct tym_i_cell_position pos){
   char buf[64] = {0};
   int len = 0;
@@ -85,24 +107,26 @@ int tym_i_pts_send_mouse_event(struct tym_i_pane_internal* pane, enum tym_button
     motion = false;
   pane->last_mouse_event_pos = pos;
   switch(pane->mouse_mode){
-    case MOUSE_MODE_X10:
+    case TYM_I_MOUSE_MODE_X10:
       if(button == TYM_BUTTON_RELEASED)
         break;
-    case MOUSE_MODE_NORMAL:
+    case TYM_I_MOUSE_MODE_NORMAL:
       if(pane->last_button == button)
         break;
-    case MOUSE_MODE_BUTTON:
+    case TYM_I_MOUSE_MODE_BUTTON:
       if(pane->last_button == button && button == TYM_BUTTON_RELEASED)
         break;
-    case MOUSE_MODE_ANY: {
-      if(pos.x>254 || pos.y>254)
-        break; // Can't encode coordinate in a byte each, overflow!!! (TODO: implement stuff like utf8 encoded positions)
+    case TYM_I_MOUSE_MODE_ANY: {
+      if(pos.x>254 || pos.y>254){ // Can't encode coordinate in a byte each, overflow!!!
+        errno = EINVAL;
+        return -1;
+      }
       unsigned char cb = 32;
       if(motion)
         cb += 32; // Motion indicator
       len = snprintf(buf, sizeof(buf), CSI "M%c%c%c", cb+button, (unsigned char)(32+pos.x+1), (unsigned char)(32+pos.y+1));
     } break;
-    case MOUSE_MODE_OFF: break;
+    case TYM_I_MOUSE_MODE_OFF: break;
   }
   pane->last_button = button;
   if(len)
