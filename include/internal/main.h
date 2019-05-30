@@ -29,7 +29,9 @@ enum tym_i_special_tym_i_poll_fds {
 enum tym_i_init_state {
   INIT_STATE_NOINIT, //!< The library is not initialised or already shut down.
   INIT_STATE_INITIALISED, //!< The library is initialised & running.
-  INIT_STATE_SHUTDOWN_IN_PROGRESS, //!< THe library is currently shutting down and doing cleanup stuff.
+  INIT_STATE_FREEZE_IN_PROGRESS, //!< The library is currently freezing (stopping the main thread).
+  INIT_STATE_FROZEN, //!< The library is currently inactive. In this state, fork can be safely called.
+  INIT_STATE_SHUTDOWN_IN_PROGRESS, //!< The library is currently shutting down and doing cleanup stuff.
   INIT_STATE_SHUTDOWN = INIT_STATE_NOINIT //!< The library is not initialised or already shut down
 };
 
@@ -37,6 +39,7 @@ enum tym_i_init_state {
 enum tym_i_poll_ctl_type {
   TYM_PC_ADD, //!< Add a file dexcriptor
   TYM_PC_REMOVE, //!< remove a file descriptor
+  TYM_PC_FREEZE, //!< exit main loop temporarely
 };
 
 /** A structure containing a command & parameters for the main loop */
@@ -82,6 +85,7 @@ void* tym_i_main(void* ptr);
 int tym_i_pollfd_add_sub(struct pollfd pfd);
 int tym_i_pollfd_add(int fd);
 int tym_i_pollfd_remove(int fd);
+int tym_i_request_freeze(void);
 
 #ifdef __GNUC__
 void tym_i_debug(const char* format, ...) __attribute__((format(printf, 1, 2)));

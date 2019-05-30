@@ -412,7 +412,7 @@ error:
 
 int tym_pane_set_env(int pane){
   pthread_mutex_lock(&tym_i_lock);
-  if(tym_i_binit != INIT_STATE_INITIALISED){
+  if(tym_i_binit != INIT_STATE_INITIALISED && tym_i_binit != INIT_STATE_FROZEN){
     errno = EINVAL;
     goto error;
   }

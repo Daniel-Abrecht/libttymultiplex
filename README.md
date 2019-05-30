@@ -11,5 +11,10 @@ using doxygen, run `make docs` to generate the documentation.
 If you want to create a new backend, see struct tym_i_backend in internal/backend.h
 for the libttymultiplex backend documentation.
 
+This library is thread safe. I wouldn't recommend using it with multiple threads
+though, because only one thread at a time can do anything in this library, so
+if you use it with more than one thread, it may end up being slower than just
+using one thread for everything would have been.
+
 This library is still in early development and it's API will probably still change slightly.
 There may also still be some bugs.

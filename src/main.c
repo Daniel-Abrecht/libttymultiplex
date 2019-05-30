@@ -101,6 +101,22 @@ int tym_i_pollfd_add(int fd){
   return 0;
 }
 
+/** Add the file descriptor of a pseudo terminal slave  from the ones watched by the main loop. */
+int tym_i_request_freeze(void){
+  enum tym_i_init_state init = tym_i_binit;
+  tym_i_binit = INIT_STATE_FREEZE_IN_PROGRESS;
+  struct tym_i_poll_ctl ctl = {
+    .action = TYM_PC_FREEZE
+  };
+  ssize_t ret = 0;
+  while((ret=write(tym_i_pollctl[1], &ctl, sizeof(ctl))) == -1 && errno == EINTR);
+  if(ret == -1){
+    tym_i_binit = init;
+    return -1;
+  }
+  return 0;
+}
+
 /** Remove the file descriptor from the ones watched by the main loop. */
 int tym_i_pollfd_remove(int fd){
   struct tym_i_poll_ctl ctl = {
@@ -151,6 +167,13 @@ void* tym_i_main(void* ptr){
               tym_i_pollfd_remove_sub(i);
               break;
             }
+        } break;
+        case TYM_PC_FREEZE: {
+          if(tym_i_binit == INIT_STATE_FREEZE_IN_PROGRESS){
+            tym_i_binit = INIT_STATE_FROZEN;
+            pthread_mutex_unlock(&tym_i_lock);
+            return 0;
+          }
         } break;
       }
     }else if(tym_i_poll_fds[SPF_POLLCTLFD].revents){
@@ -268,6 +291,7 @@ void* tym_i_main(void* ptr){
   while(tym_i_poll_fdn)
     tym_i_pollfd_remove_sub(0);
   tym_i_backend->cleanup();
+  close(tym_i_pollctl[1]);
   tym_i_binit = INIT_STATE_SHUTDOWN;
   pthread_mutex_unlock(&tym_i_lock);
   return 0;

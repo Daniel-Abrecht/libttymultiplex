@@ -24,9 +24,19 @@
 
 int tym_init(void){
   pthread_mutex_lock(&tym_i_lock);
-  if(tym_i_binit == INIT_STATE_SHUTDOWN_IN_PROGRESS){
+  if(tym_i_binit == INIT_STATE_INITIALISED){
+    pthread_mutex_unlock(&tym_i_lock);
+    return 0;
+  }
+  if(tym_i_binit == INIT_STATE_SHUTDOWN_IN_PROGRESS || tym_i_binit == INIT_STATE_FREEZE_IN_PROGRESS){
     errno = EAGAIN;
     goto error;
+  }
+  if(tym_i_binit == INIT_STATE_FROZEN){
+    pthread_create(&tym_i_main_loop, 0, tym_i_main, 0);
+    tym_i_binit = INIT_STATE_INITIALISED;
+    pthread_mutex_unlock(&tym_i_lock);
+    return 0;
   }
   if(tym_i_binit != INIT_STATE_SHUTDOWN){
     errno = EINVAL;
@@ -80,6 +90,17 @@ error:
 
 int tym_shutdown(void){
   pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit == INIT_STATE_SHUTDOWN){
+    pthread_mutex_unlock(&tym_i_lock);
+    return 0;
+  }
+  if(tym_i_binit == INIT_STATE_SHUTDOWN_IN_PROGRESS || tym_i_binit == INIT_STATE_FREEZE_IN_PROGRESS){
+    errno = EAGAIN;
+    goto error;
+  }
+  if(tym_i_binit == INIT_STATE_FROZEN)
+    if(tym_init() == -1)
+      goto error;
   if(tym_i_binit != INIT_STATE_INITIALISED){
     errno = EINVAL;
     goto error;
@@ -91,6 +112,29 @@ int tym_shutdown(void){
     }
   close(tym_i_pollctl[1]);
   tym_i_binit = INIT_STATE_SHUTDOWN_IN_PROGRESS;
+  pthread_mutex_unlock(&tym_i_lock);
+  pthread_join(tym_i_main_loop, 0);
+  return 0;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_freeze(void){
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit == INIT_STATE_FREEZE_IN_PROGRESS){
+    errno = EAGAIN;
+    goto error;
+  }
+  if(tym_i_binit == INIT_STATE_FROZEN){
+    pthread_mutex_unlock(&tym_i_lock);
+    return 0;
+  }
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  tym_i_request_freeze();
   pthread_mutex_unlock(&tym_i_lock);
   pthread_join(tym_i_main_loop, 0);
   return 0;

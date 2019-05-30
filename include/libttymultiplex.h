@@ -274,6 +274,9 @@ extern const enum tym_unit_type tym_positon_unit_map[];
  * This function also initialises the backend. It'll take the first backend which
  * reports successfull initialisation. The usage of a specific backend can be enforced
  * using the TM_BACKEND environment variable.
+ * 
+ * This function may also return -1 and set errno to EAGAIN if #tym_shutdown
+ * or #tym_freeze is currently in progress.
  */
 TYM_EXPORT int tym_init(void);
 
@@ -281,8 +284,38 @@ TYM_EXPORT int tym_init(void);
  * This function should be called after libttymultiplex is no longer needed.
  * It is also automatically called before the program exits normally, but reying
  * on that isn't recommended.
+ * 
+ * This function may also return -1 and set errno to EAGAIN if #tym_shutdown
+ * or #tym_freeze is currently in progress.
  */
 TYM_EXPORT int tym_shutdown(void);
+
+/**
+ * Exit the main loop, but keep all states.
+ * After this operation, it is safe to call fork.
+ * In this state, only #tym_init, #tym_shutdown and #tym_pane_set_env are should
+ * be used, almost everything else will return -1 and set errno to EINVAL, unless
+ * the documentation of the function ays otherwise.
+ * <br/><br/>
+ * Don't wait too long to call #tym_init or #tym_shutdown after this function,
+ * when the pseudo terminal masters aren't read, anything trying to write
+ * to the pseudo terminal slaves may end up waiting.
+ * <br/><br/>
+ * Don't call #tym_shutdown if another program still has a running instance of this
+ * library. There currently is no function to clean up all resources without
+ * resetting terminal states and such stuff yet.
+ * <br/><br/>
+ * Make sure no other threads are trying to access any functions of this library
+ * while you attemp a fork, it would leave the internal mutex lock in an undefined
+ * state. In theory, the internal mutex lock should be reset to prevent any
+ * undefined behaviour, which would introduce even more restrictions for the
+ * usage of this function, but this is currently not done because it's unlikely
+ * to cause any actual problems.
+
+ * This function may also return -1 and set errno to EAGAIN if #tym_shutdown
+ * or #tym_freeze is currently in progress.
+ */
+TYM_EXPORT int tym_freeze(void);
 
 /**
  * Create a new pane. A pane is a region on the screen which contains a virtual
@@ -346,11 +379,8 @@ TYM_EXPORT int tym_pane_get_flag(int pane, enum tym_flag flag);
 
 /**
  * Set up the environment and file descriptors so any output will go to the selected pane.
- * This is intended to be used after a fork. Forks sometimes aren't handled correctly
- * at the moment though, there will be some changes in how this functions should be used in
- * future versions.
- * 
- * \todo Fix fork bahaviour and update API accordingly.
+ * This is intended to be used after a fork. If you do a fork, make sure to
+ * freeze libttymultiplex first using the tym_freeze function.
  */
 TYM_EXPORT int tym_pane_set_env(int pane);
 
