@@ -11,10 +11,12 @@
 #include <sys/signalfd.h>
 #include <internal/list.h>
 #include <internal/main.h>
-#include <internal/pane.h>
+#include <internal/parser.h>
 #include <internal/backend.h>
 #include <internal/pseudoterminal.h>
 #include <libttymultiplex.h>
+
+/** \file */
 
 enum tym_i_init_state tym_i_binit = INIT_STATE_NOINIT;
 size_t tym_i_poll_fdn;
@@ -39,6 +41,7 @@ const size_t tym_special_key_count = sizeof(tym_special_key_list) / sizeof(*tym_
 
 static FILE* tym_i_debugfd;
 
+/** Open the debug file descriptor and initialise mutex attributes. This is done even before main. */
 static void init(void) __attribute__((constructor,used));
 static void init(void){
   {
@@ -54,20 +57,29 @@ static void init(void){
   }
   pthread_mutexattr_init(&tym_i_lock_attr);
   pthread_mutexattr_settype(&tym_i_lock_attr, PTHREAD_MUTEX_RECURSIVE);
-  pthread_mutexattr_setpshared(&tym_i_lock_attr, PTHREAD_PROCESS_SHARED);
   pthread_mutex_init(&tym_i_lock, &tym_i_lock_attr);
 }
 
+/** This is automatically called before the program exits. This is to make sure everything always gets properly deinitialised. */
 static void shutdown(void) __attribute__((destructor,used));
 static void shutdown(void){
   tym_shutdown();
 }
 
+/**
+ * Add the poll file descriptor. This should only be used within the main thread or before it is started.
+ * In all other cases, use tym_i_pollfd_add, which will delegate this task to the main loop.
+ */
 int tym_i_pollfd_add_sub(struct pollfd pfd){
   return tym_i_list_add(sizeof(*tym_i_poll_fds), &tym_i_poll_fdn, (void**)&tym_i_poll_fds, &pfd);
 }
 
-int tym_i_pollfd_remove_sub(size_t entry){
+
+/**
+ * Removes a poll file descriptor. Only to be used in the main thread.
+ * In all other cases, use tym_i_pollfd_remove, which will delegate this task to the main loop.
+ */
+static int tym_i_pollfd_remove_sub(size_t entry){
   if(entry >= tym_i_poll_fdn){
     errno = EINVAL;
     return -1;
@@ -76,6 +88,7 @@ int tym_i_pollfd_remove_sub(size_t entry){
   return tym_i_list_remove(sizeof(*tym_i_poll_fds), &tym_i_poll_fdn, (void**)&tym_i_poll_fds, entry);
 }
 
+/** Add the file descriptor of a pseudo terminal slave  from the ones watched by the main loop. */
 int tym_i_pollfd_add(int fd){
   struct tym_i_poll_ctl ctl = {
     .action = TYM_PC_ADD,
@@ -88,6 +101,7 @@ int tym_i_pollfd_add(int fd){
   return 0;
 }
 
+/** Remove the file descriptor from the ones watched by the main loop. */
 int tym_i_pollfd_remove(int fd){
   struct tym_i_poll_ctl ctl = {
     .action = TYM_PC_REMOVE,
@@ -100,6 +114,7 @@ int tym_i_pollfd_remove(int fd){
   return 0;
 }
 
+/** The main loop */
 void* tym_i_main(void* ptr){
   (void)ptr;
   while(true){
@@ -261,10 +276,19 @@ error:
   abort();
 }
 
+/**
+ * Similar to perror, but prints output to tym_i_debugfd.
+ * 
+ * \see tym_i_debug
+ */
 void tym_i_perror(const char* x){
   tym_i_debug("%s: %d %s\n", x, errno, strerror(errno));
 }
 
+/**
+ * Output debug messages to the debug file descriptor.
+ * The debug file descriptor can be set using the TM_DEBUGFD environment variable.
+ */
 void tym_i_debug(const char* format, ...){
   va_list args;
   va_start(args, format);

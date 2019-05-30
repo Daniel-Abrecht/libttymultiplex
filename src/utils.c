@@ -5,6 +5,8 @@
 #include <string.h>
 #include <internal/utils.h>
 
+/** \file */
+
 void* tym_i_copy(size_t s, void* init){
   void* ret = calloc(1, s);
   if(!ret) return 0;

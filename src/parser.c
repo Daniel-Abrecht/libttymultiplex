@@ -12,6 +12,8 @@
 #include <internal/backend.h>
 #include <internal/parser.h>
 
+/** \file */
+
 /* VT 52
   CSQ( "^=", enter_alternate_keypad_mode ) \
   CSQ( "^>", exit_alternate_keypad_mode ) \
@@ -31,6 +33,12 @@
   CSQ( ESC "X",  ) \
 */
 
+/**
+ * This is a list of all escape sequences and the corresponding callback function.
+ * There is a limitation though: don't specify NUM and an actuall number in different
+ * escape sequences with the same start, the parser isn't designed to handle that.
+ * Same for SNUM, TEXT and similar macros.
+ */
 #define CSQS \
   CSQ( RIS, reset ) \
   CSQ( ESC "#3", double_height_line_top_half ) \
@@ -74,6 +82,8 @@
   CSQ( CSI NUM "e", vertical_position_relative ) \
   CSQ( CSI "a", character_position_relative /* VPR aka. character position forward */ ) \
   CSQ( CSI NUM "a", character_position_relative ) \
+  CSQ( CSI "g", tab_clear /* TBC */ ) \
+  CSQ( CSI NUM "g", tab_clear ) \
   CSQ( CSI "k", vertical_position_backwards /* VPB */ ) \
   CSQ( CSI NUM "k", vertical_position_backwards ) \
   CSQ( CSI "@", insert_character /* ICH */ ) \
@@ -137,19 +147,24 @@
   CSQS
 #undef CSQ
 
-struct tym_i_command_sequence tym_i_command_sequence_map[] = {
 #define CSQ(A,B) { \
     .sequence=(A), \
     .length=sizeof(A)-1, \
     .callback_name=(#B), \
     .callback=tym_i_csq_ ## B \
   },
+/**
+ * This is an array of all escape sequences. This will be sorted using the 
+ * using the command_sequence_comparator in the init function in this file.
+ */
+static struct tym_i_command_sequence tym_i_command_sequence_map[] = {
 CSQS
-#undef CSQ
 };
-const size_t tym_i_command_sequence_map_count = sizeof(tym_i_command_sequence_map)/sizeof(*tym_i_command_sequence_map);
+#undef CSQ
+static const size_t tym_i_command_sequence_map_count = sizeof(tym_i_command_sequence_map)/sizeof(*tym_i_command_sequence_map);
 
-int command_sequence_comparator_ch(char ca, char cb){
+/** A comperator for characters in the escape sequence template. */
+static int command_sequence_comparator_ch(char ca, char cb){
   if(ca == cb)
     return 0;
   if((ca < ' ') == (cb < ' '))
@@ -157,7 +172,8 @@ int command_sequence_comparator_ch(char ca, char cb){
   return ca < ' ' ? 1 : -1;
 }
 
-int command_sequence_comparator_str(const char*restrict ia, const char*restrict ib){
+/** A comperator for escape sequences. */
+static int command_sequence_comparator_str(const char*restrict ia, const char*restrict ib){
   for( ; *ia && *ib; ia++, ib++ ){
     int ret = command_sequence_comparator_ch(*ia, *ib);
     if(ret)
@@ -168,7 +184,8 @@ int command_sequence_comparator_str(const char*restrict ia, const char*restrict 
   return 0;
 }
 
-int command_sequence_comparator(const void*restrict pa, const void*restrict pb){
+/** same as command_sequence_comparator_str, wrapper for qsort. */
+static int command_sequence_comparator(const void*restrict pa, const void*restrict pb){
   const struct tym_i_command_sequence* a = pa;
   const struct tym_i_command_sequence* b = pb;
   return command_sequence_comparator_str(a->sequence, b->sequence);
@@ -195,17 +212,19 @@ enum specialmatch_result {
   SM_MATCH_CONTINUE
 };
 
+/** Handle special constants in the escape sequence template which could stand for multiple different characters. */
 static enum specialmatch_result specialmatch(unsigned char a, unsigned char b){
   switch(a){
-    case '\1': return SM_MATCH_SINGLE;
-    case '\2': return (b >= '0' && b <= '9') || b == ';' ? SM_MATCH_CONTINUE : SM_NO_MATCH;
-    case '\3': return (b >= '0' && b <= '9') ? SM_MATCH_CONTINUE : SM_NO_MATCH;
-    case '\4': return b >= ' ' ? SM_MATCH_CONTINUE : SM_NO_MATCH;
+    case '\1' /* C */: return SM_MATCH_SINGLE;
+    case '\2' /* SNUM */: return (b >= '0' && b <= '9') || b == ';' ? SM_MATCH_CONTINUE : SM_NO_MATCH;
+    case '\3' /* NUM  */: return (b >= '0' && b <= '9') ? SM_MATCH_CONTINUE : SM_NO_MATCH;
+    case '\4' /* TEXT */: return b >= ' ' ? SM_MATCH_CONTINUE : SM_NO_MATCH;
     default: return SM_NO_MATCH;
   }
 }
 
-void reset_sequence(struct tym_i_sequence_state* sequence){
+/** Reset the parser state for the current sequence */
+static void reset_sequence(struct tym_i_sequence_state* sequence){
   sequence->last_special_match_continue = false;
   sequence->seq_opt_min = 0;
   sequence->seq_opt_max = -1;
@@ -215,7 +234,8 @@ void reset_sequence(struct tym_i_sequence_state* sequence){
   memset(sequence->integer, 0, sizeof(int) * TYM_I_MAX_INT_COUNT);
 }
 
-bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
+/** Check if a character is a control character and interpret it. */
+static bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   unsigned y = screen->cursor.y;
   unsigned x = screen->cursor.x;
@@ -245,6 +265,7 @@ bool control_character(struct tym_i_pane_internal* pane, unsigned char c){
   return true;
 }
 
+/** A character for representing invalid characters */
 static const struct tym_i_character UTF8_INVALID_SYMBOL = {
   .data = {
     .utf8 = {
@@ -254,7 +275,8 @@ static const struct tym_i_character UTF8_INVALID_SYMBOL = {
   }
 };
 
-void print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
+/** Print a character after converting it to utf-8 */
+static void print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
   if(tym_i_character_is_utf8(character) && !character.data.utf8.count)
     return;
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
@@ -279,7 +301,7 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
       sequence = (char*)UTF8_INVALID_SYMBOL.data.utf8.data;
     }else{
       uint8_t charset = character.charset_g[g];
-      if(charset >= TYM_I_CHARSET_GENERIC_COUNT){
+      if(charset >= TYM_I_CHARSET_COUNT){
         sequence = (char*)UTF8_INVALID_SYMBOL.data.utf8.data;
       }else{
         sequence = (char*)tym_i_translation_table[charset].table[index-' '];
@@ -301,7 +323,8 @@ void print_character(struct tym_i_pane_internal* pane, const struct tym_i_charac
   );
 }
 
-bool print_character_update(struct tym_i_pane_internal* pane, char c){
+/** Add a byte to a utf-8 character buffer and print complete ones. */
+static bool print_character_update(struct tym_i_pane_internal* pane, char c){
   if(tym_i_character_is_utf8(pane->character)){
     enum tym_i_utf8_character_state_push_result result = tym_i_utf8_character_state_push(&pane->character.data.utf8, c);
     if(result & TYM_I_UCS_INVALID_ABORT_FLAG){
@@ -319,6 +342,7 @@ bool print_character_update(struct tym_i_pane_internal* pane, char c){
   return true;
 }
 
+/** Write the sequences and parameters to the debug output */
 void tym_i_debug_sequence_params(const struct tym_i_command_sequence* command, const struct tym_i_sequence_state* state){
   tym_i_debug("%s", command->callback_name);
   if(state->integer_count){
@@ -331,6 +355,13 @@ void tym_i_debug_sequence_params(const struct tym_i_command_sequence* command, c
   }
 }
 
+/**
+ * This is the parser/interpreter. The sequences are sorted, so this parser just checks
+ * if a character is larger or smaller than the corresponding one of the first/past possible
+ * sequence, and adjusts those boundaries until only one is left and matches.
+ * If no sequence matches, the first character is sent directly and the remaining ones
+ * are parsed using this function again.
+ */
 void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
 //  tym_i_debug("tym_i_pane_parse %.2X\n", c);
   if(tym_i_character_is_utf8(pane->character))
@@ -344,6 +375,14 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
   if(!pane->sequence.length){
     pane->sequence.seq_opt_min = 0;
     pane->sequence.seq_opt_max = tym_i_command_sequence_map_count-1;
+    
+    // Optional optimisation: The fist character is currently always \x1B, checking every single
+    // entry in that case would be unnecessary and really inefficent. Let's check that right away
+    // in a way that won't break if that changes some day.
+    if( command_sequence_comparator_ch(tym_i_command_sequence_map[0].sequence[index], c) > 0
+     || command_sequence_comparator_ch(tym_i_command_sequence_map[tym_i_command_sequence_map_count-1].sequence[index], c) < 0
+    ) pane->sequence.seq_opt_max = -1;
+    // end optimisation
   }
   ssize_t min = pane->sequence.seq_opt_min;
   ssize_t max = pane->sequence.seq_opt_max;

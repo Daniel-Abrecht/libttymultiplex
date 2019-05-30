@@ -28,7 +28,9 @@ enum tym_i_pane_screen {
 };
 
 enum {
+  /** The longest escape sequence libttymultiplex allows for */
   TYM_I_MAX_SEQ_LEN = 256,
+  /** How many integers are allowed in an escape sequence. */
   TYM_I_MAX_INT_COUNT = 12,
 };
 
@@ -249,8 +251,13 @@ struct tym_i_pane_internal {
   struct tym_i_pane_screen_state screen[TYM_I_SCREEN_COUNT];
 };
 
-extern struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
+/** The first pane of the doubly linked list of panes */
+extern struct tym_i_pane_internal *tym_i_pane_list_start;
+/** The last pane of the doubly linked list of panes */
+extern struct tym_i_pane_internal *tym_i_pane_list_end;
+/** The pane currently in focus. May be 0. */
 extern struct tym_i_pane_internal *tym_i_focus_pane;
+/** This is the default format. It's all zero. It has no special formatting, uses the terminals default colors, and so on. */
 extern const struct tym_i_character_format default_character_format;
 
 bool tym_i_character_is_utf8(struct tym_i_character character);
@@ -260,7 +267,6 @@ int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct
 int tym_i_pane_resize_handler_remove(struct tym_i_pane_internal* pane, size_t entry);
 void tym_i_pane_add(struct tym_i_pane_internal* pane);
 struct tym_i_pane_internal* tym_i_pane_get(int pane);
-void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c);
 void tym_i_pane_remove(struct tym_i_pane_internal* pane);
 int tym_i_pane_focus(struct tym_i_pane_internal* pane);
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane);

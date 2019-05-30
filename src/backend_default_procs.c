@@ -5,17 +5,33 @@
 #include <internal/pane.h>
 #include <internal/main.h>
 
+/**
+ * \file
+ * 
+ * Here are default implementations for all optional backend methods.
+ */
+
+/**
+ * This is a no-op. If a backend doesn't implement the refresh method,
+ * it always draws/updates every immediately.
+ */
 int tym_i_pane_refresh_default_proc(struct tym_i_pane_internal* pane){
   (void)pane;
   return 0;
 }
 
+/**
+ * This is a no-op. A backend may check the cursor state itself every time it displays ist, or just ignore it altogether.
+ */
 int tym_i_pane_set_cursor_mode_default_proc(struct tym_i_pane_internal* pane, enum tym_i_cursor_mode cursor_mode){
   (void)pane;
   (void)cursor_mode;
   return 0;
 }
 
+/**
+ * This is a no-op. It always returns a failure.
+ */
 int tym_i_pane_change_screen_default_proc(struct tym_i_pane_internal* pane){
   (void)pane;
   return -1;

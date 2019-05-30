@@ -5,6 +5,8 @@
 #include <string.h>
 #include <internal/utf8.h>
 
+/** \file */
+
 static int utf8_length(uint8_t b){
   if( (b & 0x80) == 0 )
     return 1;

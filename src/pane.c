@@ -19,10 +19,13 @@
 #include <internal/backend.h>
 #include <libttymultiplex.h>
 
+/** \file */
+
 struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
 struct tym_i_pane_internal *tym_i_focus_pane;
 const struct tym_i_character_format default_character_format;
 
+/** Checks if character is specified using a utf-8 sequence or using enother charset. */
 bool tym_i_character_is_utf8(struct tym_i_character character){
   uint8_t gl = character.charset_selection;
   uint8_t gr = character.charset_selection >> 8;
@@ -35,6 +38,7 @@ bool tym_i_character_is_utf8(struct tym_i_character character){
   return true;
 }
 
+/** Recalculate the position and size of the pane and call the reseize handlers. */
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
   tym_i_calc_rectangle_absolut_position(&pane->absolute_position, &pane->super_position);
   for(size_t i=0; i<pane->resize_handler_count; i++){
@@ -53,14 +57,21 @@ void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
     tym_i_perror("ioctl TIOCSWINSZ failed");
 }
 
+/** Add a reseize handler for a pane */
 int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_handler_ptr_pair* cp){
   return tym_i_list_add(sizeof(*pane->resize_handler_list), &pane->resize_handler_count, (void**)&pane->resize_handler_list, cp);
 }
 
+/** Remove a reseize handler for a pane */
 int tym_i_pane_resize_handler_remove(struct tym_i_pane_internal* pane, size_t entry){
   return tym_i_list_remove(sizeof(*pane->resize_handler_list), &pane->resize_handler_count, (void**)&pane->resize_handler_list, entry);
 }
 
+/**
+ * Add a new pane to the list of all panes
+ * 
+ * \see tym_pane_create
+ */
 void tym_i_pane_add(struct tym_i_pane_internal* pane){
   int id = 2;
   pane->previous = tym_i_pane_list_start;
@@ -75,6 +86,7 @@ void tym_i_pane_add(struct tym_i_pane_internal* pane){
   tym_i_pane_list_end = pane;
 }
 
+/** Get a pane by its id */
 struct tym_i_pane_internal* tym_i_pane_get(int pane){
   if(pane == TYM_PANE_FOCUS)
     return tym_i_focus_pane;
@@ -84,6 +96,7 @@ struct tym_i_pane_internal* tym_i_pane_get(int pane){
   return 0;
 }
 
+/** Set the focus on a pane. THis will set tym_i_focus_pane. */
 int tym_i_pane_focus(struct tym_i_pane_internal* pane){
   if(pane){
     if(pane->nofocus){
@@ -101,6 +114,7 @@ int tym_i_pane_focus(struct tym_i_pane_internal* pane){
   return 0;
 }
 
+/** Update the visible cursor position. This is only done for the pane in focus, the other panes don't have a vidible cursor. */
 void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane){
   if(pane != tym_i_focus_pane || !pane)
     return;
@@ -108,6 +122,7 @@ void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane){
   tym_i_backend->pane_set_cursor_position(pane, screen->cursor);
 }
 
+/** Update the size & position of all panes. Usually done after the terminal size changes. */
 void tym_i_pane_update_size_all(void){
   struct winsize size;
   if(ioctl(tym_i_tty, TIOCGWINSZ, &size) == -1){
@@ -121,6 +136,11 @@ void tym_i_pane_update_size_all(void){
     tym_i_pane_update_size(it);
 }
 
+/**
+ * Remove a pane from the list of all panes
+ * 
+ * \see tym_pane_destroy
+ */
 void tym_i_pane_remove(struct tym_i_pane_internal* pane){
   if(tym_i_focus_pane == pane)
     tym_i_pane_focus(0);
@@ -432,6 +452,7 @@ error:
   return -1;
 }
 
+/** Scroll/Move a region of a pane and fill clear new cells. */
 int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned top, unsigned bottom, int n){
   unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(bottom > h)
@@ -443,11 +464,13 @@ int tym_i_scroll_def_scrolling_region(struct tym_i_pane_internal* pane, unsigned
   }
 }
 
+/** Scroll the current panes scrolling region. */
 int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n){
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   return tym_i_scroll_def_scrolling_region(pane, screen->scroll_region_top, screen->scroll_region_bottom, n);
 }
 
+/** Insert or delete some lines below a certain line. */
 int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y, int n){
   unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(y >= h)
@@ -455,6 +478,7 @@ int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y,
   return tym_i_scroll_def_scrolling_region(pane, y, h, n);
 }
 
+/** Try to swith to another screen */
 int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_screen screen){
   enum tym_i_pane_screen old = pane->current_screen;
   pane->current_screen = screen;
@@ -464,6 +488,7 @@ int tym_i_pane_set_screen(struct tym_i_pane_internal* pane, enum tym_i_pane_scre
   return res;
 }
 
+/** \see tym_pane_reset */
 int tym_i_pane_reset(struct tym_i_pane_internal* pane){
   memset(pane->screen, 0, sizeof(pane->screen));
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];

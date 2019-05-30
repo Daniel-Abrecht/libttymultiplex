@@ -270,6 +270,10 @@ extern const enum tym_unit_type tym_positon_unit_map[];
  * It starts the internal main/event loop thread.
  * If another function is called first, it will return -1 and set errno to EINVAL.
  * All functions return -1 on error and set errno accordingly.
+ * 
+ * This function also initialises the backend. It'll take the first backend which
+ * reports successfull initialisation. The usage of a specific backend can be enforced
+ * using the TM_BACKEND environment variable.
  */
 TYM_EXPORT int tym_init(void);
 

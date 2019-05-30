@@ -18,7 +18,7 @@ enum tym_i_charset_type {
   TYM_I_CHARSET_SPANISH,
   TYM_I_CHARSET_SWEDISH,
   TYM_I_CHARSET_SWISS,
-  TYM_I_CHARSET_GENERIC_COUNT, /* ^^^ These ones have a generic translation table */
+  TYM_I_CHARSET_COUNT,
   TYM_I_CHARSET_DEFAULT = 0,
 };
 
@@ -45,6 +45,6 @@ struct translation_table {
   char table[TYM_I_TRANSLATION_TABLE_SIZE][TYM_I_TRANSLATION_TABLE_LARGEST_UTF8_CHARACTER_SEQUENCE];
 };
 
-extern const struct translation_table tym_i_translation_table[TYM_I_CHARSET_GENERIC_COUNT];
+extern const struct translation_table tym_i_translation_table[TYM_I_CHARSET_COUNT];
 
 #endif

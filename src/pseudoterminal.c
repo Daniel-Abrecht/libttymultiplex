@@ -9,6 +9,8 @@
 #include <internal/pseudoterminal.h>
 #include <libttymultiplex.h>
 
+/** \file */
+
 #define S(X) sizeof(X)-1, X
 
 /**

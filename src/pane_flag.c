@@ -6,6 +6,7 @@
 #include <internal/pane.h>
 #include <libttymultiplex.h>
 
+/** \file */
 
 int tym_pane_set_flag(int pane, enum tym_flag flag, bool state){
   int ret = 0;

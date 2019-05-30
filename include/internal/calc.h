@@ -4,6 +4,8 @@
 #ifndef TYM_INTERNAL_CALC_H
 #define TYM_INTERNAL_CALC_H
 
+/** \file */
+
 #include <libttymultiplex.h>
 
 void tym_i_calc_init_absolute_position(struct tym_absolute_position* position);

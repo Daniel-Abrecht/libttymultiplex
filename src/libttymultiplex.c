@@ -20,6 +20,8 @@
 #include <internal/backend.h>
 #include <libttymultiplex.h>
 
+/** \file */
+
 int tym_init(void){
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit == INIT_STATE_SHUTDOWN_IN_PROGRESS){

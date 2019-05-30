@@ -6,9 +6,15 @@
 #include <stdio.h>
 #include <string.h>
 
+/** \file */
+
+/** A linked list of all backends */
 static const struct tym_i_backend_entry* tym_i_backend_list;
+
+/** The currently selected backend. */
 const struct tym_i_backend* tym_i_backend;
 
+/** Validates & registes a backend in tym_i_backend_list */
 void tym_i_backend_register(struct tym_i_backend_entry* entry){
   bool bad = false;
   if(!entry->name || !*entry->name)
@@ -32,6 +38,11 @@ void tym_i_backend_register(struct tym_i_backend_entry* entry){
   tym_i_backend_list = entry;
 }
 
+/**
+ * Choose and Initialise a backend. The backend is initialised in tym_init.
+ * 
+ * \param backend The name of the backend. If this is 0, every backend is tried until one works.
+ */
 int tym_i_backend_init(const char* backend){
   if(backend){
     for(const struct tym_i_backend_entry* it=tym_i_backend_list; it; it=it->next){

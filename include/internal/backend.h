@@ -10,10 +10,11 @@
 #include <libttymultiplex.h>
 #include <stdbool.h>
 
+/** The cursor mode */
 enum tym_i_cursor_mode {
-  TYM_I_CURSOR_BLOCK,
-  TYM_I_CURSOR_UNDERLINE,
-  TYM_I_CURSOR_NONE,
+  TYM_I_CURSOR_BLOCK, //!< the cursor is a block.
+  TYM_I_CURSOR_UNDERLINE, //!< The cursor is a line
+  TYM_I_CURSOR_NONE, //!< The cursor is invisible
 };
 
 struct tym_i_pane_internal;
@@ -52,7 +53,7 @@ struct tym_i_character_format;
   ), (Erase an area of the pane. If "block" is set to true, it is a rectangular region. Otherwise, the region is similar to how text is usually selected. )) \
   O(int, pane_change_screen, ( \
     struct tym_i_pane_internal* pane \
-  ), (If the application selects an alternate screen. There is only one alternate screen. Since applications usually only switch screens at startup and exit. It shouldn't matter if it isn't implemented. The new/current screen is specified by tym_i_pane_internal::current_screen.)) \
+  ), (If the application selects an alternate screen. There is only one alternate screen. Since applications usually only switch screens at startup and exit. It shouldn't matter if it isn't implemented. The new/current screen is specified by tym_i_pane_internal::current_screen. -1 should be returned if the screen can not be switched.)) \
   O(int, pane_set_area_to_character, ( \
     struct tym_i_pane_internal* pane, \
     struct tym_i_cell_position start, \
@@ -80,9 +81,15 @@ struct tym_i_backend {
   #undef O
 };
 
+/**
+ * An entry for the linked list of backends.
+ */
 struct tym_i_backend_entry {
+  /** The backend name*/
   const char* name;
+  /** The backend */
   struct tym_i_backend backend;
+  /** The next entry of the linked list */
   const struct tym_i_backend_entry* next;
 };
 
@@ -90,7 +97,7 @@ void tym_i_backend_register(struct tym_i_backend_entry* entry);
 int tym_i_backend_init(const char* backend);
 
 /**
- * This is the chowsen backend
+ * This is the chosen backend
  **/
 extern const struct tym_i_backend* tym_i_backend;
 
