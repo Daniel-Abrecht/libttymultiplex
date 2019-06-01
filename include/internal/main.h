@@ -12,6 +12,11 @@
 
 /** \file */
 
+struct tym_i_resize_handler_ptr_pair {
+  void* ptr;
+  tym_resize_handler_t callback;
+};
+
 /**
  * The main loop has an array of file descriptors to watch.
  * These are some special file descriptors the main loop is watching.
@@ -81,10 +86,22 @@ extern pthread_mutexattr_t tym_i_lock_attr;
  */
 extern pthread_mutex_t tym_i_lock;
 
+/** The number of resize handlers in #tym_i_resize_handler_list. */
+extern size_t tym_i_resize_handler_count;
+/**
+ * Resize handlers registred by the user.
+ * \see tym_register_resize_handler
+ */
+extern struct tym_i_resize_handler_ptr_pair* tym_i_resize_handler_list;
+
 void* tym_i_main(void* ptr);
+void tym_i_error(const char* x);
+int tym_i_update_size_all(void);
 int tym_i_pollfd_add_sub(struct pollfd pfd);
 int tym_i_pollfd_add(int fd);
 int tym_i_pollfd_remove(int fd);
+int tym_i_resize_handler_add(const struct tym_i_resize_handler_ptr_pair* cp);
+int tym_i_resize_handler_remove(size_t entry);
 int tym_i_request_freeze(void);
 
 #ifdef __GNUC__

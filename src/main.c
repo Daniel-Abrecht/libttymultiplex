@@ -27,7 +27,11 @@ int tym_i_pollctl[2];
 struct tym_absolute_position_rectangle tym_i_bounds;
 pthread_t tym_i_main_loop;
 pthread_mutexattr_t tym_i_lock_attr;
-pthread_mutex_t tym_i_lock; /* reentrant mutex */
+pthread_mutex_t tym_i_lock;
+
+size_t tym_i_resize_handler_count;
+struct tym_i_resize_handler_ptr_pair* tym_i_resize_handler_list;
+
 
 #define Y1(ID, VAL) \
   { \
@@ -64,6 +68,16 @@ static void init(void){
 static void shutdown(void) __attribute__((destructor,used));
 static void shutdown(void){
   tym_shutdown();
+}
+
+/** Add a rseize handler */
+int tym_i_resize_handler_add(const struct tym_i_resize_handler_ptr_pair* cp){
+  return tym_i_list_add(sizeof(*tym_i_resize_handler_list), &tym_i_resize_handler_count, (void**)&tym_i_resize_handler_list, cp);
+}
+
+/** Remove a resize handler */
+int tym_i_resize_handler_remove(size_t entry){
+  return tym_i_list_remove(sizeof(*tym_i_resize_handler_list), &tym_i_resize_handler_count, (void**)&tym_i_resize_handler_list, entry);
 }
 
 /**
@@ -130,6 +144,20 @@ int tym_i_pollfd_remove(int fd){
   return 0;
 }
 
+/** Update the size & position of all panes and everything. Usually done after the terminal size changes. */
+int tym_i_update_size_all(void){
+  if(tym_i_backend->update_terminal_size_information() == -1)
+    return -1;
+  for(size_t i=0; i<tym_i_resize_handler_count; i++){
+    struct tym_i_resize_handler_ptr_pair* cp = tym_i_resize_handler_list + i;
+    cp->callback(cp->ptr, &tym_i_bounds);
+  }
+  tym_i_backend->resize();
+  for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next)
+    tym_i_pane_update_size(it);
+  return 0;
+}
+
 /** The main loop */
 void* tym_i_main(void* ptr){
   (void)ptr;
@@ -188,7 +216,7 @@ void* tym_i_main(void* ptr){
         goto error;
       }
       switch(info.ssi_signo){
-        case SIGWINCH: tym_i_pane_update_size_all(); break;
+        case SIGWINCH: tym_i_update_size_all(); break;
         case SIGSTOP:
         case SIGTSTP:
         case SIGINT: {
@@ -305,7 +333,7 @@ error:
  * 
  * \see tym_i_debug
  */
-void tym_i_perror(const char* x){
+void tym_i_error(const char* x){
   tym_i_debug("%s: %d %s\n", x, errno, strerror(errno));
 }
 

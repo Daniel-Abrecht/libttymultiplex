@@ -37,6 +37,17 @@ int tym_i_pane_change_screen_default_proc(struct tym_i_pane_internal* pane){
   return -1;
 }
 
+int tym_i_update_terminal_size_information_default_proc(void){
+  struct winsize size;
+  if(ioctl(tym_i_tty, TIOCGWINSZ, &size) == -1){
+    tym_i_error("ioctl TIOCGWINSZ failed\n");
+    return -1;
+  }
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_HORIZONTAL) = size.ws_col;
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_VERTICAL) = size.ws_row;
+  return 0;
+}
+
 int tym_i_pane_erase_area_default_proc(
   struct tym_i_pane_internal* pane,
   struct tym_i_cell_position start,

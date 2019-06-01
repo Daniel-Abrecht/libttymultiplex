@@ -15,9 +15,9 @@
 #include <internal/charset.h>
 #include <libttymultiplex.h>
 
-struct tym_i_handler_ptr_pair {
+struct tym_i_pane_resize_handler_ptr_pair {
   void* ptr;
-  tym_resize_handler_t callback;
+  tym_pane_resize_handler_t callback;
 };
 
 /** The selected screen. */
@@ -235,7 +235,7 @@ struct tym_i_pane_internal {
   /** The number of registred resize handlers */
   size_t resize_handler_count;
   /** A list of registred resize handlers */
-  struct tym_i_handler_ptr_pair* resize_handler_list;
+  struct tym_i_pane_resize_handler_ptr_pair* resize_handler_list;
   /** The parser state of the current character */
   struct tym_i_character character;
   /** The current screen */
@@ -261,9 +261,8 @@ extern struct tym_i_pane_internal *tym_i_focus_pane;
 extern const struct tym_i_character_format default_character_format;
 
 bool tym_i_character_is_utf8(struct tym_i_character character);
-void tym_i_pane_update_size_all(void);
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane);
-int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_handler_ptr_pair* cp);
+int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_pane_resize_handler_ptr_pair* cp);
 int tym_i_pane_resize_handler_remove(struct tym_i_pane_internal* pane, size_t entry);
 void tym_i_pane_add(struct tym_i_pane_internal* pane);
 struct tym_i_pane_internal* tym_i_pane_get(int pane);

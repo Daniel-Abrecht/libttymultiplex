@@ -245,7 +245,7 @@ TYM_I_POSITION_SPECIALISATION(absolute, (
   (TYM_POS_REF((RECT).edge[TYM_RECT_BOTTOM_RIGHT], POSITION_TYPE, (AXIS)) - TYM_POS_REF((RECT).edge[TYM_RECT_TOP_LEFT], POSITION_TYPE, (AXIS)))
 
 /**
- * Type for callback function for #tym_register_resize_handler and #tym_unregister_resize_handler.
+ * Type for callback function for #tym_pane_register_resize_handler and #tym_pane_unregister_resize_handler.
  * This callback is called if a panes computed position and/or size changes or has to be recomputed.
  * 
  * It is allowed to call other tym_* functions from within this callback. Avoid anything
@@ -253,12 +253,26 @@ TYM_I_POSITION_SPECIALISATION(absolute, (
  * callback returns. Do not resize any panes because of a pane resize event, you could
  * end up with inconsistencies or infinite recursions.
  * 
- * \param ptr The pointer passed to tym_register_resize_handler.
+ * \param ptr The pointer passed to tym_pane_register_resize_handler.
  * \param pane The pane which was resized or changed position.
  * \param input The position & size of the pane as specified, see tym_super_position and tym_super_position_rectangle for details.
  * \param computed The computed & absolute position & size, see tym_absolute_position and tym_absolute_position_rectangle for details.
  */
-typedef void(*tym_resize_handler_t)(void* ptr, int pane, const struct tym_super_position_rectangle* input, const struct tym_absolute_position_rectangle* computed );
+typedef void(*tym_pane_resize_handler_t)(void* ptr, int pane, const struct tym_super_position_rectangle* input, const struct tym_absolute_position_rectangle* computed );
+
+/**
+ * Type for callback function for #tym_register_resize_handler and #tym_unregister_resize_handler.
+ * This callback is called if the terminal/screens computed position and/or size changes or has to be recomputed.
+ * 
+ * It is allowed to call other tym_* functions from within this callback. Avoid anything
+ * that takes a long time though, the main loop can't process any requests before this
+ * callback returns. This function is called before the panes are resized and setting
+ * new sizes for them in this callback is possible, but it isn't receommended.
+ * 
+ * \param ptr The pointer passed to tym_register_resize_handler.
+ * \param computed The computed & absolute position & size, see tym_absolute_position and tym_absolute_position_rectangle for details.
+ */
+typedef void(*tym_resize_handler_t)(void* ptr, const struct tym_absolute_position_rectangle* computed );
 
 /** Mapping from #tym_position_type to #tym_unit_type. */
 extern const enum tym_unit_type tym_positon_unit_map[];
@@ -347,14 +361,15 @@ TYM_EXPORT int tym_pane_reset(int pane);
 
 /**
  * Registers a callback function that is called from the libttymultiplex main/event loop
- * whenever the size and position of the pane has to be recalculated.
+ * whenever the size and position of the pane has to be recalculated. It is also
+ * called directly after it's first registration.
  * 
- * \see tym_resize_handler_t
+ * \see tym_pane_resize_handler_t
  * 
  * \param ptr A pointer which will be passed to the callback function
  * \param handler The callback function
  */
-TYM_EXPORT int tym_register_resize_handler( int pane, void* ptr, tym_resize_handler_t handler );
+TYM_EXPORT int tym_pane_register_resize_handler( int pane, void* ptr, tym_pane_resize_handler_t handler );
 
 /**
  * Removes every registered matching callback function pointer pair. If ptr is 0,
@@ -363,7 +378,28 @@ TYM_EXPORT int tym_register_resize_handler( int pane, void* ptr, tym_resize_hand
  * \param ptr The same pointer that was passed during registration or 0
  * \param handler The callback function which shall be unregistred
  */
-TYM_EXPORT int tym_unregister_resize_handler( int pane, void* ptr, tym_resize_handler_t handler );
+TYM_EXPORT int tym_pane_unregister_resize_handler( int pane, void* ptr, tym_pane_resize_handler_t handler );
+
+/**
+ * Registers a callback function that is called from the libttymultiplex main/event loop
+ * whenever the size and position of the terminal/screen changes. It is also
+ * called directly after it's first registration.
+ * 
+ * \see tym_resize_handler_t
+ * 
+ * \param ptr A pointer which will be passed to the callback function
+ * \param handler The callback function
+ */
+TYM_EXPORT int tym_register_resize_handler( void* ptr, tym_resize_handler_t handler );
+
+/**
+ * Removes every registered matching callback function pointer pair. If ptr is 0,
+ * any matching callback function is removed regardless of the ptr value used at registration time.
+ * 
+ * \param ptr The same pointer that was passed during registration or 0
+ * \param handler The callback function which shall be unregistred
+ */
+TYM_EXPORT int tym_unregister_resize_handler( void* ptr, tym_resize_handler_t handler );
 
 /**
  * Set a flag on a pane. 

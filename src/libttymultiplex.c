@@ -78,7 +78,8 @@ int tym_init(void){
     .events = POLLIN | POLLHUP,
     .fd = tym_i_tty
   })) goto error;
-  tym_i_pane_update_size_all();
+  if(tym_i_update_size_all() == -1)
+    goto error;
   tym_i_binit = INIT_STATE_INITIALISED;
   pthread_create(&tym_i_main_loop, 0, tym_i_main, 0);
   pthread_mutex_unlock(&tym_i_lock);
@@ -143,7 +144,46 @@ error:
   return -1;
 }
 
-int tym_register_resize_handler( int pane, void* ptr, tym_resize_handler_t handler ){
+int tym_register_resize_handler( void* ptr, tym_resize_handler_t handler ){
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  if(!tym_i_resize_handler_add(&(struct tym_i_resize_handler_ptr_pair){
+    .callback = handler,
+    .ptr = ptr
+  })) goto error;
+  (*handler)(ptr, &tym_i_bounds);
+  pthread_mutex_unlock(&tym_i_lock);
+  return 0;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_unregister_resize_handler( void* ptr, tym_resize_handler_t handler ){
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    errno = EINVAL;
+    goto error;
+  }
+  for(size_t i=0; i<tym_i_resize_handler_count; i++){
+    struct tym_i_resize_handler_ptr_pair* cp = tym_i_resize_handler_list + i;
+    if((!ptr || ptr == cp->ptr) && (!handler || handler == cp->callback))
+      continue;
+    if(tym_i_resize_handler_remove(i))
+      goto error;
+    i -= 1;
+  }
+  pthread_mutex_unlock(&tym_i_lock);
+  return 0;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_pane_register_resize_handler( int pane, void* ptr, tym_pane_resize_handler_t handler ){
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
     errno = EINVAL;
@@ -154,18 +194,19 @@ int tym_register_resize_handler( int pane, void* ptr, tym_resize_handler_t handl
     errno = ENOENT;
     goto error;
   }
-  if(!tym_i_pane_resize_handler_add(ppane, &(struct tym_i_handler_ptr_pair){
+  if(!tym_i_pane_resize_handler_add(ppane, &(struct tym_i_pane_resize_handler_ptr_pair){
     .callback = handler,
     .ptr = ptr
   })) goto error;
   (*handler)(ptr, pane, &ppane->super_position, &ppane->absolute_position);
+  pthread_mutex_unlock(&tym_i_lock);
   return 0;
 error:
   pthread_mutex_unlock(&tym_i_lock);
   return -1;
 }
 
-int tym_unregister_resize_handler( int pane, void* ptr, tym_resize_handler_t handler ){
+int tym_pane_unregister_resize_handler( int pane, void* ptr, tym_pane_resize_handler_t handler ){
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
     errno = EINVAL;
@@ -173,7 +214,7 @@ int tym_unregister_resize_handler( int pane, void* ptr, tym_resize_handler_t han
   }
   for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
     for(size_t i=0; i<it->resize_handler_count; i++){
-      struct tym_i_handler_ptr_pair* cp = it->resize_handler_list + i;
+      struct tym_i_pane_resize_handler_ptr_pair* cp = it->resize_handler_list + i;
       if(!((pane <= 0 || pane == it->id) && (!ptr || ptr == cp->ptr) && (!handler || handler == cp->callback)))
         continue;
       if(tym_i_pane_resize_handler_remove(it, i))
@@ -181,6 +222,7 @@ int tym_unregister_resize_handler( int pane, void* ptr, tym_resize_handler_t han
       i -= 1;
     }
   }
+  pthread_mutex_unlock(&tym_i_lock);
   return 0;
 error:
   pthread_mutex_unlock(&tym_i_lock);

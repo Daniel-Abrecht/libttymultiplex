@@ -42,7 +42,7 @@ bool tym_i_character_is_utf8(struct tym_i_character character){
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
   tym_i_calc_rectangle_absolut_position(&pane->absolute_position, &pane->super_position);
   for(size_t i=0; i<pane->resize_handler_count; i++){
-    struct tym_i_handler_ptr_pair* cp = pane->resize_handler_list + i;
+    struct tym_i_pane_resize_handler_ptr_pair* cp = pane->resize_handler_list + i;
     cp->callback(cp->ptr, pane->id, &pane->super_position, &pane->absolute_position);
   }
   tym_i_backend->pane_resize(pane);
@@ -54,15 +54,15 @@ void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
     .ws_row = h,
   };
   if(ioctl(pane->master, TIOCSWINSZ, &size) == -1)
-    tym_i_perror("ioctl TIOCSWINSZ failed");
+    tym_i_error("ioctl TIOCSWINSZ failed");
 }
 
-/** Add a reseize handler for a pane */
-int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_handler_ptr_pair* cp){
+/** Add a resize handler for a pane */
+int tym_i_pane_resize_handler_add(struct tym_i_pane_internal* pane, const struct tym_i_pane_resize_handler_ptr_pair* cp){
   return tym_i_list_add(sizeof(*pane->resize_handler_list), &pane->resize_handler_count, (void**)&pane->resize_handler_list, cp);
 }
 
-/** Remove a reseize handler for a pane */
+/** Remove a resize handler for a pane */
 int tym_i_pane_resize_handler_remove(struct tym_i_pane_internal* pane, size_t entry){
   return tym_i_list_remove(sizeof(*pane->resize_handler_list), &pane->resize_handler_count, (void**)&pane->resize_handler_list, entry);
 }
@@ -120,20 +120,6 @@ void tym_i_pane_update_cursor(struct tym_i_pane_internal* pane){
     return;
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   tym_i_backend->pane_set_cursor_position(pane, screen->cursor);
-}
-
-/** Update the size & position of all panes. Usually done after the terminal size changes. */
-void tym_i_pane_update_size_all(void){
-  struct winsize size;
-  if(ioctl(tym_i_tty, TIOCGWINSZ, &size) == -1){
-    perror("ioctl TIOCGWINSZ failed\n");
-    abort();
-  }
-  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_HORIZONTAL) = size.ws_col;
-  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_VERTICAL) = size.ws_row;
-  tym_i_backend->resize();
-  for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next)
-    tym_i_pane_update_size(it);
 }
 
 /**

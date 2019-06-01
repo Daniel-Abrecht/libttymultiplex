@@ -441,7 +441,7 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
   if(min == max && index+1 == tym_i_command_sequence_map[min].length){
     const struct tym_i_command_sequence* command = tym_i_command_sequence_map + min;
     if(command->callback){
-      if((*command->callback)(pane) == -1){
+      if(command->callback(pane) == -1){
         int err = errno;
         tym_i_debug("- ");
         tym_i_debug_sequence_params(command, &pane->sequence);
