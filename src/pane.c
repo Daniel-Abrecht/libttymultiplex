@@ -15,6 +15,7 @@
 #include <internal/main.h>
 #include <internal/list.h>
 #include <internal/utils.h>
+#include <internal/parser.h>
 #include <internal/pseudoterminal.h>
 #include <internal/backend.h>
 #include <libttymultiplex.h>
@@ -140,6 +141,23 @@ void tym_i_pane_remove(struct tym_i_pane_internal* pane){
     pane->next->previous = pane->previous;
 }
 
+static int tym_i_pollhandler_pane_ptm_input_handler(void* ptr, short event, int fd){
+  if(!(event & POLLIN))
+    return -1;
+  struct tym_i_pane_internal* pane = ptr;
+  static char buf[256];
+  ssize_t ret;
+  do {
+    ret = read(fd, buf, sizeof(buf));
+  } while(ret == -1 && errno == EINTR);
+  if(ret == -1)
+    return -1;
+  for(size_t i=0; i<(size_t)ret; i++)
+    tym_i_pane_parse(pane, buf[i]);
+  tym_i_backend->pane_refresh(pane);
+  return 0;
+}
+
 int tym_pane_create(const struct tym_super_position_rectangle*restrict super_position){
   static const struct tym_super_position_rectangle zeropos;
   if(!super_position)
@@ -231,8 +249,10 @@ int tym_pane_create(const struct tym_super_position_rectangle*restrict super_pos
   if(tym_i_backend->pane_create(pane) != 0)
     goto error;
   tym_i_pane_add(pane);
-  if(tym_i_pollfd_add(pane->master))
-    goto error;
+  if(tym_i_pollfd_add(pane->master, &(struct tym_i_pollfd_complement){
+    .ptr = pane,
+    .onevent = tym_i_pollhandler_pane_ptm_input_handler
+  })) goto error;
   tym_i_pane_update_size(pane);
   pthread_mutex_unlock(&tym_i_lock);
   return pane->id;

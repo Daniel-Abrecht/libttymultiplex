@@ -69,14 +69,20 @@ int tym_init(void){
   if(tym_i_pollfd_add_sub((struct pollfd){
     .events = POLLIN,
     .fd = tym_i_pollctl[0]
+  }, &(struct tym_i_pollfd_complement){
+    .onevent = tym_i_pollhandler_ctl_command_handler
   })) goto error;
   if(tym_i_pollfd_add_sub((struct pollfd){
     .events = POLLIN | POLLHUP,
     .fd = tym_i_sfd
+  }, &(struct tym_i_pollfd_complement){
+    .onevent = tym_i_pollhandler_signal_handler
   })) goto error;
   if(tym_i_pollfd_add_sub((struct pollfd){
     .events = POLLIN | POLLHUP,
     .fd = tym_i_tty
+  }, &(struct tym_i_pollfd_complement){
+    .onevent = tym_i_pollhandler_terminal_input_handler
   })) goto error;
   if(tym_i_update_size_all() == -1)
     goto error;
