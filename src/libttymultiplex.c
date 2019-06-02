@@ -23,6 +23,8 @@
 /** \file */
 
 int tym_init(void){
+  int pollctl[2] = {-1,-1};
+  int signal_fd = -1;
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit == INIT_STATE_INITIALISED){
     pthread_mutex_unlock(&tym_i_lock);
@@ -47,8 +49,6 @@ int tym_init(void){
   tym_i_calc_init_absolute_position(&tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT]);
   TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], RATIO, TYM_AXIS_HORIZONTAL) = 1;
   TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], RATIO, TYM_AXIS_VERTICAL) = 1;
-  tym_i_binit = INIT_STATE_INITIALISED;
-  tym_i_tty = dup(STDIN_FILENO);
   setlocale(LC_CTYPE, "C.UTF-8");
   if(tym_i_backend_init(getenv("TM_BACKEND")) != 0){
     fprintf(stderr,"Failed to initialise backend\n");
@@ -60,29 +60,19 @@ int tym_init(void){
   sigaddset(&sigmask, SIGINT);
   if(pthread_sigmask(SIG_BLOCK, &sigmask, 0) == -1)
     goto error;
-  if(pipe(tym_i_pollctl))
+  if(pipe(pollctl))
     goto error;
-  fcntl(tym_i_pollctl[0], F_SETFD, FD_CLOEXEC);
-  fcntl(tym_i_pollctl[1], F_SETFD, FD_CLOEXEC);
-  if((tym_i_sfd = signalfd(-1, &sigmask, SFD_CLOEXEC)) == -1)
+  fcntl(pollctl[0], F_SETFD, FD_CLOEXEC);
+  fcntl(pollctl[1], F_SETFD, FD_CLOEXEC);
+  signal_fd = signalfd(-1, &sigmask, SFD_CLOEXEC);
+  if(signal_fd == -1)
     goto error;
-  if(tym_i_pollfd_add_sub((struct pollfd){
-    .events = POLLIN,
-    .fd = tym_i_pollctl[0]
-  }, &(struct tym_i_pollfd_complement){
+  if(tym_i_pollfd_add(pollctl[0], &(struct tym_i_pollfd_complement){
     .onevent = tym_i_pollhandler_ctl_command_handler
   })) goto error;
-  if(tym_i_pollfd_add_sub((struct pollfd){
-    .events = POLLIN | POLLHUP,
-    .fd = tym_i_sfd
-  }, &(struct tym_i_pollfd_complement){
+  tym_i_cmd_fd = pollctl[1];
+  if(tym_i_pollfd_add(signal_fd, &(struct tym_i_pollfd_complement){
     .onevent = tym_i_pollhandler_signal_handler
-  })) goto error;
-  if(tym_i_pollfd_add_sub((struct pollfd){
-    .events = POLLIN | POLLHUP,
-    .fd = tym_i_tty
-  }, &(struct tym_i_pollfd_complement){
-    .onevent = tym_i_pollhandler_terminal_input_handler
   })) goto error;
   if(tym_i_update_size_all() == -1)
     goto error;
@@ -90,8 +80,13 @@ int tym_init(void){
   pthread_create(&tym_i_main_loop, 0, tym_i_main, 0);
   pthread_mutex_unlock(&tym_i_lock);
   return 0;
-error:
+error:;
+  int err = errno;
+  close(pollctl[0]);
+  close(pollctl[1]);
+  close(signal_fd);
   pthread_mutex_unlock(&tym_i_lock);
+  errno = err;
   return -1;
 }
 
@@ -117,7 +112,7 @@ int tym_shutdown(void){
       perror("tym_pane_destroy failed");
       break;
     }
-  close(tym_i_pollctl[1]);
+  close(tym_i_cmd_fd);
   tym_i_binit = INIT_STATE_SHUTDOWN_IN_PROGRESS;
   pthread_mutex_unlock(&tym_i_lock);
   pthread_join(tym_i_main_loop, 0);

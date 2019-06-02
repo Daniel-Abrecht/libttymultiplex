@@ -1,11 +1,13 @@
 // Copyright (c) 2018 Daniel Abrecht
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+#include <unistd.h>
 #include <ncurses.h>
 #include <stdlib.h>
 #include <internal/main.h>
 #include <internal/pane.h>
 #include <internal/backend.h>
+#include <internal/pseudoterminal.h>
 
 #define COLORPAIR_MAPPING_NEGATIVE_FLAG 0x80
 
@@ -31,8 +33,62 @@ struct curses_backend_pane {
   struct curses_screen_state screen[TYM_I_SCREEN_COUNT];
 };
 
+static int terminal_input_handler(void* ptr, short event, int fd){
+  (void)fd;
+  if(!(event & POLLIN))
+    return -1;
+  (void)ptr;
+  int c = getch();
+  if(c != ERR)
+  switch(c){
+    case KEY_MOUSE: {
+      MEVENT event;
+      if(getmouse(&event) != OK)
+        break;
+      for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
+        int left   = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_LEFT  );
+        int right  = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_RIGHT );
+        int top    = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_TOP   );
+        int bottom = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_BOTTOM);
+        if( left > (int)event.x || right <= (int)event.x || top > (int)event.y || bottom <= (int)event.y )
+          continue;
+        unsigned x = event.x - left;
+        unsigned y = event.y - top;
+        tym_i_pane_focus(it);
+        if(event.bstate & (BUTTON1_RELEASED | BUTTON2_RELEASED | BUTTON3_RELEASED)){
+          tym_i_pts_send_mouse_event(it, TYM_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});
+        }
+        if(event.bstate & BUTTON1_PRESSED){
+          tym_i_pts_send_mouse_event(it, TYM_BUTTON_LEFT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+        }
+        if(event.bstate & BUTTON2_PRESSED){
+          tym_i_pts_send_mouse_event(it, TYM_BUTTON_MIDDLE_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+        }
+        if(event.bstate & BUTTON3_PRESSED){
+          tym_i_pts_send_mouse_event(it, TYM_BUTTON_RIGHT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
+        }
+        break;
+      }
+    } break;
+    case KEY_ENTER: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
+    case KEY_UP   : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_UP); break;
+    case KEY_DOWN : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DOWN); break;
+    case KEY_RIGHT: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_RIGHT); break;
+    case KEY_LEFT : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_LEFT); break;
+    case KEY_BACKSPACE: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
+    case KEY_HOME: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_HOME); break;
+    case KEY_END: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_END); break;
+    case KEY_DC: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DELETE); break;
+    default: tym_i_pts_send_key(tym_i_focus_pane, c); break;
+  }
+  return 0;
+}
+
 
 static int init(void){
+  if(tym_i_pollfd_add(dup(STDIN_FILENO), &(struct tym_i_pollfd_complement){
+    .onevent = terminal_input_handler
+  })) goto error;
   if(!initscr())
     goto error;
   cbreak();
@@ -310,6 +366,17 @@ static int resize(void){
   return 0;
 }
 
+static int update_terminal_size_information(void){
+  struct winsize size;
+  if(ioctl(STDIN_FILENO, TIOCGWINSZ, &size) == -1){
+    tym_i_error("ioctl TIOCGWINSZ failed\n");
+    return -1;
+  }
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_HORIZONTAL) = size.ws_col;
+  TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_VERTICAL) = size.ws_row;
+  return 0;
+}
+
 TYM_I_BACKEND_REGISTER(1000, "curses", (
   .init = init,
   .cleanup = cleanup,
@@ -324,4 +391,5 @@ TYM_I_BACKEND_REGISTER(1000, "curses", (
   .pane_set_cursor_position = pane_set_cursor_position,
   .pane_delete_characters = pane_delete_characters,
   .pane_set_character = pane_set_character,
+  .update_terminal_size_information = update_terminal_size_information
 ))

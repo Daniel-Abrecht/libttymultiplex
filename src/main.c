@@ -1,30 +1,30 @@
 // Copyright (c) 2018 Daniel Abrecht
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+#include <pty.h>
+#include <poll.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include <assert.h>
-#include <ncurses.h>
-#include <pty.h>
 #include <sys/signalfd.h>
+#include <assert.h>
 #include <internal/list.h>
 #include <internal/main.h>
+#include <internal/pane.h>
 #include <internal/backend.h>
-#include <internal/pseudoterminal.h>
 #include <libttymultiplex.h>
 
 /** \file */
 
 enum tym_i_init_state tym_i_binit = INIT_STATE_NOINIT;
+int tym_i_cmd_fd = -1;
 size_t tym_i_poll_count;
 struct pollfd* tym_i_poll_list;
 struct tym_i_pollfd_complement* tym_i_poll_list_complement;
-int tym_i_tty;
-int tym_i_sfd;
-int tym_i_pollctl[2];
 struct tym_absolute_position_rectangle tym_i_bounds;
 pthread_t tym_i_main_loop;
 pthread_mutexattr_t tym_i_lock_attr;
@@ -82,10 +82,10 @@ int tym_i_resize_handler_remove(size_t entry){
 }
 
 /**
- * Add the poll file descriptor. This should only be used within the main thread or before it is started.
- * In all other cases, use tym_i_pollfd_add, which will delegate this task to the main loop.
+ * Add the poll file descriptor. This should only be used in the main loop.
+ * In all other cases, use tym_i_pollfd_add.
  */
-int tym_i_pollfd_add_sub(struct pollfd pfd, const struct tym_i_pollfd_complement* complement){
+static int pollfd_add_sub(struct pollfd pfd, const struct tym_i_pollfd_complement* complement){
   size_t n1 = tym_i_poll_count;
   if(tym_i_list_add(sizeof(*tym_i_poll_list), &n1, (void**)&tym_i_poll_list, &pfd) == -1){
     assert(n1 == tym_i_poll_count); // Adding an entry failed, the number of list entries should have stayed the same.
@@ -105,10 +105,10 @@ int tym_i_pollfd_add_sub(struct pollfd pfd, const struct tym_i_pollfd_complement
 }
 
 /**
- * Removes a poll file descriptor using its list index. Only to be used in the main thread.
- * In all other cases, use tym_i_pollfd_remove, which will delegate this task to the main loop.
+ * Removes a poll file descriptor using its list index. Only to be used in the main loop.
+ * In all other cases, use tym_i_pollfd_remove.
  */
-static int tym_i_pollfd_remove_sub(size_t entry){
+static int pollfd_remove_sub(size_t entry){
   if(entry >= tym_i_poll_count){
     errno = EINVAL;
     return -1;
@@ -138,15 +138,22 @@ int tym_i_pollfd_add(int fd, const struct tym_i_pollfd_complement* complement){
     errno = EINVAL;
     return -1;
   }
-  struct tym_i_poll_ctl ctl;
-  memset(&ctl, 0, sizeof(ctl));
-  ctl.action = TYM_PC_ADD,
-  ctl.data.add.fd = fd;
-  ctl.data.add.complement = *complement;
-  ssize_t ret = 0;
-  while((ret=write(tym_i_pollctl[1], &ctl, sizeof(ctl))) == -1 && errno == EINTR);
-  if(ret == -1)
-    return -1;
+  if(tym_i_binit != INIT_STATE_INITIALISED){
+    return pollfd_add_sub((struct pollfd){
+      .fd = fd,
+      .events = POLLIN | POLLHUP
+    }, complement);
+  }else{
+    struct tym_i_poll_ctl ctl;
+    memset(&ctl, 0, sizeof(ctl));
+    ctl.action = TYM_PC_ADD,
+    ctl.data.add.fd = fd;
+    ctl.data.add.complement = *complement;
+    ssize_t ret = 0;
+    while((ret=write(tym_i_cmd_fd, &ctl, sizeof(ctl))) == -1 && errno == EINTR);
+    if(ret == -1)
+      return -1;
+  }
   return 0;
 }
 
@@ -156,11 +163,16 @@ int tym_i_pollfd_remove(int fd){
   memset(&ctl, 0, sizeof(ctl));
   ctl.action = TYM_PC_REMOVE;
   ctl.data.remove.fd = fd;
-  for(size_t i=0; i<tym_i_poll_count; i++)
-    if(tym_i_poll_list[i].fd == fd)
-      tym_i_poll_list_complement[i].onevent = 0;
+  for(size_t i=0; i<tym_i_poll_count; i++){
+    if(tym_i_poll_list[i].fd != fd)
+      continue;
+    tym_i_poll_list_complement[i].onevent = 0;
+    if(tym_i_binit != INIT_STATE_INITIALISED)
+      return pollfd_remove_sub(i);
+    break;
+  }
   ssize_t ret = 0;
-  while((ret=write(tym_i_pollctl[1], &ctl, sizeof(ctl))) == -1 && errno == EINTR);
+  while((ret=write(tym_i_cmd_fd, &ctl, sizeof(ctl))) == -1 && errno == EINTR);
   if(ret == -1)
     return -1;
   return 0;
@@ -174,7 +186,7 @@ int tym_i_request_freeze(void){
   memset(&ctl, 0, sizeof(ctl));
   ctl.action = TYM_PC_FREEZE;
   ssize_t ret = 0;
-  while((ret=write(tym_i_pollctl[1], &ctl, sizeof(ctl))) == -1 && errno == EINTR);
+  while((ret=write(tym_i_cmd_fd, &ctl, sizeof(ctl))) == -1 && errno == EINTR);
   if(ret == -1){
     tym_i_binit = init;
     return -1;
@@ -209,7 +221,7 @@ int tym_i_pollhandler_ctl_command_handler(void* ptr, short event, int fd){
   }
   switch(ctl.action){
     case TYM_PC_ADD: {
-      tym_i_pollfd_add_sub((struct pollfd){
+      pollfd_add_sub((struct pollfd){
         .fd = ctl.data.add.fd,
         .events = POLLIN | POLLHUP
       }, &ctl.data.add.complement);
@@ -218,7 +230,7 @@ int tym_i_pollhandler_ctl_command_handler(void* ptr, short event, int fd){
       for(size_t i=0; i<tym_i_poll_count; i++){
         if(tym_i_poll_list[i].fd != ctl.data.remove.fd)
           continue;
-        tym_i_pollfd_remove_sub(i);
+        pollfd_remove_sub(i);
         break;
       }
     } break;
@@ -258,57 +270,6 @@ int tym_i_pollhandler_signal_handler(void* ptr, short event, int fd){
   return 0;
 }
 
-int tym_i_pollhandler_terminal_input_handler(void* ptr, short event, int fd){
-  (void)fd;
-  if(!(event & POLLIN))
-    return -1;
-  (void)ptr;
-  int c = getch();
-  if(c != ERR)
-  switch(c){
-    case KEY_MOUSE: {
-      MEVENT event;
-      if(getmouse(&event) != OK)
-        break;
-      for(struct tym_i_pane_internal* it=tym_i_pane_list_start; it; it=it->next){
-        int left   = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_LEFT  );
-        int right  = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_RIGHT );
-        int top    = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_TOP   );
-        int bottom = TYM_RECT_POS_REF(it->absolute_position, CHARFIELD, TYM_BOTTOM);
-        if( left > (int)event.x || right <= (int)event.x || top > (int)event.y || bottom <= (int)event.y )
-          continue;
-        unsigned x = event.x - left;
-        unsigned y = event.y - top;
-        tym_i_pane_focus(it);
-        if(event.bstate & (BUTTON1_RELEASED | BUTTON2_RELEASED | BUTTON3_RELEASED)){
-          tym_i_pts_send_mouse_event(it, TYM_BUTTON_RELEASED, (struct tym_i_cell_position){.x=x, .y=y});
-        }
-        if(event.bstate & BUTTON1_PRESSED){
-          tym_i_pts_send_mouse_event(it, TYM_BUTTON_LEFT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
-        }
-        if(event.bstate & BUTTON2_PRESSED){
-          tym_i_pts_send_mouse_event(it, TYM_BUTTON_MIDDLE_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
-        }
-        if(event.bstate & BUTTON3_PRESSED){
-          tym_i_pts_send_mouse_event(it, TYM_BUTTON_RIGHT_PRESSED, (struct tym_i_cell_position){.x=x, .y=y});
-        }
-        break;
-      }
-    } break;
-    case KEY_ENTER: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_ENTER); break;
-    case KEY_UP   : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_UP); break;
-    case KEY_DOWN : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DOWN); break;
-    case KEY_RIGHT: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_RIGHT); break;
-    case KEY_LEFT : tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_LEFT); break;
-    case KEY_BACKSPACE: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_BACKSPACE); break;
-    case KEY_HOME: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_HOME); break;
-    case KEY_END: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_END); break;
-    case KEY_DC: tym_i_pts_send_key(tym_i_focus_pane, TYM_KEY_DELETE); break;
-    default: tym_i_pts_send_key(tym_i_focus_pane, c); break;
-  }
-  return 0;
-}
-
 /** The main loop */
 void* tym_i_main(void* ptr){
   (void)ptr;
@@ -332,9 +293,7 @@ void* tym_i_main(void* ptr){
       if( pfd->revents & (POLLERR|POLLNVAL) || !pc->onevent
        || pc->onevent(pc->ptr, pfd->revents, pfd->fd) == -1
       ){
-        if(pc->onremove)
-          pc->onremove(pc->ptr, pfd->fd);
-        tym_i_pollfd_remove_sub(i);
+        pollfd_remove_sub(i);
         continue;
       }
       if(tym_i_binit == INIT_STATE_FROZEN){
@@ -348,9 +307,9 @@ void* tym_i_main(void* ptr){
   }
 shutdown:
   while(tym_i_poll_count)
-    tym_i_pollfd_remove_sub(0);
+    pollfd_remove_sub(0);
   tym_i_backend->cleanup();
-  close(tym_i_pollctl[1]);
+  close(tym_i_cmd_fd);
   tym_i_binit = INIT_STATE_SHUTDOWN;
 exit:
   pthread_mutex_unlock(&tym_i_lock);

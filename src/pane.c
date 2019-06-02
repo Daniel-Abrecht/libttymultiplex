@@ -141,7 +141,7 @@ void tym_i_pane_remove(struct tym_i_pane_internal* pane){
     pane->next->previous = pane->previous;
 }
 
-static int tym_i_pollhandler_pane_ptm_input_handler(void* ptr, short event, int fd){
+static int pane_ptm_input_handler(void* ptr, short event, int fd){
   if(!(event & POLLIN))
     return -1;
   struct tym_i_pane_internal* pane = ptr;
@@ -251,7 +251,7 @@ int tym_pane_create(const struct tym_super_position_rectangle*restrict super_pos
   tym_i_pane_add(pane);
   if(tym_i_pollfd_add(pane->master, &(struct tym_i_pollfd_complement){
     .ptr = pane,
-    .onevent = tym_i_pollhandler_pane_ptm_input_handler
+    .onevent = pane_ptm_input_handler
   })) goto error;
   tym_i_pane_update_size(pane);
   pthread_mutex_unlock(&tym_i_lock);

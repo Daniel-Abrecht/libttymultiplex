@@ -41,7 +41,7 @@ struct tym_i_character_format;
     (struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n),  \
     (Delete some characters of the pane and move the remaining ones to the left) \
   ) \
-  O(int, update_terminal_size_information, (void), (Sets #tym_i_bounds to the new size of the terminal. This is called from #tym_i_update_size_all, which shoud be called whenever the terminal/screen size changes. See #tym_i_update_size_all for all cases in which this happens automatically or should be done by the backend.)) \
+  R(int, update_terminal_size_information, (void), (Sets #tym_i_bounds to the new size of the terminal. This is called from #tym_i_update_size_all, which shoud be called whenever the terminal/screen size changes. See #tym_i_update_size_all for all cases in which this happens automatically or should be done by the backend.)) \
   O(int, pane_refresh, (struct tym_i_pane_internal* pane), (Refresh/redraw pane)) \
   O(int, pane_set_cursor_mode, (struct tym_i_pane_internal* pane, enum tym_i_cursor_mode cursor_mode), (Set the cursor mode. It can be a block, underlined, or invisible. )) \
   O(int, pane_scroll, (struct tym_i_pane_internal* pane, int n), (Scroll the pane.)) \
