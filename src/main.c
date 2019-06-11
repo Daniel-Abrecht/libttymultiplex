@@ -15,6 +15,8 @@
 #include <internal/list.h>
 #include <internal/main.h>
 #include <internal/pane.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <internal/backend.h>
 #include <libttymultiplex.h>
 
@@ -44,7 +46,7 @@ const struct tym_special_key_name tym_special_key_list[] = { TYM_I_SPECIAL_KEYS(
 #undef Y1
 const size_t tym_special_key_count = sizeof(tym_special_key_list) / sizeof(*tym_special_key_list);
 
-static FILE* tym_i_debugfd;
+static int tym_i_debugfd = -1;
 
 /** Open the debug file descriptor and initialise mutex attributes. This is done even before main. */
 static void init(void) __attribute__((constructor,used));
@@ -53,11 +55,8 @@ static void init(void){
     const char* debugfd = getenv("TM_DEBUGFD");
     if(debugfd){
       int fd = atoi(debugfd);
-      if(fd >= 0){
-        fd = dup(fd);
-        if(fd != -1)
-          tym_i_debugfd = fdopen(fd,"a");
-      }
+      if(fcntl(fd, F_GETFD) != -1)
+        tym_i_debugfd = fd;
     }
   }
   pthread_mutexattr_init(&tym_i_lock_attr);
@@ -330,9 +329,10 @@ void tym_i_error(const char* x){
  * The debug file descriptor can be set using the TM_DEBUGFD environment variable.
  */
 void tym_i_debug(const char* format, ...){
+  if(tym_i_debugfd < 0)
+    return;
   va_list args;
   va_start(args, format);
-  if(tym_i_debugfd)
-    vfprintf(tym_i_debugfd, format, args);
+  vdprintf(tym_i_debugfd, format, args);
   va_end(args);
 }

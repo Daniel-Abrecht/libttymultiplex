@@ -307,9 +307,10 @@ TYM_EXPORT int tym_shutdown(void);
 /**
  * Exit the main loop, but keep all states.
  * After this operation, it is safe to call fork.
- * In this state, only #tym_init, #tym_shutdown and #tym_pane_set_env are should
- * be used, almost everything else will return -1 and set errno to EINVAL, unless
- * the documentation of the function ays otherwise.
+ * In this state, only #tym_init, #tym_shutdown, #tym_pane_set_env and 
+ * #tym_pane_get_slavefd are should be used, almost everything else will
+ * return -1 and set errno to EINVAL, unless the documentation of the function
+ * say otherwise.
  * <br/><br/>
  * Don't wait too long to call #tym_init or #tym_shutdown after this function,
  * when the pseudo terminal masters aren't read, anything trying to write
