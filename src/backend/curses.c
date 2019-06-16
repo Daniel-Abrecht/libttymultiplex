@@ -208,13 +208,13 @@ static int pane_resize(struct tym_i_pane_internal* pane){
   if(!cscreen->window){
     cscreen->window = newpad(h, w);
     if(!cscreen->window){
-      tym_i_debug("newpad(%ld, %ld) failed\n", h, w);
+      TYM_U_LOG(TYM_LOG_ERROR, "newpad(%ld, %ld) failed\n", h, w);
       return -1;
     }
     initpad(pane);
   }
   if(wresize(cscreen->window, h, w) != OK){
-    tym_i_debug("wresize(%ld, %ld) failed\n", h, w);
+    TYM_U_LOG(TYM_LOG_ERROR, "wresize(%ld, %ld) failed\n", h, w);
     return -1;
   }
   pane_refresh(pane);
@@ -239,7 +239,7 @@ static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned 
   if(bottom > h)
     bottom = h;
   unsigned long m = bottom - top;
-  tym_i_debug("moving scrolling region: %u %u %lu %d\n",top,bottom,m,n);
+  TYM_U_LOG(TYM_LOG_DEBUG, "moving scrolling region: %u %u %lu %d\n",top,bottom,m,n);
   if(m <= (unsigned)abs(n)){
     return tym_i_backend->pane_erase_area(
       pane,
@@ -357,7 +357,7 @@ static int resize(void){
   int scw = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_HORIZONTAL);
   int sch = TYM_RECT_SIZE(tym_i_bounds, CHARFIELD, TYM_AXIS_VERTICAL);
   resizeterm(sch, scw);
-  tym_i_debug("resizeterm(%u, %u)\n", scw, sch);
+  TYM_U_LOG(TYM_LOG_DEBUG, "resizeterm(%u, %u)\n", scw, sch);
   cbreak();
   nodelay(stdscr, true);
   noecho();
@@ -369,7 +369,7 @@ static int resize(void){
 static int update_terminal_size_information(void){
   struct winsize size;
   if(ioctl(STDIN_FILENO, TIOCGWINSZ, &size) == -1){
-    tym_i_error("ioctl TIOCGWINSZ failed\n");
+    TYM_U_PERROR(TYM_LOG_ERROR, "ioctl TIOCGWINSZ failed\n");
     return -1;
   }
   TYM_POS_REF(tym_i_bounds.edge[TYM_RECT_BOTTOM_RIGHT], CHARFIELD, TYM_AXIS_HORIZONTAL) = size.ws_col;

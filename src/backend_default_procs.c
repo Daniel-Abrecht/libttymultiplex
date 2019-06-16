@@ -65,7 +65,7 @@ int tym_i_pane_set_area_to_character_default_proc(
     unsigned e = (block || y == end.y) ? end.x : w;
     for(unsigned x=start.x; x<e; x++){
       if(tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, format, length, utf8, false) == -1)
-        tym_i_debug("pane_set_character failed");
+        TYM_U_PERROR(TYM_LOG_ERROR, "pane_set_character failed");
     }
     if(!block)
       start.x = 0;

@@ -112,7 +112,6 @@ extern size_t tym_i_resize_handler_count;
 extern struct tym_i_resize_handler_ptr_pair* tym_i_resize_handler_list;
 
 void* tym_i_main(void* ptr);
-void tym_i_error(const char* x);
 int tym_i_update_size_all(void);
 int tym_i_pollfd_add(int fd, const struct tym_i_pollfd_complement* pcm);
 int tym_i_pollfd_remove(int fd);
@@ -122,11 +121,5 @@ int tym_i_request_freeze(void);
 
 int tym_i_pollhandler_ctl_command_handler(void* ptr, short event, int fd);
 int tym_i_pollhandler_signal_handler(void* ptr, short event, int fd);
-
-#ifdef __GNUC__
-void tym_i_debug(const char* format, ...) __attribute__((format(printf, 1, 2)));
-#else
-void tym_i_debug(const char* format, ...);
-#endif
 
 #endif

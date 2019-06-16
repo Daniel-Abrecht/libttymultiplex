@@ -19,7 +19,7 @@ int tym_i_csq_reset_mode(struct tym_i_pane_internal* pane){
     case TYM_I_SM_SEND_RECEIVE: break;
     case TYM_I_SM_AUTOMATIC_NEWLINE: break;
     default: {
-      tym_i_debug("Enable for unknown mode %d\n", code);
+      TYM_U_LOG(TYM_LOG_INFO, "Disable for unknown mode %d\n", code);
       errno = ENOSYS;
     } return -1;
   }

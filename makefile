@@ -38,6 +38,7 @@ OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -fstack-protector-
 CC_OPTS += -fvisibility=hidden -DTYM_BUILD -finput-charset=UTF-8
 CC_OPTS += $(INCLUDES)
 CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror -Wno-implicit-fallthrough -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
+CC_OPTS += -DTYM_LOG_PROJECT='"libttymultiplex"'
 LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined
 
 LIBS += -lutil $(shell ncursesw5-config --libs)

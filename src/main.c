@@ -22,6 +22,12 @@
 
 /** \file */
 
+static const char* loglevel_name[] = {
+#define X(Y) #Y,
+  TYM_I_LOG_LEVEL
+#undef X
+};
+
 enum tym_i_init_state tym_i_binit = INIT_STATE_NOINIT;
 int tym_i_cmd_fd = -1;
 size_t tym_i_poll_count;
@@ -55,7 +61,7 @@ static void init(void){
     const char* debugfd = getenv("TM_DEBUGFD");
     if(debugfd){
       int fd = atoi(debugfd);
-      if(fcntl(fd, F_GETFD) != -1)
+      if(fcntl(fd, F_SETFD, FD_CLOEXEC) != -1)
         tym_i_debugfd = fd;
     }
   }
@@ -320,19 +326,37 @@ exit:
  * 
  * \see tym_i_debug
  */
-void tym_i_error(const char* x){
-  tym_i_debug("%s: %d %s\n", x, errno, strerror(errno));
+void tym_u_perror(const char* project, enum tym_log_level level, const char* file, unsigned line, const char* message){
+  tym_u_log(project, level, file, line, "%s: %d %s\n", message, errno, strerror(errno));
 }
 
-/**
- * Output debug messages to the debug file descriptor.
- * The debug file descriptor can be set using the TM_DEBUGFD environment variable.
- */
-void tym_i_debug(const char* format, ...){
-  if(tym_i_debugfd < 0)
-    return;
+void tym_u_va_rawlog(enum tym_log_level level, const char* format, va_list args){
+  (void)level;
+  vdprintf(tym_i_debugfd, format, args);
+}
+
+void tym_u_rawlog(enum tym_log_level level, const char* format, ...){
   va_list args;
   va_start(args, format);
+  tym_u_va_rawlog(level, format, args);
+  va_end(args);
+}
+
+void tym_u_va_log(const char* project, enum tym_log_level level, const char* file, unsigned line, const char* format, va_list args){
+  if(tym_i_debugfd < 0)
+    return;
+  dprintf(tym_i_debugfd, "[%s] ", loglevel_name[level]);
+  dprintf(tym_i_debugfd, "%s: ", project ? project : "?");
+  dprintf(tym_i_debugfd, "%s: ", file);
+  if(!line)
+    dprintf(tym_i_debugfd, "%d: ", line);
   vdprintf(tym_i_debugfd, format, args);
+  va_end(args);
+}
+
+void tym_u_log(const char* project, enum tym_log_level level, const char* file, unsigned line, const char* format, ...){
+  va_list args;
+  va_start(args, format);
+  tym_u_va_log(project, level, file, line, format, args);
   va_end(args);
 }

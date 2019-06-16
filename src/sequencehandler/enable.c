@@ -32,7 +32,7 @@ int tym_i_csq_enable(struct tym_i_pane_internal* pane){
     } break;
     case TYM_I_DSDR_AUTO_WRAP_MODE: screen->wraparound_mode_off = false; break;
     case TYM_I_DSDR_APPLICATION_KEYPAD: screen->keypad_mode = TYM_I_KEYPAD_MODE_APPLICATION; break;
-    default: tym_i_debug("Enable for unknown mode %d\n", code); break;
+    default: TYM_U_LOG(TYM_LOG_INFO, "Enable for unknown mode %d\n", code); break;
   }
   return 0;
 }

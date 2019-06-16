@@ -199,10 +199,10 @@ static void init(void){
     if(tym_i_command_sequence_map[i].callback)
       continue;
     if(!notice_printed){
-      tym_i_debug("The following escape sequence actions aren't implemented yet:\n");
+      TYM_U_LOG(TYM_LOG_INFO, "The following escape sequence actions aren't implemented yet:\n");
       notice_printed = true;
     }
-    tym_i_debug(" - %s\n",tym_i_command_sequence_map[i].callback_name);
+    tym_u_rawlog(TYM_LOG_INFO, " - %s\n",tym_i_command_sequence_map[i].callback_name);
   }
 }
 
@@ -256,7 +256,7 @@ static bool control_character(struct tym_i_pane_internal* pane, unsigned char c)
   }
   if(c >= ' ')
     return false;
-  tym_i_debug("Control character: x%02X\n",(int)c);
+  TYM_U_LOG(TYM_LOG_DEBUG, "Control character: x%02X\n",(int)c);
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ABSOLUTE, x,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ABSOLUTE, y,
@@ -344,14 +344,14 @@ static bool print_character_update(struct tym_i_pane_internal* pane, char c){
 
 /** Write the sequences and parameters to the debug output */
 void tym_i_debug_sequence_params(const struct tym_i_command_sequence* command, const struct tym_i_sequence_state* state){
-  tym_i_debug("%s", command->callback_name);
+  tym_u_rawlog(TYM_LOG_DEBUG, "%s", command->callback_name);
   if(state->integer_count){
-    tym_i_debug(" i(");
+    tym_u_rawlog(TYM_LOG_DEBUG, " i(");
     for(size_t i=0; i<state->integer_count; i++){
       int x = state->integer[i];
-      tym_i_debug(i ? ", %d" : "%d", x);
+      tym_u_rawlog(TYM_LOG_DEBUG, i ? ", %d" : "%d", x);
     }
-    tym_i_debug(")");
+    tym_u_rawlog(TYM_LOG_DEBUG, ")");
   }
 }
 
@@ -363,7 +363,7 @@ void tym_i_debug_sequence_params(const struct tym_i_command_sequence* command, c
  * are parsed using this function again.
  */
 void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
-//  tym_i_debug("tym_i_pane_parse %.2X\n", c);
+//  TYM_U_LOG(TYM_LOG_DEBUG, "tym_i_pane_parse %.2X\n", c);
   if(tym_i_character_is_utf8(pane->character))
     if( pane->character.data.utf8.count )
       if(print_character_update(pane, c))
@@ -443,21 +443,21 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
     if(command->callback){
       if(command->callback(pane) == -1){
         int err = errno;
-        tym_i_debug("- ");
+        TYM_U_LOG(TYM_LOG_DEBUG, "- ");
         tym_i_debug_sequence_params(command, &pane->sequence);
-        tym_i_debug(": %d %s\n", err, strerror(err));
+        tym_u_rawlog(TYM_LOG_DEBUG, ": %d %s\n", err, strerror(err));
         if(err == ENOENT)
           goto escape_abort;
       }else{
         tym_i_pane_update_cursor(pane);
-        tym_i_debug("+ ");
+        TYM_U_LOG(TYM_LOG_DEBUG, "+ ");
         tym_i_debug_sequence_params(command, &pane->sequence);
-        tym_i_debug("\n");
+        tym_u_rawlog(TYM_LOG_DEBUG, "\n");
       }
     }else{
-      tym_i_debug("? ");
+      TYM_U_LOG(TYM_LOG_DEBUG, "? ");
       tym_i_debug_sequence_params(command, &pane->sequence);
-      tym_i_debug("\n");
+      tym_u_rawlog(TYM_LOG_DEBUG, "\n");
     }
     reset_sequence(&pane->sequence);
     return;
@@ -477,7 +477,7 @@ escape_abort:;
     default: print_character_update(pane, fc); break;
   }
   if(pane->sequence.length){
-    tym_i_debug("%.*s%c %zd %zd\n",(int)pane->sequence.length,pane->sequence.buffer,c, pane->sequence.seq_opt_min, pane->sequence.seq_opt_max);
+    TYM_U_LOG(TYM_LOG_DEBUG, "%.*s%c %zd %zd\n",(int)pane->sequence.length,pane->sequence.buffer,c, pane->sequence.seq_opt_min, pane->sequence.seq_opt_max);
     reset_sequence(&pane->sequence);
     for(unsigned short i=1; i<n; i++)
       tym_i_pane_parse(pane, pane->sequence.buffer[i]);

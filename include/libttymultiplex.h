@@ -6,9 +6,12 @@
 
 /** \file */
 
+#include <errno.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 #ifndef TYM_EXPORT
 #ifdef TYM_BUILD
@@ -76,6 +79,18 @@ enum tym_button {
   TYM_BUTTON_RELEASED,
 };
 
+#define TYM_I_LOG_LEVEL \
+  X(DEBUG) \
+  X(INFO) \
+  X(WARN) \
+  X(ERROR) \
+  X(FATAL)
+enum tym_log_level {
+#define X(Y) TYM_LOG_ ## Y,
+  TYM_I_LOG_LEVEL
+#undef X
+};
+
 #define TYM_I_UNIT_TYPE__INTEGER(F) F(INTEGER, long  , integer)
 #define TYM_I_UNIT_TYPE__REAL(F)    F(REAL   , double, real   )
 
@@ -93,6 +108,21 @@ enum tym_button {
   TYM_I_POSITION_TYPE__RATIO(F)
 
 #define TYM_I_POSITION_LOOKUP(N,F) TYM_I_CONCAT(TYM_I_POSITION_TYPE__, N)(F)
+
+#ifndef TYM_LOG_FUNC
+/** The default log function, can be overwritten. */
+#define TYM_LOG_FUNC tym_u_log
+#endif
+
+#ifndef TYM_LOG_PROJECT
+/** The default project name to prefix to log messages. Defaults to 0 (unspecified). */
+#define TYM_LOG_PROJECT 0
+#endif
+
+/** Convinience macro for simpler usage of #TYM_LOG_FUNC. */
+#define TYM_U_LOG(level,...) TYM_LOG_FUNC(TYM_LOG_PROJECT, level, __FILE__, __LINE__, __VA_ARGS__)
+/** Convinience macro for simpler usage of #TYM_LOG_FUNC. Intended usage similar to perror. */
+#define TYM_U_PERROR(level,message) TYM_LOG_FUNC(TYM_LOG_PROJECT, level, __FILE__, __LINE__, "%s: %s\n", message, strerror(errno))
 
 /**
  * Different types of positions for tym_position, which differ in what they specify the position in relation to.
@@ -280,8 +310,11 @@ extern const enum tym_unit_type tym_positon_unit_map[];
 
 
 /**
- * This function has to be called before any other function.
- * It starts the internal main/event loop thread.
+ * This function has to be called before any other function, except for some
+ * utility functions, including the logging functions, which can always be used.
+ * These functions are prefixec with tym_u_*.
+ * 
+ * This function starts the internal main/event loop thread.
  * If another function is called first, it will return -1 and set errno to EINVAL.
  * All functions return -1 on error and set errno accordingly.
  * 
@@ -461,6 +494,38 @@ TYM_EXPORT int tym_pane_type(int pane, size_t count, const char keys[count]);
  * Send a mouse button event at the specified position.
  */
 TYM_EXPORT int tym_pane_send_mouse_event(int pane, enum tym_button button, const struct tym_super_position*restrict super_position);
+
+/**
+ * Similar to tym_u_va_log, but doesn't add any extra formatting.
+ */
+void tym_u_va_rawlog(enum tym_log_level level, const char* format, va_list args);
+
+/**
+ * \see tym_u_va_rawlog
+ */
+void tym_u_rawlog(enum tym_log_level level, const char* format, ...);
+
+/**
+ * For logging purposes. Currently just logs to whatever filedescriptor is specified
+ * using the TM_DEBUGFD environment variable. This may get extended to log to syslog,
+ * filtering and so on.
+ * 
+ * This log function exists because stderr may already be used for other things and syslog isn't
+ * particularely well suited for large quantities of output & debugging.
+ */
+TYM_EXPORT void tym_u_va_log(const char* project, enum tym_log_level level, const char* file, unsigned line, const char* format, va_list args);
+
+
+#ifdef __GNUC__
+TYM_EXPORT void tym_u_log(const char* project, enum tym_log_level level, const char* file, unsigned line, const char* format, ...) __attribute__((format(printf, 5, 6)));
+#else
+/**
+ * There are the convinience macros TYM_U_LOG and TYM_U_PERROR for simpler usage.
+ * 
+ * \see tym_va_log
+ */
+TYM_EXPORT void tym_u_log(const char* project, enum tym_log_level level, const char* file, unsigned line, const char* format, ...);
+#endif
 
 #ifdef __cplusplus
 }

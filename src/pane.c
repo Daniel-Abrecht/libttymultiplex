@@ -58,7 +58,7 @@ void tym_i_pane_update_size(struct tym_i_pane_internal* pane){
     .ws_row = h,
   };
   if(ioctl(pane->master, TIOCSWINSZ, &size) == -1)
-    tym_i_error("ioctl TIOCSWINSZ failed");
+    TYM_U_PERROR(TYM_LOG_ERROR, "ioctl TIOCSWINSZ failed");
 }
 
 /** Add a resize handler for a pane */
@@ -433,14 +433,14 @@ int tym_pane_set_env(int pane){
   // We are a session leader!!!
   if(getpid() == getsid(0)){
     if(ioctl(0,TIOCNOTTY) == -1){
-      tym_i_debug("ioctl(0,TIOCNOTTY) failed");
+      TYM_U_PERROR(TYM_LOG_ERROR, "ioctl(0,TIOCNOTTY) failed");
       goto error;
     }
   }
   // Let's try if this is already possible
   if(login_tty(ppane->slave) == -1){
     if(errno != EPERM){
-      tym_i_error("login_tty failed");
+      TYM_U_PERROR(TYM_LOG_ERROR, "login_tty failed");
       goto error;
     }
     // Maybe we just need a new session?
@@ -449,14 +449,14 @@ int tym_pane_set_env(int pane){
       // We need to change to another empty and unassociated process group to fix that
       int waitfd[2];
       if(pipe(waitfd) == -1){
-        tym_i_error("pipe failed");
+        TYM_U_PERROR(TYM_LOG_ERROR, "pipe failed");
         goto error;
       }
       int ret = fork(); // Create another temporary process
       if(ret == -1){
         close(waitfd[0]);
         close(waitfd[1]);
-        tym_i_error("fork failed");
+        TYM_U_PERROR(TYM_LOG_ERROR, "fork failed");
         goto error;
       }
       if(ret){
@@ -464,20 +464,20 @@ int tym_pane_set_env(int pane){
         while(read(waitfd[0], (char[]){0}, 1) == -1 && errno == EINTR);
         close(waitfd[0]);
         if(setpgid(0,ret) == -1){ // Move to process group of temporary child process
-          tym_i_error("setpgid failed");
+          TYM_U_PERROR(TYM_LOG_ERROR, "setpgid failed");
           // Kill temporary child process
           if(kill(ret, SIGKILL) == -1)
-            tym_i_error("kill failed");
+            TYM_U_PERROR(TYM_LOG_ERROR, "kill failed");
           goto error;
         }
         // Kill temporary child process
         if(kill(ret, SIGKILL) == -1)
-          tym_i_error("kill failed");
+          TYM_U_PERROR(TYM_LOG_ERROR, "kill failed");
         while(waitpid(ret,0,0) == -1 && errno == EINTR);
       }else{
         close(waitfd[0]);
         if(setpgid(0,0)) // Make it it's process group, create a new process group!!!
-          tym_i_error("setpgid failed");
+          TYM_U_PERROR(TYM_LOG_ERROR, "setpgid failed");
         close(waitfd[1]); // Signal the other process we're done
         // Let the child wait until it gets killed
         while(true)
@@ -487,13 +487,13 @@ int tym_pane_set_env(int pane){
     }else{
       // Give up old controling terminal & processes from process group and so on so we can take a new one
       if(ioctl(0,TIOCNOTTY) == -1){
-        tym_i_debug("ioctl(0,TIOCNOTTY) failed");
+        TYM_U_PERROR(TYM_LOG_ERROR, "ioctl(0,TIOCNOTTY) failed");
         goto error;
       }
     }
     // Try again...
     if(login_tty(ppane->slave)){
-      tym_i_error("login_tty failed");
+      TYM_U_PERROR(TYM_LOG_ERROR, "login_tty failed");
       goto error;
     }
   }

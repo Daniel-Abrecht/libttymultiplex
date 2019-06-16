@@ -15,11 +15,11 @@ int tym_i_csq_set_mode(struct tym_i_pane_internal* pane){
   enum tym_i_setmode code = pane->sequence.integer[0];
   switch(code){
     case TYM_I_SM_INSERT: screen->insert_mode = true; break; // IRM
-    case TYM_I_SM_KEYBOARD_ACTION: tym_i_debug("Keyboard action mode (AM) not yet implemented\n"); break;
-    case TYM_I_SM_SEND_RECEIVE: tym_i_debug("Send receive mode (SRM) not yet implemented\n"); break;
-    case TYM_I_SM_AUTOMATIC_NEWLINE: tym_i_debug("Automatic newline mode (LNM) not yet implemented\n"); break;
+    case TYM_I_SM_KEYBOARD_ACTION: TYM_U_LOG(TYM_LOG_INFO, "Keyboard action mode (AM) not yet implemented\n"); break;
+    case TYM_I_SM_SEND_RECEIVE: TYM_U_LOG(TYM_LOG_INFO, "Send receive mode (SRM) not yet implemented\n"); break;
+    case TYM_I_SM_AUTOMATIC_NEWLINE: TYM_U_LOG(TYM_LOG_INFO, "Automatic newline mode (LNM) not yet implemented\n"); break;
     default: {
-      tym_i_debug("Enable for unknown mode %d\n", code);
+      TYM_U_LOG(TYM_LOG_INFO, "Enable for unknown mode %d\n", code);
       errno = ENOSYS;
     } return -1;
   }
