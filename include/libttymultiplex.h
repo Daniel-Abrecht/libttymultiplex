@@ -352,7 +352,9 @@ TYM_EXPORT int tym_shutdown(void);
  * Don't call #tym_shutdown if another program still has a running instance of this
  * library. There currently is no function to clean up all resources without
  * resetting terminal states and such stuff yet.
- * <br/><br/>
+ *
+ * \todo Add a function to reset all states and free memory but not deinitialise anything.
+ *
  * Make sure no other threads are trying to access any functions of this library
  * while you attemp a fork, it would leave the internal mutex lock in an undefined
  * state. In theory, the internal mutex lock should be reset to prevent any
@@ -448,7 +450,8 @@ TYM_EXPORT int tym_pane_set_flag(int pane, enum tym_flag flag, bool status);
 TYM_EXPORT int tym_pane_get_flag(int pane, enum tym_flag flag);
 
 /**
- * Set up the environment and file descriptors so any output will go to the selected pane.
+ * Set up the environment and file descriptors so any input and output will go to
+ * the selected pane. This function also sets the controling terminal.
  * This is intended to be used after a fork. If you do a fork, make sure to
  * freeze libttymultiplex first using the tym_freeze function.
  */
@@ -462,6 +465,11 @@ TYM_EXPORT int tym_pane_set_env(int pane);
  * \returns The pts fd or -1 on error
  **/
 TYM_EXPORT int tym_pane_get_slavefd(int pane);
+
+/**
+ * This function can be used to optain the environment variables tym_pane_set_env would set.
+ */
+TYM_EXPORT int tym_pane_get_default_env_vars(int pane, void* ptr, int(*callback)(int pane, void* ptr, size_t count, const char* env[count][2]));
 
 /**
  * Send a key press to the pane. You can also use the #tym_special_key constants.
@@ -500,10 +508,14 @@ TYM_EXPORT int tym_pane_send_mouse_event(int pane, enum tym_button button, const
  */
 void tym_u_va_rawlog(enum tym_log_level level, const char* format, va_list args);
 
+#ifdef __GNUC__
+void tym_u_rawlog(enum tym_log_level level, const char* format, ...) __attribute__((format(printf, 2, 3)));
+#else
 /**
  * \see tym_u_va_rawlog
  */
 void tym_u_rawlog(enum tym_log_level level, const char* format, ...);
+#endif
 
 /**
  * For logging purposes. Currently just logs to whatever filedescriptor is specified

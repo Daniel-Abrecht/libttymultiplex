@@ -419,6 +419,25 @@ error:
   return -1;
 }
 
+int tym_pane_get_default_env_vars(
+  int pane, void* ptr,
+  int(*callback)(int pane, void* ptr, size_t count, const char* env[count][2])
+){
+  const char* env[][2] = {
+    {"TERM", "xterm"}
+  };
+  size_t count = sizeof(env)/sizeof(*env);
+  return (*callback)(pane, ptr, count, env);
+}
+
+static int do_set_env(int pane, void* ptr, size_t count, const char* env[count][2]){
+  (void)pane;
+  (void)ptr;
+  for(size_t i=0; i<count; i++)
+    setenv(env[i][0], env[i][1], true);
+  return 0;
+}
+
 int tym_pane_set_env(int pane){
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED && tym_i_binit != INIT_STATE_FROZEN){
@@ -500,7 +519,7 @@ int tym_pane_set_env(int pane){
   sigset_t sigmask;
   sigemptyset(&sigmask);
   sigprocmask(SIG_SETMASK, &sigmask, 0); // reset all signals
-  setenv("TERM", "xterm", true);
+  tym_pane_get_default_env_vars(pane, 0, do_set_env);
   pthread_mutex_unlock(&tym_i_lock);
   return 0;
 error:
