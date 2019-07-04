@@ -1,0 +1,10 @@
+ * Implement remaining xterm escape sequences
+ * Implement switching to other VT escape sequence sets
+ * Add some custom termcap file & implement some additional custom escape sequences
+ * Put Backends into shared libraries, and put them in different debian packages
+ * Add a general input backend for libinput & console input
+ * Add support for any control key combination
+ * Add a simpler termcap based backend
+ * Add a framebuffer and a KMS backend
+   * Add/write a font rendering engine with UTF-8 support
+ * Implement support for virtual cuse based framebuffers & graphics support
