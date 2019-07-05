@@ -506,15 +506,15 @@ TYM_EXPORT int tym_pane_send_mouse_event(int pane, enum tym_button button, const
 /**
  * Similar to tym_u_va_log, but doesn't add any extra formatting.
  */
-void tym_u_va_rawlog(enum tym_log_level level, const char* format, va_list args);
+TYM_EXPORT void tym_u_va_rawlog(enum tym_log_level level, const char* format, va_list args);
 
 #ifdef __GNUC__
-void tym_u_rawlog(enum tym_log_level level, const char* format, ...) __attribute__((format(printf, 2, 3)));
+TYM_EXPORT void tym_u_rawlog(enum tym_log_level level, const char* format, ...) __attribute__((format(printf, 2, 3)));
 #else
 /**
  * \see tym_u_va_rawlog
  */
-void tym_u_rawlog(enum tym_log_level level, const char* format, ...);
+TYM_EXPORT void tym_u_rawlog(enum tym_log_level level, const char* format, ...);
 #endif
 
 /**
