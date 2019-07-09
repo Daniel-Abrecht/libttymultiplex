@@ -36,6 +36,8 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
     errno = EINVAL;
     return -1;
   }
+  if( key & TYM_KEY_MODIFIER_CTRL && ( (key & ~TYM_KEY_MODIFIER_CTRL) < 0x40 || (key & ~TYM_KEY_MODIFIER_CTRL) >= 0x80 ) )
+    key &= ~TYM_KEY_MODIFIER_CTRL; // Ignore control key for these keys
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
   #define CS(X) case TYM_KEY_ ## X:
   switch((enum tym_special_key)key){
@@ -69,6 +71,8 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
     case TYM_KEY_ESCAPE: break;
     case TYM_KEY_DELETE: return tym_i_pts_send(pane, S(CSI "3~"));
   }
+  if( key & TYM_KEY_MODIFIER_CTRL )
+    key = (key & ~TYM_KEY_MODIFIER_CTRL) - 64;
   if(key >= 0 && key < 0x100)
     return tym_i_pts_send(pane, 1, (char[]){key});
 #undef CS

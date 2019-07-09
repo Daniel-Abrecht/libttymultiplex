@@ -43,7 +43,9 @@ extern "C" {
   X(LEFT     , 0x103 ) \
   X(END      , 0x104 ) \
   X(PAGE_UP  , 0x105 ) \
-  X(PAGE_DOWN, 0x106 ) \
+  X(PAGE_DOWN, 0x106 )
+
+#define TYM_KEY_MODIFIER_CTRL 0x8000
 
 /**
  * These are constants representing special keys.
