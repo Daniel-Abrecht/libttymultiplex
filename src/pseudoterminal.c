@@ -71,8 +71,14 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
     case TYM_KEY_ESCAPE: break;
     case TYM_KEY_DELETE: return tym_i_pts_send(pane, S(CSI "3~"));
   }
-  if( key & TYM_KEY_MODIFIER_CTRL )
-    key = (key & ~TYM_KEY_MODIFIER_CTRL) - 64;
+  if( key & TYM_KEY_MODIFIER_CTRL ){
+    key &= ~TYM_KEY_MODIFIER_CTRL;
+    if(key >= 0x40 && key < 0x60){
+      key = (key & ~TYM_KEY_MODIFIER_CTRL) - 0x40;
+    }else if(key >= 0x60 && key < 0x80){
+      key = (key & ~TYM_KEY_MODIFIER_CTRL) - 0x60;
+    }
+  }
   if(key >= 0 && key < 0x100)
     return tym_i_pts_send(pane, 1, (char[]){key});
 #undef CS
