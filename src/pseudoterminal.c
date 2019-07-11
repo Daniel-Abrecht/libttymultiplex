@@ -31,7 +31,7 @@ int tym_i_pts_send(struct tym_i_pane_internal* pane, size_t size, const void*res
 /**
  * \see tym_pane_send_key
  */
-int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
+int tym_i_pts_send_key(struct tym_i_pane_internal* pane, uint_least16_t key){
   if(!pane){
     errno = EINVAL;
     return -1;
@@ -79,7 +79,7 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
       key = (key & ~TYM_KEY_MODIFIER_CTRL) - 0x60;
     }
   }
-  if(key >= 0 && key < 0x100)
+  if(key < 0x100)
     return tym_i_pts_send(pane, 1, (char[]){key});
 #undef CS
   return -1;
@@ -88,7 +88,7 @@ int tym_i_pts_send_key(struct tym_i_pane_internal* pane, int_least16_t key){
 /**
  * \see tym_pane_send_keys
  */
-int tym_i_pts_send_keys(struct tym_i_pane_internal* pane, size_t count, const int_least16_t keys[count]){
+int tym_i_pts_send_keys(struct tym_i_pane_internal* pane, size_t count, const uint_least16_t keys[count]){
   for(size_t i=0; i<count; i++)
     tym_i_pts_send_key(pane, keys[i]);
   return 0;

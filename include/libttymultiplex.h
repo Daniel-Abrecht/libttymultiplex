@@ -477,7 +477,7 @@ TYM_EXPORT int tym_pane_get_default_env_vars(int pane, void* ptr, int(*callback)
  * Send a key press to the pane. You can also use the #tym_special_key constants.
  * Control characters are possible, but not recommended.
  */
-TYM_EXPORT int tym_pane_send_key(int pane, int_least16_t key);
+TYM_EXPORT int tym_pane_send_key(int pane, uint_least16_t key);
 
 /**
  * Send multiple keys. Control characters are possible, but not recommended.
@@ -487,7 +487,7 @@ TYM_EXPORT int tym_pane_send_key(int pane, int_least16_t key);
  * \param count The umber of keys to be sent
  * \param keys The keys to be sent
  */
-TYM_EXPORT int tym_pane_send_keys(int pane, size_t count, const int_least16_t keys[count]);
+TYM_EXPORT int tym_pane_send_keys(int pane, size_t count, const uint_least16_t keys[count]);
 
 /**
  * Send a special key to the pane by key name. See #tym_special_key for possible key names.

@@ -618,7 +618,7 @@ error:
   return -1;
 }
 
-int tym_pane_send_key(int pane, int_least16_t key){
+int tym_pane_send_key(int pane, uint_least16_t key){
   int ret = 0;
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
@@ -638,7 +638,7 @@ error:
   return -1;
 }
 
-int tym_pane_send_keys(int pane, size_t count, const int_least16_t keys[count]){
+int tym_pane_send_keys(int pane, size_t count, const uint_least16_t keys[count]){
   int ret = 0;
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit != INIT_STATE_INITIALISED){
