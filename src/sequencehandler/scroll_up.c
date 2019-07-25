@@ -5,7 +5,7 @@
 #include <internal/pane.h>
 
 int tym_i_csq_scroll_up(struct tym_i_pane_internal* pane){
-  if(pane->sequence.integer_count != 1){
+  if(pane->sequence.integer_count > 1){
     errno = ENOENT;
     return -1;
   }

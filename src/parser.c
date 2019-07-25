@@ -136,6 +136,8 @@
   CSQ( CSI "m", character_attribute_change ) \
   CSQ( CSI NUM "m", character_attribute_change ) \
   CSQ( CSI NUM "n", device_status_report ) \
+  CSQ( CSI "b", repeat_preceding_character ) \
+  CSQ( CSI NUM "b", repeat_preceding_character ) \
   CSQ( CSI "s", save_cursor_position ) \
   CSQ( CSI "u", restore_cursor_position ) \
   CSQ( CSI "?" NUM "h", enable ) \
@@ -276,7 +278,7 @@ static const struct tym_i_character UTF8_INVALID_SYMBOL = {
 };
 
 /** Print a character after converting it to utf-8 */
-static void print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
+void tym_i_print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character){
   if(tym_i_character_is_utf8(character) && !character.data.utf8.count)
     return;
   struct tym_i_pane_screen_state* screen = &pane->screen[pane->current_screen];
@@ -313,8 +315,10 @@ static void print_character(struct tym_i_pane_internal* pane, const struct tym_i
     if(!screen->wraparound_mode_off)
       y += 1;
   }
-  if(sequence)
+  if(sequence){
+    pane->last_character = character;
     tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, screen->character_format, strlen(sequence), sequence, screen->insert_mode);
+  }
   x += 1;
   tym_i_pane_set_cursor_position( pane,
     TYM_I_SCP_PM_ABSOLUTE, x,
@@ -328,16 +332,16 @@ static bool print_character_update(struct tym_i_pane_internal* pane, char c){
   if(tym_i_character_is_utf8(pane->character)){
     enum tym_i_utf8_character_state_push_result result = tym_i_utf8_character_state_push(&pane->character.data.utf8, c);
     if(result & TYM_I_UCS_INVALID_ABORT_FLAG){
-      print_character(pane, UTF8_INVALID_SYMBOL);
+      tym_i_print_character(pane, UTF8_INVALID_SYMBOL);
       memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
       return false;
     }else if(result == TYM_I_UCS_DONE){
-      print_character(pane, pane->character);
+      tym_i_print_character(pane, pane->character);
       memset(&pane->character.data.utf8, 0, sizeof(pane->character.data.utf8));
     }
   }else{
     pane->character.data.byte = c;
-    print_character(pane, pane->character);
+    tym_i_print_character(pane, pane->character);
   }
   return true;
 }

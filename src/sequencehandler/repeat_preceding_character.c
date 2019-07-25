@@ -4,15 +4,17 @@
 #include <errno.h>
 #include <internal/pane.h>
 
-int tym_i_csq_scroll_down(struct tym_i_pane_internal* pane){
+int tym_i_csq_repeat_preceding_character(struct tym_i_pane_internal* pane){
   if(pane->sequence.integer_count > 1){
     errno = ENOENT;
     return -1;
   }
-  long long y = 1;
+  long long n = 1;
   if(pane->sequence.integer_count)
-    y = pane->sequence.integer[0];
-  if(y == 0) y = 1;
-  tym_i_scroll_scrolling_region(pane, -y);
+    n = pane->sequence.integer[0];
+  if(n == 0)
+    n = 1;
+  while(n--)
+    tym_i_print_character(pane, pane->last_character);
   return 0;
 }

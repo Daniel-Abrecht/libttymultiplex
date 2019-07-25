@@ -246,6 +246,8 @@ struct tym_i_pane_internal {
   enum tym_button last_button;
   /** The current mouse mode. Specifies what kind of mouse events are sent and how. */
   enum tym_i_mouse_mode mouse_mode;
+  /** The last character printed to the pane */
+  struct tym_i_character last_character;
 
   /** These are states which apply on a per-screen basis rather than a per-pane basis. */
   struct tym_i_pane_screen_state screen[TYM_I_SCREEN_COUNT];
@@ -275,6 +277,8 @@ int tym_i_scroll_scrolling_region(struct tym_i_pane_internal* pane, int n);
 int tym_i_pane_insert_delete_lines(struct tym_i_pane_internal* pane, unsigned y, int n);
 void tym_i_perror(const char*);
 int tym_i_pane_reset(struct tym_i_pane_internal* pane);
+void tym_i_print_character(struct tym_i_pane_internal* pane, const struct tym_i_character character);
+
 
 /** How the coordinate change is affected by the scrolling region. */
 enum tym_i_scp_scroll_region_behaviour {
