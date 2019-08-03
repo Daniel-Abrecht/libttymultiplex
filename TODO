@@ -1,6 +1,7 @@
  * Implement remaining xterm escape sequences
  * Implement switching to other VT escape sequence sets
- * Add some custom termcap file & implement some additional custom escape sequences
+ * Add a terminfo file at /usr/share/l/libttymultiplex
+   * implement some additional custom escape sequences
  * Put Backends into shared libraries, and put them in different debian packages
  * Add a general input backend for libinput & console input
  * Add support for any control key combination

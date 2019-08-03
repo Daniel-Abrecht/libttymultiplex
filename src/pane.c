@@ -21,6 +21,7 @@
 #include <internal/parser.h>
 #include <internal/pseudoterminal.h>
 #include <internal/backend.h>
+#include <internal/terminfo_helper.h>
 #include <libttymultiplex.h>
 
 /** \file */
@@ -423,8 +424,16 @@ int tym_pane_get_default_env_vars(
   int pane, void* ptr,
   int(*callback)(int pane, void* ptr, size_t count, const char* env[count][2])
 ){
+  const char* term = "xterm";
+  {
+    int res = tym_i_open_terminfo("libttymultiplex", O_RDONLY);
+    if(res != -1){
+      term = "libttymultiplex";
+      close(res);
+    }
+  }
   const char* env[][2] = {
-    {"TERM", "xterm"}
+    {"TERM", term}
   };
   size_t count = sizeof(env)/sizeof(*env);
   return (*callback)(pane, ptr, count, env);

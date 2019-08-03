@@ -16,6 +16,7 @@ SOURCES += src/charset.c
 SOURCES += src/utf8.c
 SOURCES += src/backend.c
 SOURCES += src/backend_default_procs.c
+SOURCES += src/terminfo_helper.c
 
 HEADERS = $(wildcard include/*.h) $(wildcard include/**/*.h)
 
