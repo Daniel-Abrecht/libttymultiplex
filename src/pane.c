@@ -28,7 +28,7 @@
 
 struct tym_i_pane_internal *tym_i_pane_list_start, *tym_i_pane_list_end;
 struct tym_i_pane_internal *tym_i_focus_pane;
-const struct tym_i_character_format default_character_format;
+const struct tym_i_character_format tym_i_default_character_format;
 
 /** Checks if character is specified using a utf-8 sequence or using enother charset. */
 bool tym_i_character_is_utf8(struct tym_i_character character){

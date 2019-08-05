@@ -1,0 +1,1 @@
+libs="$(ncursesw5-config --libs)"

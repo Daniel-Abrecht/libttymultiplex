@@ -260,7 +260,7 @@ extern struct tym_i_pane_internal *tym_i_pane_list_end;
 /** The pane currently in focus. May be 0. */
 extern struct tym_i_pane_internal *tym_i_focus_pane;
 /** This is the default format. It's all zero. It has no special formatting, uses the terminals default colors, and so on. */
-extern const struct tym_i_character_format default_character_format;
+extern const struct tym_i_character_format tym_i_default_character_format;
 
 bool tym_i_character_is_utf8(struct tym_i_character character);
 void tym_i_pane_update_size(struct tym_i_pane_internal* pane);

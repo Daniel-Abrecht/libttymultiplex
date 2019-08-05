@@ -246,7 +246,7 @@ static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned 
       (struct tym_i_cell_position){ .x=0, .y=top },
       (struct tym_i_cell_position){ .x=w, .y=bottom },
       true,
-      default_character_format
+      tym_i_default_character_format
     );
   }else{
     WINDOW* region = subpad(cscreen->window, m, w, top, 0);

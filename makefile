@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 SOURCES += $(wildcard src/sequencehandler/*.c)
-SOURCES += $(wildcard src/backend/*.c)
 SOURCES += src/libttymultiplex.c
 SOURCES += src/main.c
 SOURCES += src/pane.c
@@ -18,64 +17,79 @@ SOURCES += src/backend.c
 SOURCES += src/backend_default_procs.c
 SOURCES += src/terminfo_helper.c
 
-HEADERS = $(wildcard include/*.h) $(wildcard include/**/*.h)
+EXTERNAL_BACKENDS +=
+BUILTIN_BACKENDS += curses
 
-OBJS = $(patsubst src/%.c,build/%.o,$(SOURCES))
+LIBS = -lutil -ldl
 
-PREFIX = /usr
+include src/common.mk
 
-CC = gcc
-AR = ar
+# -R, --just-symbols --ignore-unresolved-symbol
 
-INCLUDES = $(shell ncursesw5-config --cflags) -Iinclude
-DEFAULT_INCLUDES = $(shell $(CC) -Wp,-v -x c++ -fsyntax-only /dev/null 2>&1 | sed -n '/search starts here/,/End of search list/p' | grep '^ ')
 
-CPPCHECK_OPTIONS += --enable=all
-CPPCHECK_OPTIONS += $(INCLUDES) $(addprefix -I,$(DEFAULT_INCLUDES)) --std=c99 -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE -DTYM_BUILD
-CPPCHECK_OPTIONS += --std=c99 -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE -DTYM_BUILD
-CPPCHECK_OPTIONS += $(CPPCHECK_OPTS)
+all: bin/libttymultiplex.so $(patsubst %,bin/backend/%.so,$(EXTERNAL_BACKENDS))
 
-OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -fstack-protector-all -g -Og
-CC_OPTS += -fvisibility=hidden -DTYM_BUILD -finput-charset=UTF-8
-CC_OPTS += $(INCLUDES)
-CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror -Wno-implicit-fallthrough -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
-CC_OPTS += -DTYM_LOG_PROJECT='"libttymultiplex"'
-LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined
+backend-%: bin/backend/%.so
 
-LIBS += -lutil $(shell ncursesw5-config --libs)
+clean-backend:
+	rm -rf "build/backend/"
 
-CC_OPTS += $(OPTIONS)
-LD_OPTS += $(OPTIONS)
+clean-backend-%:
+	rm -rf "$(patsubst clean-backend-%,build/backend/%/,$@)"
+	rm -f "$(patsubst clean-backend-%,bin/backend/%.so,$@)"
 
-all: bin/libttymultiplex.so bin/libttymultiplex.a
-
-%/.dir:
-	mkdir -p "$(dir $@)"
-	touch "$@"
+always:
 
 docs:
 	rm -rf doc
 	export PROJECT_NUMBER="$$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
 	doxygen doxygen/Doxyfile
 
-build/%.o: src/%.c $(HEADERS)
-	mkdir -p "$(dir $@)"
-	$(CC) $(CC_OPTS) -c -o $@ $<
+build/backend/%.a: backend/%/backend.mk always build/backend/.dir
+	$(MAKE) -f "$<" BACKEND="$(patsubst build/backend/%.a,%,$@)" "$@"
 
-bin/libttymultiplex.a: $(OBJS) | bin/.dir
-	$(AR) scr $@ $^
+bin/backend/%.so: build/backend/%.a | bin/backend/.dir
+	options_file="$(patsubst bin/backend/%.so,backend/%/options,$@)"; \
+	if [ -f "$$options_file" ]; \
+	  then . "$$options_file"; \
+	fi; \
+	libs="-Lbin/ -lttymultiplex $$libs"; \
+	ld_opts="$(LD_OPTS) $$ld_opts"; \
+	$(CC) $$ld_opts -Wl,--whole-archive $^ -Wl,--no-whole-archive $$libs -o $@;
 
-bin/libttymultiplex.so: bin/libttymultiplex.a | bin/.dir
-	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive $(LIBS) -o $@
+build/libttymultiplex.a: $(OBJS) $(patsubst %,build/backend/%.a,$(BUILTIN_BACKENDS)) | build/.dir
+	$(AR) scrT $@ $^
+
+bin/libttymultiplex.so: build/libttymultiplex.a | bin/.dir
+	libs="$(LIBS) \
+	$$(for backend in $(BUILTIN_BACKENDS); \
+	do (\
+	  options_file="backend/$$backend/options"; \
+	  if ! [ -f "$$options_file" ]; \
+	    then continue; \
+	  fi; \
+	  . "$$options_file"; \
+	  printf "%s\n" $$libs; \
+	) done)"; \
+	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive $$libs -o $@
 
 cppcheck:
 	cppcheck $(CPPCHECK_OPTIONS) $(SOURCES)
 
-install:
-	mkdir -p "$(DESTDIR)$(PREFIX)/lib"
-	mkdir -p "$(DESTDIR)$(PREFIX)/include"
-	cp bin/libttymultiplex.a "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.a"
-	cp bin/libttymultiplex.so "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so"
+install-backend-%: bin/backend/%.so
+	mkdir -p "$(DESTDIR)$(PREFIX)/lib/libttymultiplex/backend/"
+	cp $^ "$(DESTDIR)$(PREFIX)/lib/libttymultiplex/backend/"
+
+install-backends: $(patsubst %,install-backend-%,$(EXTERNAL_BACKENDS))
+
+install: install-lib install-header install-backends
+
+install-lib: bin/libttymultiplex.so
+	mkdir -p "$(DESTDIR)$(PREFIX)/lib/"
+	cp $^ "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so"
+
+install-header: include/libttymultiplex.h
+	mkdir -p "$(DESTDIR)$(PREFIX)/include/"
 	cp include/libttymultiplex.h "$(DESTDIR)$(PREFIX)/include/"
 
 uninstall:
@@ -85,3 +99,5 @@ uninstall:
 
 clean:
 	rm -rf bin/ build/
+
+.PHONY: all always clean install install-lib install-header uninstall install-backend-% cppcheck

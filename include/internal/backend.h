@@ -90,11 +90,13 @@ struct tym_i_backend_entry {
   const char* name;
   /** The backend */
   struct tym_i_backend backend;
+  /** If loaded from a shared library, the dlopen handle */
+  void* library;
   /** The next entry of the linked list */
   const struct tym_i_backend_entry* next;
 };
 
-void tym_i_backend_register(struct tym_i_backend_entry* entry);
+struct tym_i_backend_entry* tym_i_backend_register(struct tym_i_backend_entry* entry);
 int tym_i_backend_init(const char* backend);
 
 /**
@@ -102,22 +104,29 @@ int tym_i_backend_init(const char* backend);
  **/
 extern const struct tym_i_backend* tym_i_backend;
 
+/** Onl true if external backend is being loaded by function load_and_init_speciffic_external_backend in src/backend.c */
+extern bool tym_i_external_backend_normal_loading;
+
 /**
  * Register a backend. Currently, backends are built into libttymultiplex.
- * TODO: Put backends into shared libraries instead.
+ * Each backend has it's own folder. In each folder, only one backend
+ * is allowed to be registred.
  * 
  * \param P This is the priority determining the backend order.
  * \param N The backend name specified as a c string constant.
  * \param X The members of tym_i_backend in braces.
  **/
 #define TYM_I_BACKEND_REGISTER(P,N,X) \
+  static struct tym_i_backend_entry TYM_I_LUNIQUE(backend_entry) = { \
+    .name = N, \
+    .backend = { TYM_I_UNPACK X } \
+  }; \
   static void TYM_I_LUNIQUE(register_backend)(void) __attribute__((constructor(P),used)); \
   static void TYM_I_LUNIQUE(register_backend)(void){ \
-    static struct tym_i_backend_entry entry = { \
-      .name = N, \
-      .backend = { TYM_I_UNPACK X } \
-    }; \
-    tym_i_backend_register(&entry); \
-  }
+    if(!tym_i_external_backend_normal_loading) /* If external backend loaded normally, src/backend.c takes care of this. */ \
+      tym_i_backend_register(&TYM_I_LUNIQUE(backend_entry)); \
+  } \
+  /** This weak symbol is only used if the backend is loaded as external backend. */ \
+  __attribute__((weak,used,visibility("default"))) const struct tym_i_backend_entry*const tymb_backend_entry = &TYM_I_LUNIQUE(backend_entry);
 
 #endif
