@@ -17,8 +17,8 @@ SOURCES += src/backend.c
 SOURCES += src/backend_default_procs.c
 SOURCES += src/terminfo_helper.c
 
-EXTERNAL_BACKENDS += 
-BUILTIN_BACKENDS += curses
+EXTERNAL_BACKENDS += curses
+BUILTIN_BACKENDS +=
 
 LIBS = -lutil -ldl
 
@@ -75,11 +75,12 @@ cppcheck:
 
 install-backend-%: bin/backend/%.so
 	mkdir -p "$(DESTDIR)$(PREFIX)/lib/libttymultiplex/backend/"
+	backend="$(patsubst install-backend-%,%,$@)"; \
 	priority=50; \
-	if [ -f "backend/$(notdir $^)/priority" ] && grep -q '^[0-9][0-9]$$' && [ $$(wc -l "backend/$(notdir $^)/priority") = 1 ];  \
-	  then priority=$$(cat "backend/$(notdir $^)/priority"); \
+	if [ -f "backend/$$backend/priority" ] && grep -q '^[0-9][0-9]$$' "backend/$$backend/priority" && [ $$(wc -l "backend/$$backend/priority" | grep -o '^[0-9]*') = 1 ];  \
+	  then priority=$$(cat "backend/$$backend/priority"); \
 	fi; \
-	cp $^ "$(DESTDIR)$(PREFIX)/lib/libttymultiplex/backend/$$priority-$(notdir $^)"
+	cp $^ "$(DESTDIR)$(PREFIX)/lib/libttymultiplex/backend/$$priority-$$backend.so"
 
 install-backends: $(patsubst %,install-backend-%,$(EXTERNAL_BACKENDS))
 

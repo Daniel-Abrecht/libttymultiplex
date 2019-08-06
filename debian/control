@@ -20,5 +20,18 @@ Description: Terminal multiplexer library development files
 
 Package: libttymultiplex0
 Architecture: any
-Depends: libncursesw5, ${shlibs:Depends}, ${misc:Depends}
+Depends: libttymultiplex0-backend, ${shlibs:Depends}, ${misc:Depends}
+Recommends: libttymultiplex0-backend-all
 Description: Terminal multiplexer library
+
+Package: libttymultiplex0-backend-all
+Provides: libttymultiplex0-backend
+Architecture: all
+Depends: libttymultiplex0-backend-curses
+Description: Meta package for all backends
+
+Package: libttymultiplex0-backend-curses
+Provides: libttymultiplex0-backend
+Architecture: any
+Depends: libttymultiplex0, libncursesw5, ${shlibs:Depends}, ${misc:Depends}
+Description: curses backend for libttymultiplex

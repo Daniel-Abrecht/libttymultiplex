@@ -1,5 +1,6 @@
 libttymultiplex*/
 tmp/
 files
+debhelper-build-stamp
 *.substvars
 *.log
