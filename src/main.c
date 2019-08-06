@@ -313,8 +313,9 @@ void* tym_i_main(void* ptr){
 shutdown:
   while(tym_i_poll_count)
     pollfd_remove_sub(0);
-  tym_i_backend->cleanup();
   close(tym_i_cmd_fd);
+  tym_i_cmd_fd = -1;
+  tym_i_backend_unload();
   tym_i_binit = INIT_STATE_SHUTDOWN;
 exit:
   pthread_mutex_unlock(&tym_i_lock);

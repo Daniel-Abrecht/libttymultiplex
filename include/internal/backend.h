@@ -96,8 +96,10 @@ struct tym_i_backend_entry {
   const struct tym_i_backend_entry* next;
 };
 
+bool tym_i_backend_validate_prepare(struct tym_i_backend_entry* entry);
 struct tym_i_backend_entry* tym_i_backend_register(struct tym_i_backend_entry* entry);
 int tym_i_backend_init(const char* backend);
+void tym_i_backend_unload(void);
 
 /**
  * This is the chosen backend
