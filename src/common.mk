@@ -29,7 +29,19 @@ ifdef BACKEND
 
 HEADERS += $(wildcard backend/$(BACKEND)/include/*.h) $(wildcard backend/$(BACKEND)/include/**/*.h)
 INCLUDES += -Ibackend/$(BACKEND)/include
+CC_OPTS += -fvisibility=hidden
 CC_OPTS += -DTYM_LOG_PROJECT='"libttymultiplex-backend-$(BACKEND)"'
+CC_OPTS += -DTYM_I_BACKEND_NAME='"$(BACKEND)"'
+CC_OPTS += -DTYM_I_BACKEND_ID="B_$$(printf "$(BACKEND)" | sed 's/[^a-zA-Z0-9]/_/g')"
+BACKEND_PRIORITY = $(shell \
+  priority=50; \
+  if [ -f "backend/$(BACKEND)/priority" ] && grep -q '^[0-9][0-9]$$' "backend/$(BACKEND)/priority" && [ $$(wc -l "backend/$(BACKEND)/priority" | grep -o '^[0-9]*') = 1 ];  \
+    then priority=$$(cat "backend/$(BACKEND)/priority"); \
+  fi; \
+  echo "$$priority" \
+)
+CC_OPTS += -DTYM_I_BACKEND_PRIORITY=$(BACKEND_PRIORITY)
+
 SOURCES += $(addprefix backend/$(BACKEND)/,$(BACKEND_SOURCES))
 OBJS += $(patsubst backend/$(BACKEND)/src/%.c,build/backend/$(BACKEND)/%.o,$(SOURCES))
 

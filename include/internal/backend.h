@@ -114,21 +114,19 @@ extern bool tym_i_external_backend_normal_loading;
  * Each backend has it's own folder. In each folder, only one backend
  * is allowed to be registred.
  * 
- * \param P This is the priority determining the backend order.
- * \param N The backend name specified as a c string constant.
  * \param X The members of tym_i_backend in braces.
  **/
-#define TYM_I_BACKEND_REGISTER(P,N,X) \
-  static struct tym_i_backend_entry TYM_I_LUNIQUE(backend_entry) = { \
-    .name = N, \
+#define TYM_I_BACKEND_REGISTER(X) \
+  static struct tym_i_backend_entry TYM_I_CONCAT(tym_i_backend_entry_,TYM_I_BACKEND_ID) = { \
+    .name = TYM_I_BACKEND_NAME, \
     .backend = { TYM_I_UNPACK X } \
   }; \
-  static void TYM_I_LUNIQUE(register_backend)(void) __attribute__((constructor(P),used)); \
-  static void TYM_I_LUNIQUE(register_backend)(void){ \
+  void TYM_I_CONCAT(tym_i_register_backend_,TYM_I_BACKEND_ID)(void) __attribute__((constructor(1000+TYM_I_BACKEND_PRIORITY),used)); \
+  void TYM_I_CONCAT(tym_i_register_backend_,TYM_I_BACKEND_ID)(void){ \
     if(!tym_i_external_backend_normal_loading) /* If external backend loaded normally, src/backend.c takes care of this. */ \
-      tym_i_backend_register(&TYM_I_LUNIQUE(backend_entry)); \
+      tym_i_backend_register(&TYM_I_CONCAT(tym_i_backend_entry_,TYM_I_BACKEND_ID)); \
   } \
   /** This weak symbol is only used if the backend is loaded as external backend. */ \
-  __attribute__((weak,used,visibility("default"))) const struct tym_i_backend_entry*const tymb_backend_entry = &TYM_I_LUNIQUE(backend_entry);
+  __attribute__((weak,used,visibility("default"))) const struct tym_i_backend_entry*const tymb_backend_entry = &TYM_I_CONCAT(tym_i_backend_entry_,TYM_I_BACKEND_ID);
 
 #endif

@@ -377,7 +377,7 @@ static int update_terminal_size_information(void){
   return 0;
 }
 
-TYM_I_BACKEND_REGISTER(1000, "curses", (
+TYM_I_BACKEND_REGISTER((
   .init = init,
   .cleanup = cleanup,
   .resize = resize,
