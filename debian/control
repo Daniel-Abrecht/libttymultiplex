@@ -6,6 +6,10 @@ Standards-Version: 3.9.8
 Section: libs
 #Homepage: <insert the upstream URL, if relevant>
 Vcs-Git: https://projects.dpa.li/git/libttymultiplex.git
+# Also available at:
+#   https://gitlab.com/DanielAbrecht/libttymultiplex.git
+#   https://github.com/Daniel-Abrecht/libttymultiplex.git
+#   https://source.puri.sm/DanielAbrecht/libttymultiplex.git
 Vcs-Browser: https://projects.dpa.li/git/?p=libttymultiplex.git;a=summary
 
 Package: libttymultiplex-dev

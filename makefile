@@ -22,6 +22,10 @@ BUILTIN_BACKENDS +=
 
 LIBS = -lutil -ldl
 
+FILES_WITH_LIB_VERSION += debian/control
+FILES_WITH_LIB_VERSION += $(wildcard debian/libttymultiplex*.*)
+
+
 include src/common.mk
 
 all: bin/libttymultiplex.so $(patsubst %,bin/backend/%.so,$(EXTERNAL_BACKENDS))
@@ -41,6 +45,37 @@ docs:
 	rm -rf bin/doc
 	export PROJECT_NUMBER="v$$version $$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
 	doxygen doxygen/Doxyfile
+
+release-major: release@$(shell expr $(MAJOR) + 1).0.0
+
+release-minor: release@$(MAJOR).$(shell expr $(MINOR) + 1).0
+
+release-patch: release@$(MAJOR).$(MINOR).$(shell expr $(PATCH) + 1)
+
+release@%:
+	set -x; \
+	git clean -fdX debian/; \
+	version="$(patsubst release@%,%,$@)"; \
+	major="$(word 1,$(subst ., ,$(patsubst release@%,%,$@)))"; \
+	minor="$(word 2,$(subst ., ,$(patsubst release@%,%,$@)))"; \
+	patch="$(word 3,$(subst ., ,$(patsubst release@%,%,$@)))"; \
+	dch -v "$$version"; \
+	for file in $(FILES_WITH_LIB_VERSION); \
+	do \
+	  for prefix in libttymultiplex libttymultiplex.so.; \
+	    do sed -i "s|\($$prefix\)\([0-9]\+\.[0-9]\+.[0-9]\+\)|\1$$major.$$minor.$$patch|g;s|\($$prefix\)\([0-9]\+\.[0-9]\+\)|\1$$major.$$minor|g;s|\($$prefix\)\([0-9]\+\)|\1$$major|g" "$$file"; \
+	  done; \
+	  for prefix in libttymultiplex libttymultiplex.so.; \
+	  do \
+	    if printf '%s\n' "$$file" | grep -q "$$prefix[0-9]\+"; \
+	      then mv "$$file" "$$(printf '%s\n' "$$file" | sed "s|\($$prefix\)\([0-9]\+\.[0-9]\+.[0-9]\+\)|\1$$major.$$minor.$$patch|g;s|\($$prefix\)\([0-9]\+\.[0-9]\+\)|\1$$major.$$minor|g;s|\($$prefix\)\([0-9]\+\)|\1$$major|g")"; \
+	    fi; \
+	  done; \
+	done; \
+	echo "$$version" > version; \
+	git add debian/; \
+	git commit -m "New release v$$version"; \
+	git tag "v$$version"
 
 build/backend/%.a: backend/%/backend.mk always build/backend/.dir
 	$(MAKE) -f "$<" BACKEND="$(patsubst build/backend/%.a,%,$@)" "$@"
@@ -108,5 +143,6 @@ uninstall:
 
 clean:
 	rm -rf bin/ build/
+	git clean -fdX debian/
 
 .PHONY: all always clean install install-lib install-header uninstall install-backend-% cppcheck
