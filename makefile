@@ -38,8 +38,8 @@ clean-backend-%:
 always:
 
 docs:
-	rm -rf doc
-	export PROJECT_NUMBER="$$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
+	rm -rf bin/doc
+	export PROJECT_NUMBER="v$$version $$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
 	doxygen doxygen/Doxyfile
 
 build/backend/%.a: backend/%/backend.mk always build/backend/.dir
@@ -68,7 +68,11 @@ bin/libttymultiplex.so: build/libttymultiplex.a | bin/.dir
 	  . "$$options_file"; \
 	  printf "%s\n" $$libs; \
 	) done)"; \
-	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive $$libs -o $@
+	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive $$libs -o $@.$(MAJOR).$(MINOR).$(PATCH) -Wl,-soname,libttymultiplex.so.$(MAJOR)
+	cd bin; \
+	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR).$(MINOR)"; \
+	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR)"; \
+	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so";
 
 cppcheck:
 	cppcheck $(CPPCHECK_OPTIONS) $(SOURCES)
@@ -88,15 +92,18 @@ install: install-lib install-header install-backends
 
 install-lib: bin/libttymultiplex.so
 	mkdir -p "$(DESTDIR)$(PREFIX)/lib/"
-	cp $^ "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so"
+	cp "bin/libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)"
+	cd "$(DESTDIR)$(PREFIX)/lib/"; \
+	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR).$(MINOR)"; \
+	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR)"; \
+	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so";
 
 install-header: include/libttymultiplex.h
 	mkdir -p "$(DESTDIR)$(PREFIX)/include/"
 	cp include/libttymultiplex.h "$(DESTDIR)$(PREFIX)/include/"
 
 uninstall:
-	rm -f "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.a"
-	rm -f "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so"
+	rm -f "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so*"
 	rm -f "$(DESTDIR)$(PREFIX)/include/libttymultiplex.h"
 
 clean:

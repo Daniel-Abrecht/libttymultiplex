@@ -1,3 +1,7 @@
+VERSION := $(shell cat version)
+MAJOR   := $(word 1,$(subst ., ,$(VERSION)))
+MINOR   := $(word 2,$(subst ., ,$(VERSION)))
+PATCH   := $(word 3,$(subst ., ,$(VERSION)))
 
 HEADERS += $(wildcard include/*.h) $(wildcard include/**/*.h)
 

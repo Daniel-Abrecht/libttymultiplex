@@ -5,17 +5,13 @@ Build-Depends: libncursesw5-dev, debhelper (>= 9)
 Standards-Version: 3.9.8
 Section: libs
 #Homepage: <insert the upstream URL, if relevant>
-Vcs-Git:
- https://github.com/Daniel-Abrecht/libttymultiplex.git
- https://gitlab.com/DanielAbrecht/libttymultiplex.git
-Vcs-Browser:
- https://github.com/Daniel-Abrecht/libttymultiplex
- https://gitlab.com/DanielAbrecht/libttymultiplex
+Vcs-Git: https://projects.dpa.li/git/libttymultiplex.git
+Vcs-Browser: https://projects.dpa.li/git/?p=libttymultiplex.git;a=summary
 
 Package: libttymultiplex-dev
 Section: libdevel
 Architecture: any
-Depends: libttymultiplex0, libncursesw5-dev, ${misc:Depends}
+Depends: libttymultiplex0 (=${binary:Version}), ${misc:Depends}
 Description: Terminal multiplexer library development files
  This contains the header files needed to use the libttymultiplex
  library in another program.
@@ -41,14 +37,14 @@ Description: Terminal multiplexer library
 Package: libttymultiplex0-backend-all
 Provides: libttymultiplex0-backend
 Architecture: all
-Depends: libttymultiplex0-backend-curses
+Depends: libttymultiplex0-backend-curses, ${misc:Depends}
 Description: Meta package for all backends
  This meta package installs all libttymultiplex backends.
 
 Package: libttymultiplex0-backend-curses
 Provides: libttymultiplex0-backend
 Architecture: any
-Depends: libttymultiplex0, libncursesw5, ${shlibs:Depends}, ${misc:Depends}
+Depends: libttymultiplex0 (=${binary:Version}), libncursesw5, ${shlibs:Depends}, ${misc:Depends}
 Description: curses backend for libttymultiplex
  This backend for libttymultiplex uses the curses library.
  With this backend, libttymultiplex can be used on an existing terminal.
