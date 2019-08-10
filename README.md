@@ -2,8 +2,10 @@
 
 libttymultiplex is a terminal multiplexing library. It allows a program to create
 "panes", which are a rectangular area on the terminal/screen in which text can be
-displayed. libttymultiplex is also a xterm-compatible but still incomplete terminal
-emulator. Each pane is like a small terminal, escape sequences can be sent to them.
+displayed. Each pane is like a small terminal, escape sequences can be sent to them.
+libttymultiplex is also a xterm-compatible but still incomplete terminal emulator.
+The libttymultiplex library allows for different backends for displaying stuff, which
+allows it to be used on any display device any of the backends support.
 
 The public API is fully contained in libttymultiplex.h. This library is documented
 using doxygen, run `make docs` to generate the documentation.

@@ -17,21 +17,38 @@ Section: libdevel
 Architecture: any
 Depends: libttymultiplex0, libncursesw5-dev, ${misc:Depends}
 Description: Terminal multiplexer library development files
+ This contains the header files needed to use the libttymultiplex
+ library in another program.
 
 Package: libttymultiplex0
 Architecture: any
 Depends: libttymultiplex0-backend, ${shlibs:Depends}, ${misc:Depends}
 Recommends: libttymultiplex0-backend-all
 Description: Terminal multiplexer library
+ libttymultiplex is a terminal multiplexing library.
+ .
+ It allows a program to create "panes", which are a
+ rectangular area on the terminal/screen in which text
+ can be  displayed. Each pane is like a small terminal,
+ escape sequences can be sent to them.
+ .
+ libttymultiplex is also a xterm-compatible  but still
+ incomplete terminal emulator. The libttymultiplex library
+ allows for different backends for displaying stuff, which
+ allows it to be used on any display device any of the
+ backends support.
 
 Package: libttymultiplex0-backend-all
 Provides: libttymultiplex0-backend
 Architecture: all
 Depends: libttymultiplex0-backend-curses
 Description: Meta package for all backends
+ This meta package installs all libttymultiplex backends.
 
 Package: libttymultiplex0-backend-curses
 Provides: libttymultiplex0-backend
 Architecture: any
 Depends: libttymultiplex0, libncursesw5, ${shlibs:Depends}, ${misc:Depends}
 Description: curses backend for libttymultiplex
+ This backend for libttymultiplex uses the curses library.
+ With this backend, libttymultiplex can be used on an existing terminal.
