@@ -143,6 +143,6 @@ uninstall:
 
 clean:
 	rm -rf bin/ build/
-	git clean -fdX debian/
+	git clean -fdX debian/ || true
 
 .PHONY: all always clean install install-lib install-header uninstall install-backend-% cppcheck
