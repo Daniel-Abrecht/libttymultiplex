@@ -113,13 +113,13 @@ cppcheck:
 	cppcheck $(CPPCHECK_OPTIONS) $(SOURCES)
 
 install-backend-%: bin/backend/%.so
-	mkdir -p "$(DESTDIR)$(PREFIX)/lib/libttymultiplex/backend/"
+	mkdir -p "$(DESTDIR)/$(BACKEND_DIR)"
 	backend="$(patsubst install-backend-%,%,$@)"; \
 	priority=50; \
 	if [ -f "backend/$$backend/priority" ] && grep -q '^[0-9][0-9]$$' "backend/$$backend/priority" && [ $$(wc -l "backend/$$backend/priority" | grep -o '^[0-9]*') = 1 ];  \
 	  then priority=$$(cat "backend/$$backend/priority"); \
 	fi; \
-	cp $^ "$(DESTDIR)$(PREFIX)/lib/libttymultiplex/backend/$$priority-$$backend.so"
+	cp $^ "$(DESTDIR)/$(BACKEND_DIR)/$$priority-$$backend.so"
 
 install-backends: $(patsubst %,install-backend-%,$(EXTERNAL_BACKENDS))
 

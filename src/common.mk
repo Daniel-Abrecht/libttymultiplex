@@ -6,6 +6,7 @@ PATCH   := $(word 3,$(subst ., ,$(VERSION)))
 HEADERS += $(wildcard include/*.h) $(wildcard include/**/*.h)
 
 PREFIX = /usr
+BACKEND_DIR = $(PREFIX)/lib/libttymultiplex/backend-$(VERSION)
 
 CC = gcc
 AR = ar
@@ -23,7 +24,9 @@ CC_OPTS += -DTYM_BUILD -finput-charset=UTF-8
 CC_OPTS += $(INCLUDES)
 CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror -Wno-implicit-fallthrough
 CC_OPTS += -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
-CC_OPTS += -DPREFIX='"$(PREFIX)"'
+CC_OPTS += -DTYM_PREFIX='"$(PREFIX)"'
+CC_OPTS += -DTYM_VERSION='"$(VERSION)"' -DTYM_MAJOR='$(MAJOR)' -DTYM_MINOR='$(MINOR)' -DTYM_PATCH='$(PATCH)'
+CC_OPTS += -DTYM_BACKEND_DIR='"$(BACKEND_DIR)"'
 LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined
 
 CC_OPTS += $(OPTIONS)

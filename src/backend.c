@@ -29,7 +29,7 @@ const struct tym_i_backend* tym_i_backend;
 /** Backend entry, internal reference for cleanup stuff later on */
 static const struct tym_i_backend_entry* tym_i_backend_entry;
 
-static const char* plugin_dir = PREFIX "/lib/libttymultiplex/backend";
+static const char* plugin_dir = TYM_BACKEND_DIR;
 
 bool tym_i_external_backend_normal_loading;
 

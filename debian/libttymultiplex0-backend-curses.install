@@ -1,1 +1,1 @@
-usr/lib/libttymultiplex/backend/40-curses.so
+usr/lib/libttymultiplex/backend-*/40-curses.so
