@@ -1,0 +1,9 @@
+Document: libttymultiplex-api
+Title: libttymultiplex API documentation
+Author: Daniel Abrecht
+Abstract: This is the documentation of both, the API and the internals of the libttymultiplex library.
+Section: Programming/C
+
+Format: HTML
+Index: /usr/share/doc/libttymultiplex/html/index.html
+Files: /usr/share/doc/libttymultiplex/html/*.html

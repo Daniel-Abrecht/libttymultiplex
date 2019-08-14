@@ -41,8 +41,11 @@ clean-backend-%:
 
 always:
 
-docs:
+docs: bin/doc/html/index.html
+
+bin/doc/html/index.html: $(SOURCES) $(HEADERS)
 	rm -rf bin/doc
+	mkdir -p bin/doc
 	export PROJECT_NUMBER="v$$version $$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
 	doxygen doxygen/Doxyfile
 
@@ -137,6 +140,16 @@ install-header: include/libttymultiplex.h
 	mkdir -p "$(DESTDIR)$(PREFIX)/include/"
 	cp include/libttymultiplex.h "$(DESTDIR)$(PREFIX)/include/"
 
+install-docs:
+	mkdir -p "$(DESTDIR)/usr/share/doc/libttymultiplex/"
+	cp -r bin/doc/html "$(DESTDIR)/usr/share/doc/libttymultiplex/"
+	find bin/doc/html/ -iname "*.map" -or -iname "*.md5" -delete
+	if [ -f /usr/share/javascript/jquery/jquery.min.js ]; \
+	then \
+	  rm -f "$(DESTDIR)/usr/share/doc/libttymultiplex/html/jquery.js"; \
+	  ln -s /usr/share/javascript/jquery/jquery.min.js "$(DESTDIR)/usr/share/doc/libttymultiplex/html/jquery.js"; \
+	fi
+
 uninstall:
 	rm -f "$(DESTDIR)$(PREFIX)/lib/libttymultiplex.so*"
 	rm -f "$(DESTDIR)$(PREFIX)/include/libttymultiplex.h"
@@ -145,4 +158,4 @@ clean:
 	rm -rf bin/ build/
 	git clean -fdX debian/ || true
 
-.PHONY: all always clean install install-lib install-header uninstall install-backend-% cppcheck
+.PHONY: all always clean install install-lib install-header install-docs uninstall install-backend-% cppcheck

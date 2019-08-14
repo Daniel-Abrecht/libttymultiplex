@@ -2,6 +2,7 @@ Source: libttymultiplex
 Priority: optional
 Maintainer: Daniel Patrick Abrecht <deb@danielabrecht.ch>
 Build-Depends: libncursesw5-dev, debhelper (>= 9)
+Build-Depends-Indep: doxygen, libjs-jquery
 Standards-Version: 3.9.8
 Section: libs
 #Homepage: <insert the upstream URL, if relevant>
@@ -19,6 +20,13 @@ Depends: libttymultiplex0 (=${binary:Version}), ${misc:Depends}
 Description: Terminal multiplexer library development files
  This contains the header files needed to use the libttymultiplex
  library in another program.
+
+Package: libttymultiplex-doc
+Section: doc
+Architecture: all
+Depends: libjs-jquery, ${misc:Depends}
+Description: Terminal multiplexer library documentation of API and internals
+ This package contains the documentation for the libttymultiplex library.
 
 Package: libttymultiplex0
 Architecture: any
