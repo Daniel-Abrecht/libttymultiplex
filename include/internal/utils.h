@@ -14,7 +14,7 @@
  * 
  * \param s The size of the data to be copyed in bytes
  * \param init The data to be copyed
- * \retruns A new copy of the data
+ * \returns A new copy of the data
  */
 void* tym_i_copy(size_t s, void* init);
 
