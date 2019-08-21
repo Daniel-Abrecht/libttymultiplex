@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <assert.h>
 #include <internal/main.h>
 #include <internal/pane.h>
 #include <internal/backend.h>
@@ -165,6 +166,7 @@ static int pane_resize(struct tym_i_pane_internal* pane){
 }
 
 static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned top, unsigned bottom){
+  assert(bottom <= terminal.size.y);
   (void)pane;
   (void)n;
   (void)top;
@@ -173,6 +175,8 @@ static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned 
 }
 
 static int pane_set_cursor_position(struct tym_i_pane_internal* pane, struct tym_i_cell_position position){
+  assert(position.y < terminal.size.y);
+  assert(position.x < terminal.size.x);
   (void)pane;
   (void)position;
   return 0;
@@ -185,14 +189,11 @@ static int pane_set_character(
   size_t length, const char utf8[length+1],
   bool insert
 ){
-  if(position.y >= terminal.size.y)
-    position.y = terminal.size.y - 1;
-  if(position.x >= terminal.size.x)
-    position.x = terminal.size.x - 1;
+  (void)pane;
+  assert(position.y < terminal.size.y);
+  assert(position.x < terminal.size.x);
   struct character (*tch)[terminal.size.y][terminal.size.x] = terminal.content;
   struct character* ch = &(*tch)[position.y][position.x];
-  (void)pane;
-  (void)insert;
   ch->format = format.attribute;
   ch->fgcolor[CI_RED]   = format.fgcolor.red;
   ch->fgcolor[CI_GREEN] = format.fgcolor.green;
@@ -200,17 +201,26 @@ static int pane_set_character(
   ch->bgcolor[CI_RED]   = format.bgcolor.red;
   ch->bgcolor[CI_GREEN] = format.bgcolor.green;
   ch->bgcolor[CI_BLUE]  = format.bgcolor.blue;
+  if(insert)
+    if(position.x+1 < terminal.size.x)
+      memmove( (*tch)[position.y]+position.x, (*tch)[position.y]+position.x+1, (terminal.size.x-position.x-1) * sizeof(struct character) );
   if(length <= TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT)
     memcpy(ch->data, utf8, length);
-  (void)length;
-  (void)utf8;
   return 0;
 }
 
 static int pane_delete_characters(struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n){
   (void)pane;
-  (void)position;
-  (void)n;
+  assert(position.y < terminal.size.y);
+  assert(position.x < terminal.size.x);
+  if(!n)
+    return 0;
+  if(terminal.size.x - position.x < n)
+    n = terminal.size.x - position.x;
+  struct character (*tch)[terminal.size.y][terminal.size.x] = terminal.content;
+  if(position.x+n < terminal.size.x)
+    memmove( (*tch)[position.y]+position.x+n, (*tch)[position.y]+position.x, (terminal.size.x-position.x-n) * sizeof(struct character) );
+  memset( (*tch)[position.y]+position.x, 0, n * sizeof(struct character) );
   return 0;
 }
 

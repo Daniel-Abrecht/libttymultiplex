@@ -59,8 +59,10 @@ int tym_i_pane_set_area_to_character_default_proc(
   unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(end.x > w)
     end.x = w;
-  if(end.y > h)
-    end.y = h;
+  if(!h)
+    return 0;
+  if(end.y >= h)
+    end.y = h-1;
   for(unsigned y=start.y; y<=end.y; y++){
     unsigned e = (block || y == end.y) ? end.x : w;
     for(unsigned x=start.x; x<e; x++){

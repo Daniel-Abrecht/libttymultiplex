@@ -315,16 +315,15 @@ void tym_i_print_character(struct tym_i_pane_internal* pane, const struct tym_i_
     if(!screen->wraparound_mode_off)
       y += 1;
   }
-  if(sequence){
-    pane->last_character = character;
-    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){.x=x,.y=y}, screen->character_format, strlen(sequence), sequence, screen->insert_mode);
-  }
-  x += 1;
   tym_i_pane_set_cursor_position( pane,
-    TYM_I_SCP_PM_ABSOLUTE, x,
+    TYM_I_SCP_PM_ABSOLUTE, x+1,
     TYM_I_SCP_SMM_SCROLL_FORWARD_ONLY, TYM_I_SCP_PM_ABSOLUTE, y,
     TYM_I_SCP_SCROLLING_REGION_UNCROSSABLE, true
   );
+  if(sequence){
+    pane->last_character = character;
+    tym_i_backend->pane_set_character(pane, (struct tym_i_cell_position){x<w?x:w-1,y<h?y:h-1}, screen->character_format, strlen(sequence), sequence, screen->insert_mode);
+  }
 }
 
 /** Add a byte to a utf-8 character buffer and print complete ones. */

@@ -2,15 +2,19 @@ TESTS = $(dir $(wildcard */makefile))
 
 all: test
 
-clean: $(addprefix clean-,$(TESTS)) 
-build: $(addprefix build-,$(TESTS)) 
-test: $(addprefix test-,$(TESTS)) 
+clean: $(addprefix clean-,$(TESTS))
+build: $(addprefix bin/,$(TESTS))
+test: $(addprefix test-,$(TESTS))
 
-build-%:
-	$(MAKE) -C "$(patsubst build-%,%,$@)"
+bin/%: always
+	$(MAKE) -C "$(patsubst bin/%,%,$@)"
+
+build-%: bin/%
 
 clean-%:
 	$(MAKE) -C "$(patsubst clean-%,%,$@)" clean
 
 test-%:
 	$(MAKE) -C "$(patsubst test-%,%,$@)" test
+
+always: ;

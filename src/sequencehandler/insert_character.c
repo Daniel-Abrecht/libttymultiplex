@@ -19,10 +19,12 @@ int tym_i_csq_insert_character(struct tym_i_pane_internal* pane){
   unsigned x = screen->cursor.x;
   unsigned w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
   unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
+  if(w == 0 || h == 0)
+    return 0;
   if(x >= w)
-    x = w;
+    x = w-1;
   if(y >= h)
-    y = h;
+    y = h-1;
   if(n > w - x)
     n = w - x;
   while(n--)

@@ -76,7 +76,7 @@ static void shutdown(void){
   tym_shutdown();
 }
 
-/** Add a rseize handler */
+/** Add a reseize handler */
 int tym_i_resize_handler_add(const struct tym_i_resize_handler_ptr_pair* cp){
   return tym_i_list_add(sizeof(*tym_i_resize_handler_list), &tym_i_resize_handler_count, (void**)&tym_i_resize_handler_list, cp);
 }
