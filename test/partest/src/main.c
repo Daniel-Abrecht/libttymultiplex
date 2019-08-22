@@ -166,17 +166,65 @@ static int pane_resize(struct tym_i_pane_internal* pane){
 }
 
 static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned top, unsigned bottom){
-  assert(bottom <= terminal.size.y);
-  (void)pane;
-  (void)n;
-  (void)top;
-  (void)bottom;
+  unsigned pt = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_TOP);
+  unsigned pb = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_BOTTOM);
+  unsigned pl = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_LEFT);
+  unsigned pr = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_RIGHT);
+  assert(pl <= pr);
+  assert(pt <= pb);
+  assert(pr <= terminal.size.x);
+  assert(pb <= terminal.size.y);
+  assert(top <= bottom);
+  assert(bottom <= pb-pt);
+  if(n == 0 || bottom-top == 0 || pr-pl == 0)
+    return 0;
+  if(bottom-top <= (unsigned)abs(n)){
+    return tym_i_backend->pane_erase_area(
+      pane,
+      (struct tym_i_cell_position){ .x=0, .y=top },
+      (struct tym_i_cell_position){ .x=pr-pl, .y=bottom },
+      true,
+      tym_i_default_character_format
+    );
+  }else{
+    struct character (*tch)[terminal.size.y][terminal.size.x] = terminal.content;
+    if(n > 0){
+      for(int i=0,m=bottom-top-n; i<m; i++)
+        memcpy( (*tch)[pt+top+i]+pl, (*tch)[pt+top+n+i]+pl, (pr-pl) * sizeof(struct character) );
+      return tym_i_backend->pane_erase_area(
+        pane,
+        (struct tym_i_cell_position){ .x=0, .y=bottom-n },
+        (struct tym_i_cell_position){ .x=pr-pl, .y=bottom-1 },
+        true,
+        tym_i_default_character_format
+      );
+    }else{
+      for(int i=0,m=bottom-top+n; i<m; i++)
+        memcpy( (*tch)[pt+bottom-i]+pl, (*tch)[pt+bottom+n-i]+pl, (pr-pl) * sizeof(struct character) );
+      return tym_i_backend->pane_erase_area(
+        pane,
+        (struct tym_i_cell_position){ .x=0, .y=top },
+        (struct tym_i_cell_position){ .x=pr-pl, .y=top-(n+1) },
+        true,
+        tym_i_default_character_format
+      );
+    }
+  }
+  assert(false);
   return 0;
 }
 
 static int pane_set_cursor_position(struct tym_i_pane_internal* pane, struct tym_i_cell_position position){
-  assert(position.y < terminal.size.y);
-  assert(position.x < terminal.size.x);
+  unsigned pt = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_TOP);
+  unsigned pb = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_BOTTOM);
+  unsigned pl = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_LEFT);
+  unsigned pr = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_RIGHT);
+  assert(pl <= pr);
+  assert(pt <= pb);
+  assert(pr <= terminal.size.x);
+  assert(pb <= terminal.size.y);
+  assert(position.x < pr-pl);
+  assert(position.y < pb-pt);
   (void)pane;
   (void)position;
   return 0;
@@ -189,11 +237,18 @@ static int pane_set_character(
   size_t length, const char utf8[length+1],
   bool insert
 ){
-  (void)pane;
-  assert(position.y < terminal.size.y);
-  assert(position.x < terminal.size.x);
+  unsigned pt = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_TOP);
+  unsigned pb = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_BOTTOM);
+  unsigned pl = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_LEFT);
+  unsigned pr = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_RIGHT);
+  assert(pl <= pr);
+  assert(pt <= pb);
+  assert(pr <= terminal.size.x);
+  assert(pb <= terminal.size.y);
+  assert(position.x < pr-pl);
+  assert(position.y < pb-pt);
   struct character (*tch)[terminal.size.y][terminal.size.x] = terminal.content;
-  struct character* ch = &(*tch)[position.y][position.x];
+  struct character* ch = &(*tch)[pt+position.y][pl+position.x];
   ch->format = format.attribute;
   ch->fgcolor[CI_RED]   = format.fgcolor.red;
   ch->fgcolor[CI_GREEN] = format.fgcolor.green;
@@ -202,25 +257,34 @@ static int pane_set_character(
   ch->bgcolor[CI_GREEN] = format.bgcolor.green;
   ch->bgcolor[CI_BLUE]  = format.bgcolor.blue;
   if(insert)
-    if(position.x+1 < terminal.size.x)
-      memmove( (*tch)[position.y]+position.x, (*tch)[position.y]+position.x+1, (terminal.size.x-position.x-1) * sizeof(struct character) );
-  if(length <= TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT)
+    if(position.x+1 < pr-pl)
+      memmove( (*tch)[pt+position.y]+pl+position.x, (*tch)[pt+position.y]+pl+position.x+1, (pr-pl-position.x-1) * sizeof(struct character) );
+  if(length && length <= TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT)
     memcpy(ch->data, utf8, length);
+  if(length < TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT)
+    memset(ch->data+length, 0, TYM_I_UTF8_CHARACTER_MAX_BYTE_COUNT-length);
   return 0;
 }
 
 static int pane_delete_characters(struct tym_i_pane_internal* pane, struct tym_i_cell_position position, unsigned n){
-  (void)pane;
-  assert(position.y < terminal.size.y);
-  assert(position.x < terminal.size.x);
+  unsigned pt = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_TOP);
+  unsigned pb = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_BOTTOM);
+  unsigned pl = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_LEFT);
+  unsigned pr = TYM_RECT_POS_REF(pane->absolute_position, CHARFIELD, TYM_RIGHT);
+  assert(pl <= pr);
+  assert(pt <= pb);
+  assert(pr <= terminal.size.x);
+  assert(pb <= terminal.size.y);
+  assert(position.x < pr-pl);
+  assert(position.y < pb-pt);
+  if(pr-pl - position.x < n)
+    n = pr-pl - position.x;
   if(!n)
     return 0;
-  if(terminal.size.x - position.x < n)
-    n = terminal.size.x - position.x;
   struct character (*tch)[terminal.size.y][terminal.size.x] = terminal.content;
-  if(position.x+n < terminal.size.x)
-    memmove( (*tch)[position.y]+position.x+n, (*tch)[position.y]+position.x, (terminal.size.x-position.x-n) * sizeof(struct character) );
-  memset( (*tch)[position.y]+position.x, 0, n * sizeof(struct character) );
+  if(position.x+n < pr-pl)
+    memmove( (*tch)[pt+position.y]+pl+position.x+n, (*tch)[pt+position.y]+pl+position.x, (pr-pl-position.x-n) * sizeof(struct character) );
+  memset( (*tch)[pt+position.y]+pl+position.x, 0, n * sizeof(struct character) );
   return 0;
 }
 

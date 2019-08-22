@@ -59,7 +59,7 @@ int tym_i_pane_set_area_to_character_default_proc(
   unsigned h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
   if(end.x > w)
     end.x = w;
-  if(!h)
+  if(h == 0 || w == 0)
     return 0;
   if(end.y >= h)
     end.y = h-1;
