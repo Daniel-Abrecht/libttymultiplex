@@ -158,4 +158,7 @@ clean:
 	rm -rf bin/ build/
 	git clean -fdX debian/ || true
 
-.PHONY: all always clean install install-lib install-header install-docs uninstall install-backend-% cppcheck
+test: build/libttymultiplex.a
+	$(MAKE) -C test
+
+.PHONY: all always clean test install install-lib install-header install-docs uninstall install-backend-% cppcheck

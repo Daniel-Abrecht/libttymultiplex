@@ -6,6 +6,8 @@ BIN_DIR = $(TEST_DIR)/bin
 BUILD_DIR = $(TEST_DIR)/build/$(NAME)
 SRC_DIR = src
 
+BIN = $(BIN_DIR)/$(NAME)
+
 LIBTTYMULTIPLEX_BASE_A = build/libttymultiplex.a
 ABS_LIBTTYMULTIPLEX_BASE_A = $(PROJECT_ROOT)/$(LIBTTYMULTIPLEX_BASE_A)
 
@@ -33,9 +35,9 @@ LD_OPTS += $(OPTS)
 
 OBJS += $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SOURCES))
 
-bin-base: $(BIN_DIR)/$(NAME)
+bin-base: $(BIN)
 
-$(BIN_DIR)/$(NAME): $(ABS_LIBTTYMULTIPLEX_BASE_A) $(OBJS)
+$(BIN): $(ABS_LIBTTYMULTIPLEX_BASE_A) $(OBJS)
 	mkdir -p "$(dir $@)"
 	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive -o "$@"
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <unistd.h>
 #include <internal/main.h>
 #include <internal/pane.h>
 #include <internal/backend.h>
@@ -41,7 +42,7 @@ int dump_screen(void){
   size_t len = strlen(dump_target);
   if(len > sizeof(buf)-9)
     return 1;
-  ssize_t n = snprintf(buf, sizeof(buf)-1, "%s.%u.", dump_target, (unsigned)di++);
+  ssize_t n = snprintf(buf, sizeof(buf)-1, "%s%u.", dump_target, (unsigned)di++);
   if(n < 0 || n > (ssize_t)sizeof(buf)-4)
     return 1;
   enum {
@@ -105,6 +106,7 @@ int main(int argc, char* argv[]){
     perror("tym_pane_focus failed");
     return 1;
   }
+  int fd = tym_pane_get_slavefd(top_pane);
   int c;
   while((c=getchar()) != EOF && c != -1){
     if(c == 0){
@@ -114,8 +116,8 @@ int main(int argc, char* argv[]){
       }
       continue;
     }
-    if(tym_pane_send_key(TYM_PANE_FOCUS, c)){
-      perror("tym_pane_send_key failed");
+    if(write(fd, (char[]){c}, 1) != 1){
+      perror("write failed");
       return 1;
     }
   }
