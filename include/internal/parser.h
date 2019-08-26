@@ -43,7 +43,7 @@ typedef int (*tym_i_csq_sequence_callback)(struct tym_i_pane_internal* pane);
 
 /**
  * This is the mapping between escape sequences, their description/name and their callback function.
- */ 
+ */
 struct tym_i_command_sequence {
   /** The escape sequence template */
   const char* sequence;
@@ -54,6 +54,18 @@ struct tym_i_command_sequence {
   /** A pointer to the callback function */
   tym_i_csq_sequence_callback callback;
 };
+
+/**
+ * This is just a hook for some white box tests to check if an escape sequence
+ * was detected
+ */
+extern void tym_i_csq_test_hook(const struct tym_i_pane_internal* pane, int ret, const struct tym_i_command_sequence* command) __attribute__((weak));
+
+/**
+ * This is just a hook for some white box tests to check if a character was
+ * detected as not to be part of an escape sequence
+ */
+extern void tym_i_nocsq_test_hook(const struct tym_i_pane_internal* pane, char c) __attribute__((weak));
 
 /**
  * The parser function for parsing escape sequences.

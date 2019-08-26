@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <unistd.h>
 #include <internal/main.h>
 #include <internal/pane.h>
+#include <internal/parser.h>
 #include <internal/backend.h>
 #include <internal/pseudoterminal.h>
+
+int fpipe[2] = {-1,-1};
 
 struct tym_super_position_rectangle top_pane_coordinates = {
   .edge[TYM_RECT_BOTTOM_RIGHT].type[TYM_P_RATIO].axis = {
@@ -11,11 +15,25 @@ struct tym_super_position_rectangle top_pane_coordinates = {
   }
 };
 
+void tym_i_csq_test_hook(const struct tym_i_pane_internal* pane, int ret, const struct tym_i_command_sequence* command){
+  printf("tym_i_csq_test_hook: %d %d %s\n", pane->id, ret, command->callback_name);
+}
+
+void tym_i_nocsq_test_hook(const struct tym_i_pane_internal* pane, char c){
+  if(c == 0){
+    close(fpipe[1]);
+    return;
+  }
+  printf("tym_i_nocsq_test_hook: %d 0x%.2x\n", pane->id, (int)(uint8_t)c);
+}
+
+
 int main(int argc, char* argv[]){
   if(argc != 2){
     fprintf(stderr, "Usage: %s sequence\n", argv[0]);
     return 1;
   }
+  pipe(fpipe);
   setenv("TM_BACKEND", TYM_I_BACKEND_NAME, true);
   if(tym_init()){
     perror("tym_init failed");
@@ -30,12 +48,20 @@ int main(int argc, char* argv[]){
     perror("tym_pane_focus failed");
     return 1;
   }
-  char* seq = argv[1];
-  for( ; *seq; seq++ ){
-    if(tym_pane_send_key(TYM_PANE_FOCUS, *seq)){
-      perror("tym_pane_send_key failed");
+  int fd = tym_pane_get_slavefd(top_pane);
+  if(dprintf(fd, "%s%c", argv[1], 0) == -1)
+    return -1;
+  while(true){
+    char c = 0;
+    ssize_t ret = read(fpipe[0], &c, 1);
+    if(ret == -1 && errno == EINTR)
+      continue;
+    if(ret){
+      perror("read failed");
       return 1;
     }
+    if(ret == 0)
+      break;
   }
   tym_shutdown();
   return 0;

@@ -414,6 +414,8 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
     fprintf(stderr,"%*s %c\n",(int)pane->sequence.length,pane->sequence.buffer, c);*/
   if(max < min || index >= tym_i_command_sequence_map[min].length || index >= tym_i_command_sequence_map[max].length){
     if(control_character(pane, c)){
+      if(tym_i_nocsq_test_hook)
+        tym_i_nocsq_test_hook(pane, c);
       return;
     }else{
       goto escape_abort;
@@ -444,7 +446,10 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
   if(min == max && index+1 == tym_i_command_sequence_map[min].length){
     const struct tym_i_command_sequence* command = tym_i_command_sequence_map + min;
     if(command->callback){
-      if(command->callback(pane) == -1){
+      int ret = command->callback(pane);
+      if(tym_i_csq_test_hook)
+        tym_i_csq_test_hook(pane, ret, command);
+      if(ret == -1){
         int err = errno;
         TYM_U_LOG(TYM_LOG_DEBUG, "- ");
         tym_i_debug_sequence_params(command, &pane->sequence);
@@ -475,6 +480,8 @@ void tym_i_pane_parse(struct tym_i_pane_internal* pane, unsigned char c){
   return;
 escape_abort:;
   char fc = pane->sequence.length ? pane->sequence.buffer[0] : c;
+  if(tym_i_nocsq_test_hook)
+    tym_i_nocsq_test_hook(pane, fc);
   switch(fc){
     case '\x1B': print_character_update(pane, '^'); break;
     default: print_character_update(pane, fc); break;
