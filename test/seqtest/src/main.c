@@ -7,6 +7,7 @@
 #include <internal/pseudoterminal.h>
 
 int fpipe[2] = {-1,-1};
+int result = 0;
 
 struct tym_super_position_rectangle top_pane_coordinates = {
   .edge[TYM_RECT_BOTTOM_RIGHT].type[TYM_P_RATIO].axis = {
@@ -16,15 +17,25 @@ struct tym_super_position_rectangle top_pane_coordinates = {
 };
 
 void tym_i_csq_test_hook(const struct tym_i_pane_internal* pane, int ret, const struct tym_i_command_sequence* command){
-  printf("tym_i_csq_test_hook: %d %d %s\n", pane->id, ret, command->callback_name);
+  if(ret != 0 && ret != -1)
+    result = 1;
+  (void)pane;
+  printf("escape sequence: %d <- %s\n", ret, command->callback_name);
 }
 
-void tym_i_nocsq_test_hook(const struct tym_i_pane_internal* pane, char c){
+void tym_i_nocsq_test_hook(const struct tym_i_pane_internal* pane, char ch){
+  uint8_t c = ch;
+  (void)pane;
   if(c == 0){
     close(fpipe[1]);
     return;
   }
-  printf("tym_i_nocsq_test_hook: %d 0x%.2x\n", pane->id, (int)(uint8_t)c);
+  if(c < 0x20 || c == 0x7F){
+    printf("control character: 0x%.2x\n", (int)c);
+  }else{
+    printf("regular character: 0x%.2x %c\n", (int)c, (char)c);
+    result = 1;
+  }
 }
 
 
@@ -64,7 +75,7 @@ int main(int argc, char* argv[]){
       break;
   }
   tym_shutdown();
-  return 0;
+  return result;
 }
 
 static int update_terminal_size_information(void){
