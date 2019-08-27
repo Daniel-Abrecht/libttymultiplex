@@ -8,9 +8,6 @@ HEADERS += $(wildcard include/*.h) $(wildcard include/**/*.h)
 PREFIX = /usr
 BACKEND_DIR = $(PREFIX)/lib/libttymultiplex/backend-$(VERSION)
 
-CC = gcc
-AR = ar
-
 INCLUDES += -Iinclude
 DEFAULT_INCLUDES += $(shell $(CC) -Wp,-v -x c++ -fsyntax-only /dev/null 2>&1 | sed -n '/search starts here/,/End of search list/p' | grep '^ ')
 
@@ -19,18 +16,24 @@ CPPCHECK_OPTIONS += $(INCLUDES) $(addprefix -I,$(DEFAULT_INCLUDES)) --std=c99 -D
 CPPCHECK_OPTIONS += --std=c99 -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE -DTYM_BUILD
 CPPCHECK_OPTIONS += $(CPPCHECK_OPTS)
 
-OPTIONS += -fPIC -pthread -ffunction-sections -fdata-sections -fstack-protector-all -g -Og
+ifdef DEBUG
+CC_OPTS += -Og -g
+endif
+
+ifndef LENIENT
+CC_OPTS = -Werror
+endif
+
+CC_OPTS += -fPIC -pthread -ffunction-sections -fdata-sections -fstack-protector-all
 CC_OPTS += -DTYM_BUILD -finput-charset=UTF-8
 CC_OPTS += $(INCLUDES)
-CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror -Wno-implicit-fallthrough
+CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Wno-implicit-fallthrough
 CC_OPTS += -D_POSIX_C_SOURCE -D_DEFAULT_SOURCE
 CC_OPTS += -DTYM_PREFIX='"$(PREFIX)"'
 CC_OPTS += -DTYM_VERSION='"$(VERSION)"' -DTYM_MAJOR='$(MAJOR)' -DTYM_MINOR='$(MINOR)' -DTYM_PATCH='$(PATCH)'
 CC_OPTS += -DTYM_BACKEND_DIR='"$(BACKEND_DIR)"'
-LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined
 
-CC_OPTS += $(OPTIONS)
-LD_OPTS += $(OPTIONS)
+LD_OPTS += --shared -Wl,-gc-sections -Wl,-no-undefined -pthread
 
 ifdef BACKEND
 
@@ -50,20 +53,20 @@ BACKEND_PRIORITY = $(shell \
 CC_OPTS += -DTYM_I_BACKEND_PRIORITY=$(BACKEND_PRIORITY)
 
 SOURCES += $(addprefix backend/$(BACKEND)/,$(BACKEND_SOURCES))
-OBJS += $(patsubst backend/$(BACKEND)/src/%.c,build/backend/$(BACKEND)/%.o,$(SOURCES))
+OBJS += $(patsubst backend/$(BACKEND)/src/%.c,build/backend/$(BACKEND)/%.c.o,$(SOURCES))
 
-build/backend/$(BACKEND)/%.o: backend/$(BACKEND)/src/%.c $(HEADERS)
+build/backend/$(BACKEND)/%.c.o: backend/$(BACKEND)/src/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
-	$(CC) $(CC_OPTS) -c -o $@ $<
+	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) "$<"
 
 else
 
 CC_OPTS += -DTYM_LOG_PROJECT='"libttymultiplex"'
-OBJS += $(patsubst src/%.c,build/%.o,$(SOURCES))
+OBJS += $(patsubst src/%.c,build/%.c.o,$(SOURCES))
 
-build/%.o: src/%.c $(HEADERS)
+build/%.c.o: src/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
-	$(CC) $(CC_OPTS) -c -o $@ $<
+	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) "$<"
 
 endif
 

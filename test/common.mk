@@ -11,15 +11,18 @@ BIN = $(BIN_DIR)/$(NAME)
 LIBTTYMULTIPLEX_BASE_A = build/libttymultiplex.a
 ABS_LIBTTYMULTIPLEX_BASE_A = $(PROJECT_ROOT)/$(LIBTTYMULTIPLEX_BASE_A)
 
-CC = gcc
-
 HEADERS += $(wildcard include/*.h) $(wildcard include/**/*.h)
 HEADERS += $(wildcard $(PROJECT_ROOT)/*.h) $(wildcard $(PROJECT_ROOT)/include/**/*.h)
 
-OPTS += -pthread -lutil
-
-CC_OPTS += -std=c99 -Wall -Wextra -pedantic -Werror
+ifdef DEBUG
 CC_OPTS += -Og -g
+endif
+
+ifndef LENIENT
+CC_OPTS = -Werror
+endif
+
+CC_OPTS += -std=c99 -Wall -Wextra -pedantic
 CC_OPTS += -D_DEFAULT_SOURCE
 CC_OPTS += -Iinclude
 CC_OPTS += -I$(PROJECT_ROOT)/include
@@ -29,21 +32,19 @@ CC_OPTS += -DTYM_I_BACKEND_NAME='"$(NAME)"'
 CC_OPTS += -DTYM_I_BACKEND_ID="B_$$(printf "$(BACKEND)" | sed 's/[^a-zA-Z0-9]/_/g')"
 CC_OPTS += -DTYM_I_BACKEND_PRIORITY=100
 
-LD_OPTS += -ldl
-CC_OPTS += $(OPTS)
-LD_OPTS += $(OPTS)
+LD_OPTS += -ldl -lutil -pthread
 
-OBJS += $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SOURCES))
+OBJS += $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.c.o,$(SOURCES))
 
 bin-base: $(BIN)
 
 $(BIN): $(ABS_LIBTTYMULTIPLEX_BASE_A) $(OBJS)
 	mkdir -p "$(dir $@)"
-	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive -o "$@"
+	$(CC) -o "$@" -Wl,--whole-archive $^ -Wl,--no-whole-archive  $(LD_OPTS) $(LDFLAGS)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+$(BUILD_DIR)/%.c.o: $(SRC_DIR)/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
-	$(CC) $(CC_OPTS) "$<" -c -o "$@"
+	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) "$<"
 
 $(ABS_LIBTTYMULTIPLEX_BASE_A):
 	$(MAKE) -C "$(PROJECT_ROOT)" "$(LIBTTYMULTIPLEX_BASE_A)"

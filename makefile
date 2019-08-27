@@ -90,7 +90,7 @@ bin/backend/%.so: build/backend/%.a | bin/backend/.dir
 	fi; \
 	libs="-Lbin/ -lttymultiplex $$libs"; \
 	ld_opts="$(LD_OPTS) $$ld_opts"; \
-	$(CC) $$ld_opts -Wl,--whole-archive $^ -Wl,--no-whole-archive $$libs -o $@;
+	$(CC) -o "$@" -Wl,--whole-archive $^ -Wl,--no-whole-archive $$ld_opts $$libs $(LDFLAGS);
 
 build/libttymultiplex.a: $(OBJS) $(patsubst %,build/backend/%.a,$(BUILTIN_BACKENDS)) | build/.dir
 	$(AR) scrT $@ $^
@@ -105,8 +105,10 @@ bin/libttymultiplex.so: build/libttymultiplex.a | bin/.dir
 	  fi; \
 	  . "$$options_file"; \
 	  printf "%s\n" $$libs; \
-	) done)"; \
-	$(CC) $(LD_OPTS) -Wl,--whole-archive $^ -Wl,--no-whole-archive $$libs -o $@.$(MAJOR).$(MINOR).$(PATCH) -Wl,-soname,libttymultiplex.so.$(MAJOR)
+	) done) \
+	-Wl,-soname,libttymultiplex.so.$(MAJOR) \
+	"; \
+	$(CC) -o "$@.$(MAJOR).$(MINOR).$(PATCH)" -Wl,--whole-archive $^ -Wl,--no-whole-archive $$libs $(LD_OPTS) $(LDFLAGS)
 	cd bin; \
 	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR).$(MINOR)"; \
 	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR)"; \
@@ -157,6 +159,7 @@ uninstall:
 clean:
 	rm -rf bin/ build/
 	git clean -fdX debian/ || true
+	$(MAKE) -C test clean
 
 test: build/libttymultiplex.a
 	$(MAKE) -C test
