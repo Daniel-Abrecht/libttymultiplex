@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# != 3 ] || [ -z "$SUMMARY_FD" ]
+then
+  echo "Usage: test-result #successful #total name" >&2
+  exit 1
+fi
+
+echo "$@" >&"$SUMMARY_FD"

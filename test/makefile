@@ -1,10 +1,25 @@
-TESTS = $(dir $(wildcard */makefile))
+TESTS = $(dir $(wildcard */.test))
+
+TS_BIN = test-summary/bin/test-summary
 
 all: test
 
 clean: $(addprefix clean-,$(TESTS))
 build: $(addprefix bin/,$(TESTS))
-test: $(addprefix test-,$(TESTS))
+
+
+test: $(TS_BIN)
+	$(TS_BIN) partest $(MAKE) do-test
+
+do-test:
+	res=0; \
+	for test in $(TESTS); \
+	  do $(MAKE) "test-$$test" || res=1; \
+	done; \
+	exit "$$res"
+
+$(TS_BIN): always
+	$(MAKE) -C test-summary
 
 bin/%: always
 	$(MAKE) -C "$(patsubst bin/%,%,$@)"

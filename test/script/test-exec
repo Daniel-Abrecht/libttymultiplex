@@ -1,0 +1,9 @@
+#!/bin/sh
+
+what="$1"
+shift
+
+if "$@"
+  then test-result 1 1 "$what"; exit 0
+  else test-result 1 0 "$what"; exit 1
+fi

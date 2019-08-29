@@ -1,10 +1,14 @@
-PROJECT_ROOT = ../..
-TEST_DIR = ..
+PROJECT_ROOT = $(realpath ../..)
+TEST_DIR = $(realpath ..)
 NAME = $(notdir $(realpath .))
 
 BIN_DIR = $(TEST_DIR)/bin
 BUILD_DIR = $(TEST_DIR)/build/$(NAME)
 SRC_DIR = src
+
+TS_BIN = ../test-summary/bin/test-summary
+
+export PATH := $(PATH):$(TEST_DIR)/script:$(TEST_DIR)/test-summary/bin
 
 BIN = $(BIN_DIR)/$(NAME)
 
@@ -36,6 +40,14 @@ LD_OPTS += -ldl -lutil -pthread
 
 OBJS += $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.c.o,$(SOURCES))
 
+always:
+
+test: $(TS_BIN)
+	test-summary "$(NAME)" $(MAKE) do-test
+
+$(TS_BIN): always
+	$(MAKE) -C .. test-summary/bin/test-summary
+
 bin-base: $(BIN)
 
 $(BIN): $(ABS_LIBTTYMULTIPLEX_BASE_A) $(OBJS)
@@ -52,4 +64,4 @@ $(ABS_LIBTTYMULTIPLEX_BASE_A):
 clean-base:
 	rm -rf "$(BUILD_DIR)" "$(BIN_DIR)"
 
-test-base: bin
+test-base: bin $(TS_BIN)

@@ -1,15 +1,13 @@
 SOURCES += src/main.c
 
-include ../common.mk
-
 all: bin
 
+include ../common.mk
+
 bin: bin-base
-
 clean: clean-base
-
 test: test-base
-	echo
+do-test: bin
 
 check-sequence: bin
 	echo 'checking if some sequences are detected...'
@@ -19,7 +17,7 @@ check-sequence: bin
 	  do \
 	    [ -n "$$seq" ] || continue; \
 	    printf '  %s: ' "$$cap"; \
-	    if $(BIN) "$$(tput "$$cap" 1 2 3 4 5 6 7 8 9)" >/dev/null; \
+	    if test-exec "$$cap" $(BIN) "$$(tput "$$cap" 1 2 3 4 5 6 7 8 9)" >/dev/null; \
 	      then printf 'OK\n' "$$cap"; \
 	      else printf 'NO\n' "$$cap"; res=1; \
 	    fi; \
