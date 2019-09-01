@@ -10,10 +10,15 @@ TS_BIN = ../test-summary/bin/test-summary
 
 export PATH := $(PATH):$(TEST_DIR)/script:$(TEST_DIR)/test-summary/bin
 
+export TERMINFO_DIRS = $(PROJECT_ROOT)/build/terminfo/
+
 BIN = $(BIN_DIR)/$(NAME)
 
 LIBTTYMULTIPLEX_BASE_A = build/libttymultiplex.a
 ABS_LIBTTYMULTIPLEX_BASE_A = $(PROJECT_ROOT)/$(LIBTTYMULTIPLEX_BASE_A)
+
+TERMINFO_BASE = bin/terminfo/
+ABS_TERMINFO_BASE = $(PROJECT_ROOT)/$(TERMINFO_BASE)
 
 HEADERS += $(wildcard include/*.h) $(wildcard include/**/*.h)
 HEADERS += $(wildcard $(PROJECT_ROOT)/*.h) $(wildcard $(PROJECT_ROOT)/include/**/*.h)
@@ -42,7 +47,7 @@ OBJS += $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.c.o,$(SOURCES))
 
 always:
 
-test: $(TS_BIN)
+test: test-base $(TS_BASE)
 	test-summary "$(NAME)" $(MAKE) do-test
 
 $(TS_BIN): always
@@ -61,7 +66,10 @@ $(BUILD_DIR)/%.c.o: $(SRC_DIR)/%.c $(HEADERS)
 $(ABS_LIBTTYMULTIPLEX_BASE_A):
 	$(MAKE) -C "$(PROJECT_ROOT)" "$(LIBTTYMULTIPLEX_BASE_A)"
 
+$(ABS_TERMINFO_BASE): always
+	$(MAKE) -C "$(PROJECT_ROOT)" "$(TERMINFO_BASE)"
+
 clean-base:
 	rm -rf "$(BUILD_DIR)" "$(BIN_DIR)"
 
-test-base: bin $(TS_BIN)
+test-base: bin $(TS_BIN) $(ABS_TERMINFO_BASE)

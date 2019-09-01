@@ -17,6 +17,8 @@ SOURCES += src/backend.c
 SOURCES += src/backend_default_procs.c
 SOURCES += src/terminfo_helper.c
 
+TERMINFO_SOURCES += $(wildcard terminfo/*.ti)
+
 EXTERNAL_BACKENDS += curses
 BUILTIN_BACKENDS +=
 
@@ -28,9 +30,27 @@ FILES_WITH_LIB_VERSION += $(wildcard debian/libttymultiplex*.*)
 
 include src/common.mk
 
-all: bin/libttymultiplex.so $(patsubst %,bin/backend/%.so,$(EXTERNAL_BACKENDS))
+all: bin/libttymultiplex.so $(patsubst %,bin/backend/%.so,$(EXTERNAL_BACKENDS)) bin/terminfo/
+
+bin/terminfo/: build/terminfo/
+	rm -rf "bin/terminfo/"
+	mkdir -p bin
+	cp -r build/terminfo bin/terminfo
+
+build/terminfo/: $(TERMINFO_SOURCES)
+	rm -rf build/terminfo/
+	set -ex; \
+	mkdir -p build/terminfo/; \
+	for ti in $(TERMINFO_SOURCES); \
+	do \
+		tic -x -o build/terminfo/ terminfo/test.ti; \
+	done
+	touch "$@"
 
 backend-%: bin/backend/%.so
+
+clean-terminfo:
+	rm -rf build/terminfo/ bin/terminfo/
 
 clean-backend:
 	rm -rf "build/backend/"
