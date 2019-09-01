@@ -14,4 +14,4 @@ build/%.o: src/%.cpp
 	$(CXX)  -c -o "$@" -std=c++98 -Wall -Wextra -pedantic -Werror -Iinclude -D_DEFAULT_SOURCE "$<"
 
 clean:
-	rm -rf build
+	rm -rf build bin

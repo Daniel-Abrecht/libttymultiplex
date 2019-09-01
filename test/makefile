@@ -4,7 +4,7 @@ TS_BIN = test-summary/bin/test-summary
 
 all: test
 
-clean: $(addprefix clean-,$(TESTS))
+clean: $(addprefix clean-,$(TESTS)) clean-test-summary
 build: $(addprefix bin/,$(TESTS))
 
 
