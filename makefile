@@ -67,7 +67,7 @@ bin/doc/html/index.html: $(SOURCES) $(HEADERS)
 	rm -rf bin/doc
 	mkdir -p bin/doc
 	export PROJECT_NUMBER="v$$version $$(git rev-parse HEAD ; git diff-index --quiet HEAD || echo '(with uncommitted changes)')"; \
-	doxygen doxygen/Doxyfile
+	timeout -k 5 10 doxygen doxygen/Doxyfile || true
 
 release-major: release@$(shell expr $(MAJOR) + 1).0.0
 
