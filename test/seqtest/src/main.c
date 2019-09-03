@@ -44,8 +44,14 @@ int main(int argc, char* argv[]){
     fprintf(stderr, "Usage: %s sequence\n", argv[0]);
     return 1;
   }
-  pipe(fpipe);
-  setenv("TM_BACKEND", TYM_I_BACKEND_NAME, true);
+  if(pipe(fpipe) == -1){
+    perror("pipe failed");
+    return 1;
+  }
+  if(setenv("TM_BACKEND", TYM_I_BACKEND_NAME, true) == -1){
+    perror("setenv failed");
+    return 1;
+  }
   if(tym_init()){
     perror("tym_init failed");
     return 1;
