@@ -1,3 +1,6 @@
+# Copyright (c) 2018 Daniel Abrecht
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 VERSION := $(shell cat version)
 MAJOR   := $(word 1,$(subst ., ,$(VERSION)))
 MINOR   := $(word 2,$(subst ., ,$(VERSION)))

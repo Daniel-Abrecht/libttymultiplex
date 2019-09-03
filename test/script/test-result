@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Copyright (c) 2018 Daniel Abrecht
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 if [ -z "$SUMMARY_FD" ]
   then exit 0
 fi
