@@ -28,7 +28,7 @@ CC_OPTS += -Og -g
 endif
 
 ifndef LENIENT
-CC_OPTS = -Werror
+CC_OPTS += -Werror
 endif
 
 CC_OPTS += -std=c99 -Wall -Wextra -pedantic
