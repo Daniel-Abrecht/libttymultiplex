@@ -1,0 +1,150 @@
+# Copyright (c) 2019 Daniel Abrecht
+# SPDX-License-Identifier: AGPL-3.0-or-later OR MIT
+
+# TODO: Figure out what's still missing or wrong in this terminfo file...
+
+# Options in common with other teminals libttymultiplex is intended to be
+# compatible with, namely vt100 and xterm
+libttymultiplex::common-option,
+  auto_right_margin,
+  back_color_erase,
+  has_meta_key,
+  prtr_silent,
+  move_insert_mode,
+  move_standout_mode,
+  no_pad_char,
+  eat_newline_glitch,
+  
+  cols#80,
+  lines#24,
+  it#8,
+
+
+# Escape sequences regarding character sets
+libttymultiplex::common-charset,
+#   When the drawing character set is used, every first character of two characters is
+#   replaced by the second one. Note, in the drawing character set, these characters
+#   are entirely different glyphs
+  acs_chars=``aaffggiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~,
+  enter_alt_charset_mode=\E(0,
+  exit_alt_charset_mode=\E(B,
+
+# TODO:
+#  Add select_char_set and set*_des_seq entries above
+
+
+libttymultiplex::special-keys,
+  key_backspace=\177,
+  key_mouse=\E[M,
+  key_home=\EOH,
+  key_npage=\E[6~,
+  key_ppage=\E[5~,
+  key_end=\EOF,
+  key_enter=\EOM,
+  key_right=\EOC,
+  key_left=\EOD,
+  key_down=\EOB,
+  key_up=\EOA,
+
+# TODO: Make libttymultiplex check key termcaps for sending them
+
+
+# This terminfo includes the minimal feature set providable given a 
+# backend with the minimal feature set necessary
+libttymultiplex|libttymultiplex with minimal required feature set,
+  erase_overstrike,
+  
+  carriage_return=^M,
+  tab=^I,
+  
+  change_scroll_region=\E[%i%p1%d;%p2%dr,
+  clear_screen=\E[H\E[2J,
+  clr_bol=\E[1K,
+  clr_eol=\E[K,
+  clr_eos=\E[J,
+  column_address=\E[%i%p1%dG,
+  cursor_down=^J,
+  parm_down_cursor=\E[%p1%dB,
+  cursor_home=\E[H,
+  cursor_address=\E[%i%p1%d;%p2%dH,
+  cursor_left=^H,
+  parm_left_cursor=\E[%p1%dD,
+  cursor_right=\E[C,
+  parm_right_cursor=\E[%p1%dC,
+  cursor_up=\E[A,
+  parm_up_cursor=\E[%p1%dA,
+  delete_character=\E[P,
+  parm_dch=\E[%p1%dP,
+  delete_line=\E[M,
+  parm_delete_line=\E[%p1%dM,
+  erase_chars=\E[%p1%dX,
+  set_attributes=%?%p9%t\E(0%e\E(B%;\E[0%?%p6%t;1%;%?%p5%t;2%;%?%p2%t;4%;%?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p7%t;8%;m,
+  set_background=\E[4%?%p1%{1}%=%t4%e%p1%{3}%=%t6%e%p1%{4}%=%t1%e%p1%{6}%=%t3%e%p1%d%;m,
+  set_a_background=\E[4%p1%dm,
+  set_foreground=\E[3%?%p1%{1}%=%t4%e%p1%{3}%=%t6%e%p1%{4}%=%t1%e%p1%{6}%=%t3%e%p1%d%;m,
+  set_a_foreground=\E[3%p1%dm,
+  exit_attribute_mode=\E(B\E[m,
+  insert_character=\E[@,
+  parm_ich=\E[%p1%d@,
+  scroll_forward=^J,
+  parm_index=\E[%p1%dS,
+  insert_line=\E[L,
+  parm_insert_line=\E[%p1%dL,
+  scroll_reverse=^M,
+  parm_rindex=\E[%p1%dT,
+  save_cursor=\E7,
+  restore_cursor=\E8,
+  row_address=\E[%i%p1%dd,
+  repeat_char=%p1%c\E[%p2%{1}%-%db,
+  
+  enter_am_mode=\E[?7h,
+  exit_am_mode=\E[?7l,
+  enter_ca_mode=\E[?1049l,
+  exit_ca_mode=\E[?1049h,
+  enter_insert_mode=\E[4h,
+  exit_insert_mode=\E[4l,
+  enter_underline_mode=\E[4m,
+  exit_underline_mode=\E[24m,
+  enter_italics_mode=\E[3m,
+  exit_italics_mode=\E[23m,
+  enter_bold_mode=\E[1m,
+  exit_bold_mode=\E[21m,
+  enter_blink_mode=\E[5m,
+  exit_blink_mode=\E[25m,
+  enter_reverse_mode=\E[7m,
+  enter_standout_mode=\E[7m,
+  exit_standout_mode=\E[27m,
+  enter_secure_mode=\E[8m,
+  exit_secure_mode=\E[28m,
+  
+  use=libttymultiplex::common-option,
+  use=libttymultiplex::common-charset,
+  use=libttymultiplex::special-keys,
+
+# Notes:
+#  * secure mode is just invisible characters
+#  * maybe the I should use the cap names instead, the more expressive one are
+#    sometimes rather misleading
+#  * exit_secure_mode, exit_bold_mode and exit_blink_mode are user defined capabillity,
+#    there doesn't seam to be an existing capability for those.
+
+# TODO: Not yet implemented, add above once implemented
+#  bel=^G,
+#
+#  back_tab=\E[Z,
+#  clear_all_tabs=\E[3g,
+#  set_tab=\[H,
+#
+#  clear_margins=\E[?69l,
+#  set_lr_margin=\E[?69h\E[%i%p1%d;%p2%ds,
+#  set_bottom_margin,
+#  set_bottom_margin_parm,
+#  set_top_margin,
+#  set_top_margin_parm,
+#
+#  cursor_invisible=\E[?25l,
+#  cursor_visible=\E[?25h,
+#  cursor_normal=\E[?12l\E[?25h,
+#
+#  enter_dim_mode=\E[2m,
+#

@@ -19,6 +19,8 @@ int tym_i_csq_character_attribute_change(struct tym_i_pane_internal* pane){
       screen->character_format.fgcolor.index = 0;
     }else if(c == 1){
       screen->character_format.attribute |= TYM_I_CA_BOLD;
+    }else if(c == 3){
+      screen->character_format.attribute |= TYM_I_CA_ITALIC;
     }else if(c == 4){
       screen->character_format.attribute |= TYM_I_CA_UNDERLINE;
     }else if(c == 5){
@@ -27,8 +29,12 @@ int tym_i_csq_character_attribute_change(struct tym_i_pane_internal* pane){
       screen->character_format.attribute |= TYM_I_CA_INVERSE;
     }else if(c == 8){
       screen->character_format.attribute |= TYM_I_CA_INVISIBLE;
+    }else if(c == 21){
+      screen->character_format.attribute &= ~TYM_I_CA_BOLD;
     }else if(c == 22){
       screen->character_format.attribute = TYM_I_CA_DEFAULT;
+    }else if(c == 23){
+      screen->character_format.attribute &= ~TYM_I_CA_ITALIC;
     }else if(c == 24){
       screen->character_format.attribute &= ~TYM_I_CA_UNDERLINE;
     }else if(c == 25){

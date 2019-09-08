@@ -35,7 +35,12 @@ all: bin/libttymultiplex.so $(patsubst %,bin/backend/%.so,$(EXTERNAL_BACKENDS)) 
 bin/terminfo/: build/terminfo/
 	rm -rf "bin/terminfo/"
 	mkdir -p bin
-	cp -r build/terminfo bin/terminfo
+	( cd build/terminfo; find -not -iname ".*" -not -iname "*::*" -type f; ) | \
+	  while read ti; \
+	  do \
+	    mkdir -p "$$(dirname "bin/terminfo/$$ti")"; \
+	    cp "build/terminfo/$$ti" "bin/terminfo/$$ti"; \
+	  done;
 
 build/terminfo/: $(TERMINFO_SOURCES)
 	rm -rf build/terminfo/
@@ -43,7 +48,7 @@ build/terminfo/: $(TERMINFO_SOURCES)
 	mkdir -p build/terminfo/; \
 	for ti in $(TERMINFO_SOURCES); \
 	do \
-		tic -x -o build/terminfo/ terminfo/test.ti; \
+		tic -x -o build/terminfo/ "$$ti"; \
 	done
 	touch "$@"
 

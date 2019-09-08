@@ -1,6 +1,7 @@
  * Implement remaining xterm escape sequences
  * Implement switching to other VT escape sequence sets
  * Add a terminfo file at /etc/l/libttymultiplex
+   * Evaluate terminfo entries ŵhich describe changing things other than line and column settings, such as virtual_terminal (vt), max_colors (colors), output_res_char (orc), output_res_horz_inch (orc), and other things that change depending on where libttymultiplex is used and other conditions, and how to ecpand terminfo & ncurses to allow for runtime changes of these things (without using signals)
    * implement some additional custom escape sequences
  * Add a general input backend for libinput & console input
  * Add support for any control key combination

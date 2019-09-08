@@ -3,6 +3,8 @@
 
 SOURCES += src/main.c
 
+TERM_CHECK_LIST += libttymultiplex
+
 all: bin
 
 include ../common.mk
@@ -12,6 +14,10 @@ clean: clean-base
 test: test-base
 
 do-test: bin
+	set -e; \
+	for term in $(TERM_CHECK_LIST); \
+	  do $(MAKE) "test-terminfo-$$term"; \
+	done
 
 test-terminfo-%: $(TS_BIN)
 	term="$(patsubst test-terminfo-%,%,$@)"; \
@@ -26,6 +32,7 @@ do-test-terminfo-%: bin
 	  do \
 	    case "$$cap" in \
 	      k*) continue ;; \
+	      'acsc') continue ;; \
 	      '') continue ;; \
 	    esac; \
 	    [ -n "$$seq" ] || continue; \

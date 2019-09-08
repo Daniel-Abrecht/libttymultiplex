@@ -132,7 +132,8 @@ enum tym_i_character_attribute {
   TYM_I_CA_UNDERLINE = 1<<1, //!< Underlined text
   TYM_I_CA_BLINK     = 1<<2, //!< Blinking text
   TYM_I_CA_INVERSE   = 1<<3, //!< Switch foreground and background color
-  TYM_I_CA_INVISIBLE = 1<<4  //!< The text isn't visible at all
+  TYM_I_CA_INVISIBLE = 1<<4, //!< The text isn't visible at all
+  TYM_I_CA_ITALIC    = 1<<5, //!< Text is italic
 };
 
 /** The format of the current character */
