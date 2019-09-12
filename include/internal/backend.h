@@ -21,8 +21,19 @@ struct tym_i_pane_internal;
 struct tym_i_cell_position;
 struct tym_i_character_format;
 
+/**
+ * Optional things the backend may support
+ */
+struct tym_i_backend_capabilities {
+  bool buffered : 1;
+  bool mouse : 1;
+  bool color_8 : 1;
+  bool color_256 : 1;
+  bool color_rgb : 1;
+};
+
 #define TYM_I_BACKEND_CALLBACKS \
-  R(int, init, (void), (Initialise the backend.)) \
+  R(int, init, (struct tym_i_backend_capabilities*), (Initialise the backend.)) \
   R(int, cleanup, (void), (Cleanup the backend. The backend can not be used again until it gets reinitialised.)) \
   R(int, resize, (void), (Handle terminal and screen size changes)) \
   R(int, pane_create, (struct tym_i_pane_internal* pane), (Backend specific initialisation of pane. The variable is for pane->backend exclusive usage by the backend.)) \
@@ -108,6 +119,9 @@ extern const struct tym_i_backend* tym_i_backend;
 
 /** Onl true if external backend is being loaded by function load_and_init_speciffic_external_backend in src/backend.c */
 extern bool tym_i_external_backend_normal_loading;
+
+/** What the backend can do. These capabillities will be passed to the init function & initialised by it. */
+extern const struct tym_i_backend_capabilities* tym_i_backend_capabilities;
 
 /**
  * Register a backend. Currently, backends are built into libttymultiplex.

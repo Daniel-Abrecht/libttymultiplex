@@ -420,20 +420,92 @@ error:
   return -1;
 }
 
+static const char* getTerm(void){
+
+  bool found = false;
+
+  #define VARIANTS \
+    X(mouse) \
+    X(color) \
+    X(256color) \
+    X(rgbcolor)
+
+  const char*const term_suffixies[] = {
+    "",
+  #define X(Y) "-" #Y,
+    VARIANTS
+  #undef X
+  };
+
+  enum term_variants {
+    V_NONE,
+  #define X(Y) V_ ## Y,
+    VARIANTS
+  #undef X
+    V_COUNT,
+  };
+
+  #define X(Y) + sizeof(#Y)
+  enum { term_name_max_len=sizeof("libttymultiplex") VARIANTS };
+  #undef X
+  #undef VARIANTS
+
+  static char term[term_name_max_len];
+
+  bool variants[V_COUNT] = {0};
+  if(tym_i_backend_capabilities->mouse)
+    variants[V_mouse] = true;
+  if(tym_i_backend_capabilities->color_rgb){
+    variants[V_rgbcolor] = true;
+    variants[V_256color] = true;
+    variants[V_color] = true;
+  }else if(tym_i_backend_capabilities->color_256){
+    variants[V_256color] = true;
+    variants[V_color] = true;
+  }else if(tym_i_backend_capabilities->color_8){
+    variants[V_color] = true;
+  }
+  static const enum term_variants check_list[][V_COUNT] = {
+    { V_rgbcolor, V_mouse },
+    { V_256color, V_mouse },
+    { V_color, V_mouse },
+    { V_rgbcolor },
+    { V_256color },
+    { V_color },
+    { V_mouse },
+    {0}
+  };
+  const size_t check_list_count = sizeof(check_list)/sizeof(*check_list);
+  for(unsigned i=0; i<check_list_count; i++){
+    strcpy(term, "libttymultiplex");
+    for(unsigned j=0; j<V_COUNT; j++){
+      if(!check_list[i][j])
+        continue;
+      if(!variants[check_list[i][j]])
+        goto next;
+      strcat(term, term_suffixies[check_list[i][j]]);
+    }
+    int res = tym_i_open_terminfo(term, O_RDONLY);
+    if(res != -1){
+      close(res);
+      found = true;
+      break;
+    }
+  next:;
+  }
+
+  if(!found)
+    strcpy(term, "xterm");
+
+  return term;
+}
+
 int tym_pane_get_default_env_vars(
   int pane, void* ptr,
   int(*callback)(int pane, void* ptr, size_t count, const char* env[count][2])
 ){
-  const char* term = "xterm";
-  {
-    int res = tym_i_open_terminfo("libttymultiplex", O_RDONLY);
-    if(res != -1){
-      term = "libttymultiplex";
-      close(res);
-    }
-  }
   const char* env[][2] = {
-    {"TERM", term}
+    {"TERM", getTerm()}
   };
   size_t count = sizeof(env)/sizeof(*env);
   return (*callback)(pane, ptr, count, env);

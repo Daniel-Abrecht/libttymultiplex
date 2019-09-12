@@ -85,7 +85,7 @@ static int terminal_input_handler(void* ptr, short event, int fd){
 }
 
 
-static int init(void){
+static int init(struct tym_i_backend_capabilities* caps){
   if(tym_i_pollfd_add(dup(STDIN_FILENO), &(struct tym_i_pollfd_complement){
     .onevent = terminal_input_handler
   })) goto error;
@@ -95,10 +95,12 @@ static int init(void){
   nodelay(stdscr, true);
   noecho();
   keypad(stdscr, true);
+  caps->buffered = true;
   if(has_colors()){
     start_color();
     use_default_colors();
     if(COLOR_PAIRS >= 45){
+      caps->color_8 = true;
       for(uint8_t i=0, j=0, k=1; k<=45; k++){
         colorpair8x8_triangular_number_mirror_mapping_index[i][j] = k | COLORPAIR_MAPPING_NEGATIVE_FLAG;
         colorpair8x8_triangular_number_mirror_mapping_index[j][i] = k;
@@ -116,8 +118,13 @@ static int init(void){
   }
   leaveok(stdscr, false);
   refresh();
+
   mousemask(ALL_MOUSE_EVENTS|REPORT_MOUSE_POSITION, &tym_i_mouseeventmask);
   mouseinterval(0);
+
+  if(has_mouse())
+    caps->mouse = true;
+
   return 0;
 error:
   return -1;

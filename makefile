@@ -153,7 +153,11 @@ install-backend-%: bin/backend/%.so
 
 install-backends: $(patsubst %,install-backend-%,$(EXTERNAL_BACKENDS))
 
-install: install-lib install-header install-backends
+install-terminfos:
+	mkdir -p "$(DESTDIR)/usr/share/terminfo/l/"
+	cp bin/terminfo/l/libttymultiplex* "$(DESTDIR)/usr/share/terminfo/l/"
+
+install: install-lib install-header install-backends install-terminfos
 
 install-lib: bin/libttymultiplex.so
 	mkdir -p "$(DESTDIR)$(PREFIX)/lib/"

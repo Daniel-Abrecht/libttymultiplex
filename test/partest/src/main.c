@@ -138,7 +138,8 @@ static int update_terminal_size_information(void){
   return 0;
 }
 
-static int init(void){
+static int init(struct tym_i_backend_capabilities* caps){
+  (void)caps;
   terminal.content = calloc(terminal.size.x * terminal.size.y, sizeof(struct character));
   if(!terminal.content)
     return 1;

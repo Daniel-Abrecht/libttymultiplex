@@ -1,5 +1,5 @@
 # Copyright (c) 2019 Daniel Abrecht
-# SPDX-License-Identifier: AGPL-3.0-or-later OR MIT
+# SPDX-License-Identifier: MIT
 
 # TODO: Figure out what's still missing or wrong in this terminfo file...
 
@@ -37,7 +37,6 @@ libttymultiplex::special-keys,
   keypad_xmit=\E[?1h\E=,
   keypad_local=\E[?1l\E>,
   key_backspace=\177,
-  key_mouse=\E[M,
   key_home=\EOH,
   key_npage=\E[6~,
   key_ppage=\E[5~,
@@ -51,9 +50,19 @@ libttymultiplex::special-keys,
 # TODO: Make libttymultiplex check key termcaps for sending them
 
 
+libttymultiplex::color,
+  colors#8,
+  pairs#64,
+
+
+libttymultiplex::mouse,
+  key_mouse=\E[M, XM=\E[?1000%?%p1%{1}%=%th%el%;,
+  xm=\E[M%?%p4%t3%e%p3%'\s'%+%c%;%p2%'!'%+%c%p1%'!'%+%c,
+
+
 # This terminfo includes the minimal feature set providable given a 
 # backend with the minimal feature set necessary
-libttymultiplex-basic|libttymultiplex with minimal required feature set,
+libttymultiplex|libttymultiplex with minimal required feature set,
   erase_overstrike,
   
   carriage_return=^M,
@@ -155,7 +164,17 @@ libttymultiplex-basic|libttymultiplex with minimal required feature set,
 #
 
 
-libttymultiplex|libttymultiplex default,
-  colors#8,
-  pairs#64,
-  use=libttymultiplex-basic,
+libttymultiplex-color-mouse,
+  use=libttymultiplex,
+  use=libttymultiplex::color,
+  use=libttymultiplex::mouse,
+
+
+libttymultiplex-color,
+  use=libttymultiplex,
+  use=libttymultiplex::color,
+
+
+libttymultiplex-mouse,
+  use=libttymultiplex,
+  use=libttymultiplex::mouse,

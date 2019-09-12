@@ -26,6 +26,9 @@ static const struct tym_i_backend_entry* tym_i_backend_list;
 /** The currently selected backend. */
 const struct tym_i_backend* tym_i_backend;
 
+static struct tym_i_backend_capabilities backend_capabilities;
+const struct tym_i_backend_capabilities* tym_i_backend_capabilities = &backend_capabilities;
+
 /** Backend entry, internal reference for cleanup stuff later on */
 static const struct tym_i_backend_entry* tym_i_backend_entry;
 
@@ -69,7 +72,8 @@ static struct tym_i_backend_entry* load_and_init_speciffic_external_backend(cons
     goto error_after_dlopen;
   tym_i_backend_entry = backend_entry;
   tym_i_backend = &backend_entry->backend;
-  if(tym_i_backend->init() != 0)
+  memset(&backend_capabilities, 0, sizeof(backend_capabilities));
+  if(tym_i_backend->init(&backend_capabilities) != 0)
     goto error_after_backend_register;
   tym_i_external_backend_normal_loading = false;
   return backend_entry;
@@ -209,7 +213,8 @@ int tym_i_backend_init(const char* backend){
         tym_i_backend_entry = it;
         tym_i_backend = &it->backend;
         errno = 0;
-        return tym_i_backend->init();
+        memset(&backend_capabilities, 0, sizeof(backend_capabilities));
+        return tym_i_backend->init(&backend_capabilities);
       }
     }
     errno = ENOENT;
@@ -219,7 +224,8 @@ int tym_i_backend_init(const char* backend){
       tym_i_backend_entry = it;
       tym_i_backend = &it->backend;
       errno = 0;
-      if(tym_i_backend->init() == 0)
+      memset(&backend_capabilities, 0, sizeof(backend_capabilities));
+      if(tym_i_backend->init(&backend_capabilities) == 0)
         return 0;
     }
     tym_i_backend_entry = 0;

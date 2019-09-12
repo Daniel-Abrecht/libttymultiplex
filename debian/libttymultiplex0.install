@@ -1,1 +1,2 @@
 usr/lib/libttymultiplex.so.*
+usr/share/terminfo/*/libttymultiplex*
