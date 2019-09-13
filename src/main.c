@@ -275,6 +275,26 @@ int tym_i_pollhandler_signal_handler(void* ptr, short event, int fd){
   return 0;
 }
 
+void tym_i_finalize_cleanup(bool zap){
+
+  while(tym_i_poll_count)
+    pollfd_remove_sub(0);
+
+  sigset_t sigmask;
+  sigemptyset(&sigmask);
+  sigaddset(&sigmask, SIGWINCH);
+  sigaddset(&sigmask, SIGINT);
+  pthread_sigmask(SIG_UNBLOCK, &sigmask, 0);
+
+  close(tym_i_cmd_fd);
+  tym_i_cmd_fd = -1;
+
+  tym_i_backend_unload(zap);
+
+  tym_i_binit = INIT_STATE_SHUTDOWN;
+
+}
+
 /** The main loop */
 void* tym_i_main(void* ptr){
   (void)ptr;
@@ -311,12 +331,7 @@ void* tym_i_main(void* ptr){
     pthread_mutex_unlock(&tym_i_lock);
   }
 shutdown:
-  while(tym_i_poll_count)
-    pollfd_remove_sub(0);
-  close(tym_i_cmd_fd);
-  tym_i_cmd_fd = -1;
-  tym_i_backend_unload();
-  tym_i_binit = INIT_STATE_SHUTDOWN;
+  tym_i_finalize_cleanup(false);
 exit:
   pthread_mutex_unlock(&tym_i_lock);
   return 0;

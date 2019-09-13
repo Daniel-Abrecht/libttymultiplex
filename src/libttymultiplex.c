@@ -25,6 +25,7 @@
 int tym_init(void){
   int pollctl[2] = {-1,-1};
   int signal_fd = -1;
+  bool sigblocked = false;
   pthread_mutex_lock(&tym_i_lock);
   if(tym_i_binit == INIT_STATE_INITIALISED){
     pthread_mutex_unlock(&tym_i_lock);
@@ -54,12 +55,14 @@ int tym_init(void){
     fprintf(stderr,"Failed to initialise backend\n");
     goto error;
   }
-  sigset_t sigmask;
+  sigset_t sigmask, oldmask;
   sigemptyset(&sigmask);
   sigaddset(&sigmask, SIGWINCH);
   sigaddset(&sigmask, SIGINT);
-  if(pthread_sigmask(SIG_BLOCK, &sigmask, 0) == -1)
+  // Undo this in tym_i_finalize_cleanup
+  if(pthread_sigmask(SIG_BLOCK, &sigmask, &oldmask) == -1)
     goto error;
+  sigblocked = true;
   if(pipe(pollctl))
     goto error;
   fcntl(pollctl[0], F_SETFD, FD_CLOEXEC);
@@ -80,8 +83,11 @@ int tym_init(void){
   pthread_create(&tym_i_main_loop, 0, tym_i_main, 0);
   pthread_mutex_unlock(&tym_i_lock);
   return 0;
+
 error:;
   int err = errno;
+  if(sigblocked)
+    pthread_sigmask(SIG_BLOCK, &sigmask, &oldmask);
   close(pollctl[0]);
   close(pollctl[1]);
   close(signal_fd);
@@ -116,6 +122,29 @@ int tym_shutdown(void){
   tym_i_binit = INIT_STATE_SHUTDOWN_IN_PROGRESS;
   pthread_mutex_unlock(&tym_i_lock);
   pthread_join(tym_i_main_loop, 0);
+  return 0;
+error:
+  pthread_mutex_unlock(&tym_i_lock);
+  return -1;
+}
+
+int tym_zap(){
+  pthread_mutex_lock(&tym_i_lock);
+  if(tym_i_binit == INIT_STATE_SHUTDOWN){
+    pthread_mutex_unlock(&tym_i_lock);
+    return 0;
+  }
+  if(tym_i_binit == INIT_STATE_FREEZE_IN_PROGRESS){
+    errno = EAGAIN;
+    goto error;
+  }
+  if(tym_i_binit != INIT_STATE_FROZEN){
+    errno = EINVAL;
+    goto error;
+  }
+  tym_i_binit = INIT_STATE_SHUTDOWN_IN_PROGRESS;
+  tym_i_finalize_cleanup(true);
+  pthread_mutex_unlock(&tym_i_lock);
   return 0;
 error:
   pthread_mutex_unlock(&tym_i_lock);

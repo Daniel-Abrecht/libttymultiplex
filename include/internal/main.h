@@ -112,6 +112,7 @@ extern size_t tym_i_resize_handler_count;
 extern struct tym_i_resize_handler_ptr_pair* tym_i_resize_handler_list;
 
 void* tym_i_main(void* ptr);
+void tym_i_finalize_cleanup(bool zap);
 int tym_i_update_size_all(void);
 int tym_i_pollfd_add(int fd, const struct tym_i_pollfd_complement* pcm);
 int tym_i_pollfd_remove(int fd);

@@ -34,7 +34,7 @@ struct tym_i_backend_capabilities {
 
 #define TYM_I_BACKEND_CALLBACKS \
   R(int, init, (struct tym_i_backend_capabilities*), (Initialise the backend.)) \
-  R(int, cleanup, (void), (Cleanup the backend. The backend can not be used again until it gets reinitialised.)) \
+  R(int, cleanup, (bool zap), (Cleanup the backend. The backend can not be used again until it gets reinitialised. If zap is set, do not try to reset any output.)) \
   R(int, resize, (void), (Handle terminal and screen size changes)) \
   R(int, pane_create, (struct tym_i_pane_internal* pane), (Backend specific initialisation of pane. The variable is for pane->backend exclusive usage by the backend.)) \
   R(void, pane_destroy, (struct tym_i_pane_internal* pane), (Backend specific cleanup of panes.)) \
@@ -110,7 +110,7 @@ struct tym_i_backend_entry {
 bool tym_i_backend_validate_prepare(struct tym_i_backend_entry* entry);
 struct tym_i_backend_entry* tym_i_backend_register(struct tym_i_backend_entry* entry);
 int tym_i_backend_init(const char* backend);
-void tym_i_backend_unload(void);
+void tym_i_backend_unload(bool zap);
 
 /**
  * This is the chosen backend

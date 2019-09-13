@@ -352,10 +352,7 @@ TYM_EXPORT int tym_shutdown(void);
  * to the pseudo terminal slaves may end up waiting.
  * <br/><br/>
  * Don't call #tym_shutdown if another program still has a running instance of this
- * library. There currently is no function to clean up all resources without
- * resetting terminal states and such stuff yet.
- *
- * \todo Add a function to reset all states and free memory but not deinitialise anything.
+ * library. Use tym_zap in that case.
  *
  * Make sure no other threads are trying to access any functions of this library
  * while you attemp a fork, it would leave the internal mutex lock in an undefined
@@ -368,6 +365,13 @@ TYM_EXPORT int tym_shutdown(void);
  * or #tym_freeze is currently in progress.
  */
 TYM_EXPORT int tym_freeze(void);
+
+/**
+ * Free & reset everything, but don't perform any deinitialisation.
+ * 
+ * Can only be called when libttymultiplex is in frozen mode after tym_freeze was called.
+ **/
+TYM_EXPORT int tym_zap(void);
 
 /**
  * Create a new pane. A pane is a region on the screen which contains a virtual

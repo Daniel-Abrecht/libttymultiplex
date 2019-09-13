@@ -24,6 +24,7 @@ static int colortable8[9] = {
 };
 static uint8_t colorpair8x8_triangular_number_mirror_mapping_index[9][9];
 static mmask_t tym_i_mouseeventmask;
+static SCREEN* terminal_screen_handle;
 
 struct curses_screen_state {
   WINDOW* window;
@@ -89,7 +90,8 @@ static int init(struct tym_i_backend_capabilities* caps){
   if(tym_i_pollfd_add(dup(STDIN_FILENO), &(struct tym_i_pollfd_complement){
     .onevent = terminal_input_handler
   })) goto error;
-  if(!initscr())
+  terminal_screen_handle = newterm(getenv("term"), stdin, stderr);
+  if(!terminal_screen_handle)
     goto error;
   cbreak();
   nodelay(stdscr, true);
@@ -130,9 +132,13 @@ error:
   return -1;
 }
 
-static int cleanup(void){
-  mousemask(tym_i_mouseeventmask, 0);
-  endwin();
+static int cleanup(bool zap){
+  if(!zap){
+    mousemask(tym_i_mouseeventmask, 0);
+    endwin();
+  }
+  if(terminal_screen_handle)
+    delscreen(terminal_screen_handle);
   return 0;
 }
 

@@ -98,7 +98,8 @@ static int init(struct tym_i_backend_capabilities* caps){
   return 0;
 }
 
-static int cleanup(void){
+static int cleanup(bool zap){
+  (void)zap;
   return 0;
 }
 

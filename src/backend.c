@@ -237,11 +237,13 @@ int tym_i_backend_init(const char* backend){
 
 /**
  * Unload the backend which is currently in use / was started using tym_i_backend_init.
+ * 
+ * \param zap If set, tell backend to only free up space but not reset any output or similar stuff.
  */
-void tym_i_backend_unload(void){
+void tym_i_backend_unload(bool zap){
   if(!tym_i_backend_entry || !tym_i_backend)
     return;
-  tym_i_backend->cleanup();
+  tym_i_backend->cleanup(zap);
   if(tym_i_backend_entry->library){
     free((char*)tym_i_backend_entry->name);
     dlclose(tym_i_backend_entry->library);
