@@ -60,7 +60,7 @@ OBJS += $(patsubst backend/$(BACKEND)/src/%.c,build/backend/$(BACKEND)/%.c.o,$(S
 
 build/backend/$(BACKEND)/%.c.o: backend/$(BACKEND)/src/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
-	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) "$<"
+	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) $(CPPFLAGS) "$<"
 
 else
 
@@ -69,7 +69,7 @@ OBJS += $(patsubst src/%.c,build/%.c.o,$(SOURCES))
 
 build/%.c.o: src/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
-	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) "$<"
+	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) $(CPPFLAGS) "$<"
 
 endif
 

@@ -1,9 +1,9 @@
 Source: libttymultiplex
 Priority: optional
 Maintainer: Daniel Patrick Abrecht <deb@danielabrecht.ch>
-Build-Depends: libncursesw5-dev, debhelper (>= 9)
+Build-Depends: libncursesw5-dev, debhelper (>= 12)
 Build-Depends-Indep: doxygen, libjs-jquery, graphviz
-Standards-Version: 3.9.8
+Standards-Version: 4.3.0
 Section: libs
 #Homepage: <insert the upstream URL, if relevant>
 Vcs-Git: https://projects.dpa.li/git/libttymultiplex.git
@@ -50,8 +50,8 @@ Package: libttymultiplex0-backend-all
 Provides: libttymultiplex0-backend
 Architecture: all
 Depends: libttymultiplex0-backend-curses, ${misc:Depends}
-Description: Meta package for all backends
- This meta package installs all libttymultiplex backends.
+Description: Metapackage for all backends
+ This metapackage installs all libttymultiplex backends.
 
 Package: libttymultiplex0-backend-curses
 Provides: libttymultiplex0-backend

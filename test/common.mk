@@ -64,7 +64,7 @@ $(BIN): $(ABS_LIBTTYMULTIPLEX_BASE_A) $(OBJS)
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/%.c $(HEADERS)
 	mkdir -p "$(dir $@)"
-	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) "$<"
+	$(CC) -c -o "$@" $(CC_OPTS) $(CFLAGS) $(CPPFLAGS) "$<"
 
 $(ABS_LIBTTYMULTIPLEX_BASE_A):
 	$(MAKE) -C "$(PROJECT_ROOT)" "$(LIBTTYMULTIPLEX_BASE_A)"
