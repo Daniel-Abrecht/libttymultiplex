@@ -137,7 +137,7 @@ bin/libttymultiplex.so: build/libttymultiplex.a | bin/.dir
 	cd bin; \
 	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR).$(MINOR)"; \
 	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR)"; \
-	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so";
+	ln -sf "libttymultiplex.so.$(MAJOR)" "libttymultiplex.so";
 
 cppcheck:
 	cppcheck $(CPPCHECK_OPTIONS) $(SOURCES)
@@ -165,7 +165,7 @@ install-lib: bin/libttymultiplex.so
 	cd "$(DESTDIR)$(PREFIX)/lib/"; \
 	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR).$(MINOR)"; \
 	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so.$(MAJOR)"; \
-	ln -sf "libttymultiplex.so.$(MAJOR).$(MINOR).$(PATCH)" "libttymultiplex.so";
+	ln -sf "libttymultiplex.so.$(MAJOR)" "libttymultiplex.so";
 
 install-header: include/libttymultiplex.h
 	mkdir -p "$(DESTDIR)$(PREFIX)/include/"

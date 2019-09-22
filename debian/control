@@ -13,21 +13,6 @@ Vcs-Git: https://projects.dpa.li/git/libttymultiplex.git
 #   https://source.puri.sm/DanielAbrecht/libttymultiplex.git
 Vcs-Browser: https://projects.dpa.li/git/?p=libttymultiplex.git;a=summary
 
-Package: libttymultiplex-dev
-Section: libdevel
-Architecture: any
-Depends: libttymultiplex0 (=${binary:Version}), ${misc:Depends}
-Description: Terminal multiplexer library development files
- This contains the header files needed to use the libttymultiplex
- library in another program.
-
-Package: libttymultiplex-doc
-Section: doc
-Architecture: all
-Depends: libjs-jquery, ${misc:Depends}
-Description: Terminal multiplexer library documentation of API and internals
- This package contains the documentation for the libttymultiplex library.
-
 Package: libttymultiplex0
 Architecture: any
 Depends: libttymultiplex0-backend, ${shlibs:Depends}, ${misc:Depends}
@@ -46,12 +31,34 @@ Description: Terminal multiplexer library
  allows it to be used on any display device any of the
  backends support.
 
+Package: libttymultiplex-dev
+Section: libdevel
+Architecture: any
+Depends: libttymultiplex0 (=${binary:Version}), ${misc:Depends}
+Description: Terminal multiplexer library development files
+ This contains the header files needed to use the libttymultiplex
+ library in another c or c++ program. This package is only
+ needed for building such a program though.
+
+Package: libttymultiplex-doc
+Section: doc
+Architecture: all
+Depends: libjs-jquery, ${misc:Depends}
+Description: Terminal multiplexer library documentation of APIs and internals
+ This package contains the documentation for the libttymultiplex library.
+ This is mostly just doxygen generated API documentation, describing
+ the API functions & datastructures for the public API of this library,
+ but also containing documentation of the internal backend interface
+ and some internal functions and data structures.
+
 Package: libttymultiplex0-backend-all
 Provides: libttymultiplex0-backend
 Architecture: all
 Depends: libttymultiplex0-backend-curses, ${misc:Depends}
 Description: Metapackage for all backends
  This metapackage installs all libttymultiplex backends.
+ Currently, there is only the libttymultiplex0-backend-curses
+ backend, but other backends may be added in future versions.
 
 Package: libttymultiplex0-backend-curses
 Provides: libttymultiplex0-backend
@@ -59,4 +66,6 @@ Architecture: any
 Depends: libttymultiplex0 (=${binary:Version}), libncursesw5, ${shlibs:Depends}, ${misc:Depends}
 Description: curses backend for libttymultiplex
  This backend for libttymultiplex uses the curses library.
- With this backend, libttymultiplex can be used on an existing terminal.
+ With this backend, libttymultiplex can be used on an existing terminal,
+ well, except maybe if your terminal is in fact a printer or something
+ like that.

@@ -1,0 +1,46 @@
+# All internally used symbols of this library which aren't to be used
+# by other libraries are prefixed with tym_i_. Initially, all symbols
+# except for the explicitly exported ones used to have hidden visibility,
+# but then the backends have been put in their own libraries instead of
+# being built into libttymultiplex directly. While these backends do
+# have a more or less stable API for libttymultiplex to use, a proper
+# API for the backends to interface with libttymultiplex doesn't exist
+# yet. Because of that, the backends currently use libttymultiplex
+# internals, and thus all libttymultiplex symbols have to be exported.
+# Since all backends are currently built along libttymultiplex anyway,
+# this shouldn't cause any issues though. Once this is fixed,
+# the (regex|optional)"^tym_i_" line should be removed.
+
+libttymultiplex.so.0 libttymultiplex0 #MINVER#
+* Build-Depends-Package: libttymultiplex-dev
+ (regex|optional)"^tym_i_" 0.0.0
+ tym_freeze@Base 0.0.1
+ tym_init@Base 0.0.1
+ tym_pane_create@Base 0.0.1
+ tym_pane_destroy@Base 0.0.1
+ tym_pane_get_default_env_vars@Base 0.0.1
+ tym_pane_get_flag@Base 0.0.1
+ tym_pane_get_slavefd@Base 0.0.1
+ tym_pane_register_resize_handler@Base 0.0.1
+ tym_pane_reset@Base 0.0.1
+ tym_pane_resize@Base 0.0.1
+ tym_pane_send_key@Base 0.0.1
+ tym_pane_send_keys@Base 0.0.1
+ tym_pane_send_mouse_event@Base 0.0.1
+ tym_pane_send_special_key_by_name@Base 0.0.1
+ tym_pane_set_env@Base 0.0.1
+ tym_pane_set_flag@Base 0.0.1
+ tym_pane_type@Base 0.0.1
+ tym_pane_unregister_resize_handler@Base 0.0.1
+ tym_positon_unit_map@Base 0.0.1
+ tym_register_resize_handler@Base 0.0.1
+ tym_shutdown@Base 0.0.1
+ tym_special_key_count@Base 0.0.1
+ tym_special_key_list@Base 0.0.1
+ tym_u_log@Base 0.0.1
+ tym_u_perror@Base 0.0.1
+ tym_u_rawlog@Base 0.0.1
+ tym_u_va_log@Base 0.0.1
+ tym_u_va_rawlog@Base 0.0.1
+ tym_unregister_resize_handler@Base 0.0.1
+ tym_zap@Base 0.0.1

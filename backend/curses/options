@@ -1,1 +1,1 @@
-libs="$(ncursesw5-config --libs)"
+libs="$(ncursesw5-config --libs | tr ' ' '\n' | grep -v -- -ldl)"

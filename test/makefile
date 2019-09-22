@@ -8,6 +8,8 @@ TS_BIN = test-summary/bin/test-summary
 all: test
 
 clean: $(addprefix clean-,$(TESTS)) clean-test-summary
+	rm -rf build
+
 build: $(addprefix bin/,$(TESTS))
 
 
