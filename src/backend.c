@@ -11,11 +11,9 @@
 #include <string.h>
 #include <stddef.h>
 #include <ctype.h>
-#include <stdio.h>
 
 #include <internal/backend.h>
 #include <errno.h>
-#include <stdio.h>
 #include <string.h>
 
 /** \file */
@@ -54,18 +52,18 @@ static struct tym_i_backend_entry* load_and_init_speciffic_external_backend(cons
   }
   void* lib = dlopen(path, RTLD_LOCAL | RTLD_NOW | RTLD_DEEPBIND);
   if(!lib){
-    fprintf(stderr,"dlopen(\"%s\") failed: %s\n", path, dlerror());
+    TYM_U_LOG(TYM_LOG_ERROR, "dlopen(\"%s\") failed: %s\n", path, dlerror());
     goto error_after_calloc;
   }
   dlerror();
   struct tym_i_backend_entry** res = dlsym(lib,"tymb_backend_entry");
   if(!res || !*res){
-    fprintf(stderr, "%s: dlsym failed: %s\n", path, dlerror());
+    TYM_U_LOG(TYM_LOG_ERROR, "%s: dlsym failed: %s\n", path, dlerror());
     goto error_after_dlopen;
   }
   struct tym_i_backend_entry* backend_entry = *res;
   if(strcmp(backend_entry->name, libname))
-    fprintf(stderr, "Warning: builting backend name (%s) mismatches library name (%s). Overriding backend name...", backend_entry->name, libname);
+    TYM_U_LOG(TYM_LOG_WARN, "builting backend name (%s) mismatches library name (%s). Overriding backend name...", backend_entry->name, libname);
   backend_entry->name = libname;
   backend_entry->library = lib;
   if(!tym_i_backend_validate_prepare(backend_entry))
@@ -124,7 +122,7 @@ static struct tym_i_backend_entry* load_and_init_external_backend(const char* na
   struct dirent **entries = 0;
   int n = scandir(plugin_dir, &entries, backend_filename_filter, alphasort);
   if(n < 0){
-    perror("scandir");
+    TYM_U_PERROR(TYM_LOG_ERROR, "scandir");
     return 0;
   }
   if(!n){
@@ -171,7 +169,7 @@ bool tym_i_backend_validate_prepare(struct tym_i_backend_entry* entry){
     return false;
   #define R(RET, ID, PARAMS, DOC) \
     if(!entry->backend.ID){ \
-      fprintf(stderr,"Backend \"%s\" is missing required function \"%s\"\n",entry->name,#ID); \
+      TYM_U_LOG(TYM_LOG_ERROR, "Backend \"%s\" is missing required function \"%s\"\n",entry->name,#ID); \
       bad = true; \
     }
   #define O(RET, ID, PARAMS, DOC) \
@@ -190,7 +188,7 @@ bool tym_i_backend_validate_prepare(struct tym_i_backend_entry* entry){
  */
 struct tym_i_backend_entry* tym_i_backend_register(struct tym_i_backend_entry* entry){
   if(!tym_i_backend_validate_prepare(entry)){
-    fprintf(stderr,"Invalid backend \"%s\", not registring backend!\n",entry->name);
+    TYM_U_LOG(TYM_LOG_ERROR, "Invalid backend \"%s\", not registring backend!\n",entry->name);
     return 0;
   }
   entry->next = tym_i_backend_list;
