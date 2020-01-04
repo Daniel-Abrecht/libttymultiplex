@@ -14,6 +14,7 @@
 #include <internal/utf8.h>
 #include <internal/charset.h>
 #include <libttymultiplex.h>
+#include <sys/types.h>
 
 struct tym_i_pane_resize_handler_ptr_pair {
   void* ptr;
