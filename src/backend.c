@@ -16,6 +16,11 @@
 #include <errno.h>
 #include <string.h>
 
+#ifndef RTLD_DEEPBIND
+// musl cannot use RTLD_DEEPBIND so maybe it'll be supported in the future?
+#define RTLD_DEEPBIND 0
+#endif
+
 /** \file */
 
 /** A linked list of all backends */
