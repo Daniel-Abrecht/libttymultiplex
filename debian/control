@@ -1,7 +1,7 @@
 Source: libttymultiplex
 Priority: optional
 Maintainer: Daniel Patrick Abrecht <deb@danielabrecht.ch>
-Build-Depends: libncursesw5-dev, debhelper (>= 12~)
+Build-Depends: libncursesw5-dev, pkgconf, debhelper (>= 12~)
 Build-Depends-Indep: doxygen, libjs-jquery, graphviz
 Standards-Version: 4.3.0
 Section: libs
