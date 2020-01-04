@@ -1,7 +1,7 @@
 
 BACKEND_SOURCES += src/main.c
 
-INCLUDES = $(shell ncursesw5-config --cflags)
+INCLUDES = $(shell pkg-config --cflags ncursesw)
 
 include src/common.mk
 
