@@ -247,9 +247,13 @@ static int pane_scroll_region(struct tym_i_pane_internal* pane, int n, unsigned 
   struct curses_screen_state* cscreen = &cbp->screen[pane->current_screen];
   long w = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_HORIZONTAL);
   long h = TYM_RECT_SIZE(pane->absolute_position, CHARFIELD, TYM_AXIS_VERTICAL);
-  if(top >= h)
+  if(w < 0 || h < 0 || (long)(unsigned)w != w || (long)(unsigned)h != h){
+    TYM_U_LOG(TYM_LOG_WARN, "w=%ld or h=%ld is outside of expected range\n", w, h);
     return -1;
-  if(bottom > h)
+  }
+  if(top >= (unsigned)h)
+    return -1;
+  if(bottom > (unsigned)h)
     bottom = h;
   unsigned long m = bottom - top;
   TYM_U_LOG(TYM_LOG_DEBUG, "moving scrolling region: %u %u %lu %d\n",top,bottom,m,n);
