@@ -108,14 +108,14 @@ release@%:
 build/backend/%.a: backend/%/backend.mk always build/backend/.dir
 	$(MAKE) -f "$<" BACKEND="$(patsubst build/backend/%.a,%,$@)" "$@"
 
-bin/backend/%.so: build/backend/%.a | bin/backend/.dir
+bin/backend/%.so: build/backend/%.a bin/libttymultiplex.so | bin/backend/.dir
 	options_file="$(patsubst bin/backend/%.so,backend/%/options,$@)"; \
 	if [ -f "$$options_file" ]; \
 	  then . "$$options_file"; \
 	fi; \
 	libs="-Lbin/ -lttymultiplex $$libs"; \
 	ld_opts="$(LD_OPTS) $$ld_opts"; \
-	$(CC) -o "$@" -Wl,--whole-archive $^ -Wl,--no-whole-archive $$ld_opts $$libs $(LDFLAGS);
+	$(CC) -o "$@" -Wl,--whole-archive $< -Wl,--no-whole-archive $$ld_opts $$libs $(LDFLAGS);
 
 build/libttymultiplex.a: $(OBJS) $(patsubst %,build/backend/%.a,$(BUILTIN_BACKENDS)) | build/.dir
 	$(AR) scrT $@ $^
