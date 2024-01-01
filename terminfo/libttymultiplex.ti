@@ -5,7 +5,7 @@
 
 # Options in common with other teminals libttymultiplex is intended to be
 # compatible with, namely vt100 and xterm
-libttymultiplex::common-option,
+libttymultiplex--b-common-option,
   auto_right_margin,
   back_color_erase,
   has_meta_key,
@@ -21,7 +21,7 @@ libttymultiplex::common-option,
 
 
 # Escape sequences regarding character sets
-libttymultiplex::common-charset,
+libttymultiplex--b-common-charset,
 #   When the drawing character set is used, every first character of two characters is
 #   replaced by the second one. Note, in the drawing character set, these characters
 #   are entirely different glyphs
@@ -33,7 +33,7 @@ libttymultiplex::common-charset,
 #  Add select_char_set and set*_des_seq entries above
 
 
-libttymultiplex::special-keys,
+libttymultiplex--b-special-keys,
   keypad_xmit=\E[?1h\E=,
   keypad_local=\E[?1l\E>,
   key_backspace=\177,
@@ -50,12 +50,12 @@ libttymultiplex::special-keys,
 # TODO: Make libttymultiplex check key termcaps for sending them
 
 
-libttymultiplex::color,
+libttymultiplex--b-color,
   colors#8,
   pairs#64,
 
 
-libttymultiplex::mouse,
+libttymultiplex--b-mouse,
   key_mouse=\E[M, XM=\E[?1000%?%p1%{1}%=%th%el%;,
   xm=\E[M%?%p4%t3%e%p3%'\s'%+%c%;%p2%'!'%+%c%p1%'!'%+%c,
 
@@ -131,9 +131,9 @@ libttymultiplex|libttymultiplex with minimal required feature set,
   enter_secure_mode=\E[8m,
   exit_secure_mode=\E[28m,
   
-  use=libttymultiplex::common-option,
-  use=libttymultiplex::common-charset,
-  use=libttymultiplex::special-keys,
+  use=libttymultiplex--b-common-option,
+  use=libttymultiplex--b-common-charset,
+  use=libttymultiplex--b-special-keys,
 
 # Notes:
 #  * secure mode is just invisible characters
@@ -166,15 +166,15 @@ libttymultiplex|libttymultiplex with minimal required feature set,
 
 libttymultiplex-color-mouse,
   use=libttymultiplex,
-  use=libttymultiplex::color,
-  use=libttymultiplex::mouse,
+  use=libttymultiplex--b-color,
+  use=libttymultiplex--b-mouse,
 
 
 libttymultiplex-color,
   use=libttymultiplex,
-  use=libttymultiplex::color,
+  use=libttymultiplex--b-color,
 
 
 libttymultiplex-mouse,
   use=libttymultiplex,
-  use=libttymultiplex::mouse,
+  use=libttymultiplex--b-mouse,
