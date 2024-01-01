@@ -63,7 +63,7 @@ Description: Metapackage for all backends
 Package: libttymultiplex0-backend-curses
 Provides: libttymultiplex0-backend
 Architecture: any
-Depends: libttymultiplex0 (=${binary:Version}), libncursesw5, ${shlibs:Depends}, ${misc:Depends}
+Depends: libttymultiplex0 (=${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: curses backend for libttymultiplex
  This backend for libttymultiplex uses the curses library.
  With this backend, libttymultiplex can be used on an existing terminal,
